@@ -96,6 +96,7 @@ class LLMKnowledgeExtractor:
         if not transcript.segments or not transcript.full_text.strip():
             logger.info("Empty transcript detected (no speech segments). Returning empty extraction result.")
             return ExtractionResult(
+                meeting_id=transcript.meeting_id,
                 summary="No speech detected in audio file.",
                 decisions=[],
                 tasks=[],
@@ -103,6 +104,7 @@ class LLMKnowledgeExtractor:
                 technologies=[],
                 relationships=[],
             )
+
 
         prompt = (
             f"Please analyze the following meeting transcript and extract structured knowledge:\n\n"

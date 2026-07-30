@@ -90,6 +90,19 @@ def create_app(container: ServiceContainer | None = None) -> FastAPI:
             "speech_provider": cntr.config.speech.provider,
         }
 
+    @app.get("/api/audio/devices")
+    async def get_audio_devices() -> dict[str, Any]:
+        """Get system audio hardware devices and loopback hook diagnostic status."""
+        from transcribe.infrastructure.system_audio_hook import SystemAudioHook
+        hook = SystemAudioHook()
+        devices = hook.list_devices()
+        status = hook.get_setup_status()
+        return {
+            "devices": [dev.model_dump() for dev in devices],
+            "setup_status": status.model_dump(),
+        }
+
+
     @app.get("/api/meetings")
     async def list_meetings() -> list[dict[str, Any]]:
         """List all processed meetings."""

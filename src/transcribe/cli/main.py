@@ -209,48 +209,88 @@ def ask(container: ServiceContainer, question: str, top_k: int) -> None:
             console.print(table)
 
 @cli.command()
+def audio_devices() -> None:
+    """Inspect local audio hardware & system loopback hooks for Teams/Zoom capture."""
+    from transcribe.infrastructure.system_audio_hook import SystemAudioHook
+
+    hook = SystemAudioHook()
+    devices = hook.list_devices()
+    status = hook.get_setup_status()
+
+    table = Table(title="Detected System Audio & Loopback Devices", show_header=True, header_style="bold cyan")
+    table.add_column("Device ID", style="yellow")
+    table.add_column("Device Name", style="bold white")
+    table.add_column("Category", style="magenta")
+    table.add_column("Platform", style="green")
+
+    for dev in devices:
+        table.add_row(dev.id, dev.name, dev.kind.upper(), dev.platform)
+
+    console.print(table)
+
+    status_color = "green" if status.is_ready else "yellow"
+    console.print(f"\n[bold {status_color}]Teams/Zoom Call Capture Diagnostics:[/bold {status_color}]")
+    for rec in status.recommendations:
+        console.print(f"  • {rec}")
+
+
+@cli.command()
 @click.option("--duration", "-d", default=10, help="Recording duration in seconds.")
 @click.option("--title", "-t", default=None, help="Optional meeting title.")
+@click.option(
+    "--mode", "-m",
+    type=click.Choice(["mic", "system", "mixed"]),
+    default="mixed",
+    help="Audio capture mode: 'mic' (microphone only), 'system' (Teams call output), or 'mixed' (both).",
+)
+@click.option("--mic-device", help="Specific microphone device ID or name.")
+@click.option("--system-device", help="Specific system loopback device ID or name (e.g. BlackHole/Loopback).")
 @click.pass_obj
-def record(container: ServiceContainer, duration: int, title: str | None) -> None:
-    """Record live microphone audio from terminal and process meeting memory."""
-    import subprocess
-    import time
-    from transcribe.application.services.meeting_service import MeetingService
-
+def record(
+    container: ServiceContainer,
+    duration: int,
+    title: str | None,
+    mode: str,
+    mic_device: str | None,
+    system_device: str | None,
+) -> None:
+    """Record live microphone and/or Teams system call audio and process meeting memory."""
     from datetime import datetime
+    from transcribe.application.services.meeting_service import MeetingService
+    from transcribe.infrastructure.system_audio_hook import SystemAudioHook
+
     rec_dir = container.config.storage.recordings_dir
     rec_dir.mkdir(parents=True, exist_ok=True)
     timestamp_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     out_file = rec_dir / f"meeting_{timestamp_str}.wav"
 
-    console.print(f"[bold red]🔴 Recording live microphone audio for {duration} seconds...[/bold red]")
+    console.print(f"[bold red]🔴 Recording live meeting audio ({mode.upper()} mode) for {duration} seconds...[/bold red]")
     console.print(f"[dim]Saving to {out_file}[/dim]")
 
-    # Record via FFmpeg avfoundation on macOS
-    cmd = [
-        "ffmpeg", "-y",
-        "-f", "avfoundation",
-        "-i", ":0",
-        "-t", str(duration),
-        str(out_file)
-    ]
-
+    hook = SystemAudioHook()
     try:
-        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=True)
-        console.print(f"[bold green]✓ Live recording complete![/bold green]")
+        recorded_path = hook.record(
+            output_path=out_file,
+            duration_seconds=duration,
+            mode=mode,  # type: ignore
+            mic_device=mic_device,
+            system_device=system_device,
+        )
+        console.print("[bold green]✓ Live audio capture complete![/bold green]")
     except Exception as err:
         console.print(f"[bold red]Recording failed: {err}[/bold red]")
         return
 
-    console.print(f"[bold cyan]Processing live meeting recording...[/bold cyan]")
+    console.print("[bold cyan]Processing meeting recording into memory...[/bold cyan]")
     service = MeetingService(container=container)
 
     async def _run_proc() -> None:
-        result = await service.process_meeting(audio_path=out_file, title=title or f"Live Terminal Meeting ({duration}s)")
+        meeting_title = title or f"Live Meeting Call ({mode.title()}, {duration}s)"
+        result = await service.process_meeting(audio_path=recorded_path, title=meeting_title)
         console.print(f"[bold green]✓ Meeting processed![/bold green] Notes at [yellow]{result.markdown_path}[/yellow]")
 
     asyncio.run(_run_proc())
+
 
 
 @cli.command()

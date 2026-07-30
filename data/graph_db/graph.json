@@ -1,589 +1,11 @@
 {
   "nodes": [
     {
-      "id": "069c376b-0065-4e07-be16-b707f5609f2e",
-      "label": "Meeting",
-      "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T06:56:46.593712+00:00"
-      }
-    },
-    {
-      "id": "dadcee1e-4777-4dde-b3be-cbd1adca8da9",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "3e83e0d4-85a3-4d22-b9e0-3ccd0d469114",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "Bob",
-      "label": "Person",
-      "properties": {}
-    },
-    {
-      "id": "Create the initial repository and setup CI",
-      "label": "Task",
-      "properties": {}
-    },
-    {
-      "id": "2de2050e-e35c-4fb3-9669-63ffe6b4ddca",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T06:57:20.506124+00:00"
-      }
-    },
-    {
-      "id": "cddda082-ef7b-42d1-8097-c17b6e5543b5",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "dbfce13e-1d88-434c-b94f-a71ead2ec1e5",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "6518eba9-ab3e-483a-bbcc-9b9ac13b44ec",
-      "label": "Meeting",
-      "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T06:59:51.161372+00:00"
-      }
-    },
-    {
-      "id": "e9c00e33-f901-40a4-a123-bde8209b32fb",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "b73cf173-13ca-460e-a85e-b982b27e8c18",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "8ba45e3c-6ba6-4c59-8a50-2d976ae28721",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T07:00:16.113187+00:00"
-      }
-    },
-    {
-      "id": "69afa055-f914-49c6-a103-5ff0adfea30d",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "5fb8d998-2fb8-4a5b-aa9d-42da377f674e",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "60e97036-0d9f-4902-8e4a-23f1d8b629bd",
-      "label": "Meeting",
-      "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T07:38:37.975918+00:00"
-      }
-    },
-    {
-      "id": "5e711bae-0fad-46c0-b044-944e7a7ba23c",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend",
-        "owner": null
-      }
-    },
-    {
-      "id": "d0a4de37-7377-4976-bdcb-2247eafe001c",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "787929b6-5c5c-4f04-8113-490c6ff432ed",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T07:38:57.050281+00:00"
-      }
-    },
-    {
-      "id": "6ce464f3-4589-42cb-96a9-b60d9a194234",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "bd7b079f-bd87-4bf1-abed-b17d55650a70",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "0103155a-de67-4b88-a68f-4a1148e92ce0",
-      "label": "Meeting",
-      "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T07:40:21.281256+00:00"
-      }
-    },
-    {
-      "id": "00288f06-1148-4753-b765-b554370a028c",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "4f5dd350-b4ba-4856-be36-934d9791f937",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "504ac468-e8f7-4e5a-b1ee-fc40c44bf030",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T07:40:40.406040+00:00"
-      }
-    },
-    {
-      "id": "4e90dc65-d06c-4f6d-95e2-4673e90ca666",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "241d8705-fd6e-4673-991a-ce134ef982ea",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "4521f2eb-45ef-4c64-b281-4a71875e390a",
-      "label": "Meeting",
-      "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T07:43:32.363549+00:00"
-      }
-    },
-    {
-      "id": "dfa41a3c-e771-42af-948a-68ecc4d3a9bd",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "bc723d7a-3f4b-411f-8b61-ac3d5468be3d",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "4ff3b882-79a7-4f9e-a594-461117a8344e",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T07:43:52.232077+00:00"
-      }
-    },
-    {
-      "id": "385d0e3c-b15a-4a57-a169-142b5ec2e30e",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "d493b8db-b12e-4ca6-a560-a79eaaccfedb",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "ed6266f6-5647-4411-aa2d-755f48620ebc",
-      "label": "Meeting",
-      "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T07:44:51.192120+00:00"
-      }
-    },
-    {
-      "id": "3e835a55-a730-418e-96fe-36069d55049b",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "df95ca76-b0ac-4520-ab38-a9cd50dda080",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "92e94b72-39b0-4549-a510-83057009a211",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T07:45:10.654099+00:00"
-      }
-    },
-    {
-      "id": "9e83d21b-3e12-4cbb-bfd4-2538cdbd2790",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "c0087f24-a396-4466-b330-71f1815af882",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "9735cf87-1eb4-4a5a-9d8c-81c1bbd22cc1",
-      "label": "Meeting",
-      "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T07:47:19.403986+00:00"
-      }
-    },
-    {
-      "id": "1132c787-5d78-43a4-9b9f-41edbe3ec074",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "61d4c522-884d-49f4-83dc-9cb0272bc4d2",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "dfa58350-d443-4e42-b353-08be05849926",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T07:47:39.252644+00:00"
-      }
-    },
-    {
-      "id": "978ee8ac-3a30-41d3-a4c1-8339b5e8605b",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "04ac5fa0-ca90-45be-a276-a40b1d2416d7",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "39624f68-03a7-4a71-81a1-6d02713d3898",
-      "label": "Meeting",
-      "properties": {
-        "title": "Terminal Test Record",
-        "date": "2026-07-30T07:53:16.099232+00:00"
-      }
-    },
-    {
-      "id": "be617c93-1f44-4cf5-925c-439c3044ce73",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "8ba07531-6d83-42ed-b536-da275c601fb8",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "53ae7246-0816-444e-b9b6-309df7209608",
-      "label": "Meeting",
-      "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T08:04:20.279875+00:00"
-      }
-    },
-    {
-      "id": "20004311-7c69-43c7-9617-bc64000e743e",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend",
-        "owner": null
-      }
-    },
-    {
-      "id": "51b89c9d-148d-4e99-a2b3-5785bf97798b",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "eb435ddc-6d31-4b0d-b17d-f63a60a4960a",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T08:04:39.871157+00:00"
-      }
-    },
-    {
-      "id": "6254e6d2-2b4d-4592-a968-21f7373cc51d",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "cc326b38-3ca4-4fd3-b014-6a0e0b9fb6e7",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "77a55deb-5e77-4299-b862-aa847bc0db39",
-      "label": "Meeting",
-      "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T09:15:11.386852+00:00"
-      }
-    },
-    {
-      "id": "f96a130a-7aed-4ac3-a5dd-6fff56506b47",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend",
-        "owner": null
-      }
-    },
-    {
-      "id": "ecca2f7c-189d-4a58-a910-4cdad1bf37a5",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "c24fb700-2b3b-40bf-8aef-6686c28c94c2",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T09:15:32.611262+00:00"
-      }
-    },
-    {
-      "id": "60c67b3e-8c9e-4fba-8804-575fb56fc8ac",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend",
-        "owner": null
-      }
-    },
-    {
-      "id": "32a5b841-333e-4b45-8866-a5c8d8ab2fd9",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "610aaa3e-191d-4c09-88a7-a2a2e41c3c84",
-      "label": "Meeting",
-      "properties": {
-        "title": "Live Meeting (2:59:36 pm)",
-        "date": "2026-07-30T09:29:36.840705+00:00"
-      }
-    },
-    {
-      "id": "9750f79b-1f80-40ba-bad1-9cb375329a7c",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "943704fd-bc62-4a42-9426-075a6768a697",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "23e5be7f-ad38-4b46-bfb7-6f388a63d77a",
-      "label": "Meeting",
-      "properties": {
-        "title": "Live Meeting (3:01:33 pm)",
-        "date": "2026-07-30T09:31:34.034094+00:00"
-      }
-    },
-    {
-      "id": "ccf3ca8c-25b1-4424-a183-422e6a2e741f",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "2066c880-1005-4be4-8288-3b158430b3f1",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "15468524-8d27-4d0a-a566-c3033fc0765b",
-      "label": "Meeting",
-      "properties": {
-        "title": "WebM Test",
-        "date": "2026-07-30T09:34:40.585566+00:00"
-      }
-    },
-    {
-      "id": "09412e5d-c3d5-4759-9074-12dae79912aa",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "6d23c654-9661-4b59-a9b6-4eaf317d9b21",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "1383a1fb-4607-4cb6-9ed0-15baed19fd31",
-      "label": "Meeting",
-      "properties": {
-        "title": "WebM Test 2",
-        "date": "2026-07-30T09:35:09.201765+00:00"
-      }
-    },
-    {
-      "id": "75c24d05-2bf5-445a-a4c4-da49656ca792",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "5a9b5c1c-02c5-4569-8b65-60f97f49dfcd",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
       "id": "sample",
       "label": "Meeting",
       "properties": {
         "title": "CLI Sync Meeting",
-        "date": "2026-07-30T10:33:17.551013+00:00"
-      }
-    },
-    {
-      "id": "31c5535e-8450-492a-b4e7-627df34da2c8",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "b94876d7-eaee-4e43-ad3d-6c94c9e16be0",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
+        "date": "2026-07-30T14:29:13.149247+00:00"
       }
     },
     {
@@ -591,75 +13,11 @@
       "label": "Meeting",
       "properties": {
         "title": "Architecture Sync",
-        "date": "2026-07-30T10:33:27.167478+00:00"
+        "date": "2026-07-30T14:29:22.865718+00:00"
       }
     },
     {
-      "id": "b674ecac-3fc9-4d23-9dad-15d30ba0a85d",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "18a3edf5-c37f-4a73-9910-13559e1b1dbb",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "8863b44e-1d5c-43f4-814f-2a8bf34fc8da",
-      "label": "Meeting",
-      "properties": {
-        "title": "Live Meeting (3:19:06 pm)",
-        "date": "2026-07-30T09:49:06.970899+00:00"
-      }
-    },
-    {
-      "id": "1009f335-f385-4ed7-8a6d-655d31bb47aa",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "cf99b217-9825-48af-8bf8-0197b01e724f",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "meeting_2026-07-30_15-20-45",
-      "label": "Meeting",
-      "properties": {
-        "title": "Live Meeting (3:20:45 pm)",
-        "date": "2026-07-30T09:50:45.865894+00:00"
-      }
-    },
-    {
-      "id": "b62817e5-289c-41d4-8d4e-fea0ae709c9e",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for the AI pipeline backend.",
-        "owner": null
-      }
-    },
-    {
-      "id": "f442c94a-3e4b-43ad-9588-a508882b2477",
-      "label": "Task",
-      "properties": {
-        "description": "Create the initial repository and setup CI.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "a4300f60-4d17-4c1c-8320-0870e71a9f9c",
+      "id": "8def17ef-91b8-4a9f-8ece-20137344c1b6",
       "label": "Decision",
       "properties": {
         "description": "Adopt Python for AI pipeline backend infrastructure.",
@@ -667,12 +25,17 @@
       }
     },
     {
-      "id": "a44e8303-77ec-4699-bae9-04298b95ac99",
+      "id": "1117431d-349c-4655-a636-ce97f8ce4c77",
       "label": "Task",
       "properties": {
         "description": "Create initial repository structure and configure CI pipeline.",
         "owner": "Bob"
       }
+    },
+    {
+      "id": "Bob",
+      "label": "Person",
+      "properties": {}
     },
     {
       "id": "Create initial repository structure",
@@ -690,7 +53,7 @@
       "properties": {}
     },
     {
-      "id": "9bc11c1b-cf58-4ec6-aebe-095e9486b051",
+      "id": "d1dc81ee-079c-4895-869c-8f92cb5e8210",
       "label": "Decision",
       "properties": {
         "description": "Adopt Python for AI pipeline backend infrastructure.",
@@ -698,7 +61,7 @@
       }
     },
     {
-      "id": "bb117a0a-55ef-4505-9998-4bfd1a26efa5",
+      "id": "34c8d5dd-b6a8-4d39-afaf-6417946f8b70",
       "label": "Task",
       "properties": {
         "description": "Create initial repository structure and configure CI pipeline.",
@@ -706,15 +69,47 @@
       }
     },
     {
-      "id": "meeting_2026-07-30_15-41-29",
+      "id": "e5553022-6eeb-4eca-afe1-b4a8b5c5d3fe",
+      "label": "Decision",
+      "properties": {
+        "description": "Adopt Python for AI pipeline backend infrastructure.",
+        "owner": "Alice"
+      }
+    },
+    {
+      "id": "87428000-4c1b-4ae0-804f-710bf7dca96a",
+      "label": "Task",
+      "properties": {
+        "description": "Create initial repository structure and configure CI pipeline.",
+        "owner": "Bob"
+      }
+    },
+    {
+      "id": "caf240f4-5185-4088-9c80-8b18ce21e91e",
+      "label": "Decision",
+      "properties": {
+        "description": "Adopt Python for AI pipeline backend infrastructure.",
+        "owner": "Alice"
+      }
+    },
+    {
+      "id": "056df26d-088a-4953-aba0-aa10c81f8be5",
+      "label": "Task",
+      "properties": {
+        "description": "Create initial repository structure and configure CI pipeline.",
+        "owner": "Bob"
+      }
+    },
+    {
+      "id": "meeting_2026-07-30_19-59-11",
       "label": "Meeting",
       "properties": {
-        "title": "Live Meeting (3:41:29 pm)",
-        "date": "2026-07-30T10:11:29.416033+00:00"
+        "title": "Teams Weekly Sync",
+        "date": "2026-07-30T14:29:12.855614+00:00"
       }
     },
     {
-      "id": "4f31d80e-c7e5-480a-a8e7-034a8da8c536",
+      "id": "35845cfc-c1c4-4392-bf78-37963d50bb3f",
       "label": "Decision",
       "properties": {
         "description": "Adopt Python for AI pipeline backend infrastructure.",
@@ -722,7 +117,7 @@
       }
     },
     {
-      "id": "c8a884b0-c7fa-4890-8191-5bd4bc51e2c1",
+      "id": "f7c4bdf2-a11b-49e3-a043-4cdd9dc3b4ba",
       "label": "Task",
       "properties": {
         "description": "Create initial repository structure and configure CI pipeline.",
@@ -730,450 +125,25 @@
       }
     },
     {
-      "id": "42946296-daac-4131-b5a0-2c72c2307847",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for AI pipeline backend infrastructure.",
-        "owner": "Alice"
-      }
-    },
-    {
-      "id": "ca237314-82a3-4e86-8609-c78d844aa29d",
-      "label": "Task",
-      "properties": {
-        "description": "Create initial repository structure and configure CI pipeline.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "3522c760-48a2-4f6c-9fda-077a98378ca8",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for AI pipeline backend infrastructure.",
-        "owner": "Alice"
-      }
-    },
-    {
-      "id": "7375b2f9-3bdf-4cab-a803-cec75ba78e6e",
-      "label": "Task",
-      "properties": {
-        "description": "Create initial repository structure and configure CI pipeline.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "meeting_2026-07-30_17-42-15",
+      "id": "meeting_2026-07-30_19-59-24",
       "label": "Meeting",
       "properties": {
-        "title": "Live Meeting (5:42:15 pm)",
-        "date": "2026-07-30T12:12:15.159744+00:00"
-      }
-    },
-    {
-      "id": "7783f199-9e97-4735-94eb-158079fd14eb",
-      "label": "Task",
-      "properties": {
-        "description": "Generate transcript summary and decisions",
-        "owner": null
+        "title": "Teams Weekly Sync",
+        "date": "2026-07-30T14:29:26.356733+00:00"
       }
     }
   ],
   "edges": [
     {
-      "source_id": "069c376b-0065-4e07-be16-b707f5609f2e",
-      "target_id": "dadcee1e-4777-4dde-b3be-cbd1adca8da9",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "069c376b-0065-4e07-be16-b707f5609f2e",
-      "target_id": "3e83e0d4-85a3-4d22-b9e0-3ccd0d469114",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "Bob",
-      "target_id": "Create the initial repository and setup CI",
-      "relation_type": "owns",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "2de2050e-e35c-4fb3-9669-63ffe6b4ddca",
-      "target_id": "cddda082-ef7b-42d1-8097-c17b6e5543b5",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "2de2050e-e35c-4fb3-9669-63ffe6b4ddca",
-      "target_id": "dbfce13e-1d88-434c-b94f-a71ead2ec1e5",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "6518eba9-ab3e-483a-bbcc-9b9ac13b44ec",
-      "target_id": "e9c00e33-f901-40a4-a123-bde8209b32fb",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "6518eba9-ab3e-483a-bbcc-9b9ac13b44ec",
-      "target_id": "b73cf173-13ca-460e-a85e-b982b27e8c18",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "8ba45e3c-6ba6-4c59-8a50-2d976ae28721",
-      "target_id": "69afa055-f914-49c6-a103-5ff0adfea30d",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "8ba45e3c-6ba6-4c59-8a50-2d976ae28721",
-      "target_id": "5fb8d998-2fb8-4a5b-aa9d-42da377f674e",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "60e97036-0d9f-4902-8e4a-23f1d8b629bd",
-      "target_id": "5e711bae-0fad-46c0-b044-944e7a7ba23c",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "60e97036-0d9f-4902-8e4a-23f1d8b629bd",
-      "target_id": "d0a4de37-7377-4976-bdcb-2247eafe001c",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "787929b6-5c5c-4f04-8113-490c6ff432ed",
-      "target_id": "6ce464f3-4589-42cb-96a9-b60d9a194234",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "787929b6-5c5c-4f04-8113-490c6ff432ed",
-      "target_id": "bd7b079f-bd87-4bf1-abed-b17d55650a70",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "0103155a-de67-4b88-a68f-4a1148e92ce0",
-      "target_id": "00288f06-1148-4753-b765-b554370a028c",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "0103155a-de67-4b88-a68f-4a1148e92ce0",
-      "target_id": "4f5dd350-b4ba-4856-be36-934d9791f937",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "504ac468-e8f7-4e5a-b1ee-fc40c44bf030",
-      "target_id": "4e90dc65-d06c-4f6d-95e2-4673e90ca666",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "504ac468-e8f7-4e5a-b1ee-fc40c44bf030",
-      "target_id": "241d8705-fd6e-4673-991a-ce134ef982ea",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "4521f2eb-45ef-4c64-b281-4a71875e390a",
-      "target_id": "dfa41a3c-e771-42af-948a-68ecc4d3a9bd",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "4521f2eb-45ef-4c64-b281-4a71875e390a",
-      "target_id": "bc723d7a-3f4b-411f-8b61-ac3d5468be3d",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "4ff3b882-79a7-4f9e-a594-461117a8344e",
-      "target_id": "385d0e3c-b15a-4a57-a169-142b5ec2e30e",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "4ff3b882-79a7-4f9e-a594-461117a8344e",
-      "target_id": "d493b8db-b12e-4ca6-a560-a79eaaccfedb",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "ed6266f6-5647-4411-aa2d-755f48620ebc",
-      "target_id": "3e835a55-a730-418e-96fe-36069d55049b",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "ed6266f6-5647-4411-aa2d-755f48620ebc",
-      "target_id": "df95ca76-b0ac-4520-ab38-a9cd50dda080",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "92e94b72-39b0-4549-a510-83057009a211",
-      "target_id": "9e83d21b-3e12-4cbb-bfd4-2538cdbd2790",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "92e94b72-39b0-4549-a510-83057009a211",
-      "target_id": "c0087f24-a396-4466-b330-71f1815af882",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "9735cf87-1eb4-4a5a-9d8c-81c1bbd22cc1",
-      "target_id": "1132c787-5d78-43a4-9b9f-41edbe3ec074",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "9735cf87-1eb4-4a5a-9d8c-81c1bbd22cc1",
-      "target_id": "61d4c522-884d-49f4-83dc-9cb0272bc4d2",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "dfa58350-d443-4e42-b353-08be05849926",
-      "target_id": "978ee8ac-3a30-41d3-a4c1-8339b5e8605b",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "dfa58350-d443-4e42-b353-08be05849926",
-      "target_id": "04ac5fa0-ca90-45be-a276-a40b1d2416d7",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "39624f68-03a7-4a71-81a1-6d02713d3898",
-      "target_id": "be617c93-1f44-4cf5-925c-439c3044ce73",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "39624f68-03a7-4a71-81a1-6d02713d3898",
-      "target_id": "8ba07531-6d83-42ed-b536-da275c601fb8",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "53ae7246-0816-444e-b9b6-309df7209608",
-      "target_id": "20004311-7c69-43c7-9617-bc64000e743e",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "53ae7246-0816-444e-b9b6-309df7209608",
-      "target_id": "51b89c9d-148d-4e99-a2b3-5785bf97798b",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "eb435ddc-6d31-4b0d-b17d-f63a60a4960a",
-      "target_id": "6254e6d2-2b4d-4592-a968-21f7373cc51d",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "eb435ddc-6d31-4b0d-b17d-f63a60a4960a",
-      "target_id": "cc326b38-3ca4-4fd3-b014-6a0e0b9fb6e7",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "77a55deb-5e77-4299-b862-aa847bc0db39",
-      "target_id": "f96a130a-7aed-4ac3-a5dd-6fff56506b47",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "77a55deb-5e77-4299-b862-aa847bc0db39",
-      "target_id": "ecca2f7c-189d-4a58-a910-4cdad1bf37a5",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "c24fb700-2b3b-40bf-8aef-6686c28c94c2",
-      "target_id": "60c67b3e-8c9e-4fba-8804-575fb56fc8ac",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "c24fb700-2b3b-40bf-8aef-6686c28c94c2",
-      "target_id": "32a5b841-333e-4b45-8866-a5c8d8ab2fd9",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "610aaa3e-191d-4c09-88a7-a2a2e41c3c84",
-      "target_id": "9750f79b-1f80-40ba-bad1-9cb375329a7c",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "610aaa3e-191d-4c09-88a7-a2a2e41c3c84",
-      "target_id": "943704fd-bc62-4a42-9426-075a6768a697",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "23e5be7f-ad38-4b46-bfb7-6f388a63d77a",
-      "target_id": "ccf3ca8c-25b1-4424-a183-422e6a2e741f",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "23e5be7f-ad38-4b46-bfb7-6f388a63d77a",
-      "target_id": "2066c880-1005-4be4-8288-3b158430b3f1",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "15468524-8d27-4d0a-a566-c3033fc0765b",
-      "target_id": "09412e5d-c3d5-4759-9074-12dae79912aa",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "15468524-8d27-4d0a-a566-c3033fc0765b",
-      "target_id": "6d23c654-9661-4b59-a9b6-4eaf317d9b21",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "1383a1fb-4607-4cb6-9ed0-15baed19fd31",
-      "target_id": "75c24d05-2bf5-445a-a4c4-da49656ca792",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "1383a1fb-4607-4cb6-9ed0-15baed19fd31",
-      "target_id": "5a9b5c1c-02c5-4569-8b65-60f97f49dfcd",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "sample",
-      "target_id": "31c5535e-8450-492a-b4e7-627df34da2c8",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "sample",
-      "target_id": "b94876d7-eaee-4e43-ad3d-6c94c9e16be0",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
       "source_id": "test_meeting",
-      "target_id": "b674ecac-3fc9-4d23-9dad-15d30ba0a85d",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "18a3edf5-c37f-4a73-9910-13559e1b1dbb",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "8863b44e-1d5c-43f4-814f-2a8bf34fc8da",
-      "target_id": "1009f335-f385-4ed7-8a6d-655d31bb47aa",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "8863b44e-1d5c-43f4-814f-2a8bf34fc8da",
-      "target_id": "cf99b217-9825-48af-8bf8-0197b01e724f",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "meeting_2026-07-30_15-20-45",
-      "target_id": "b62817e5-289c-41d4-8d4e-fea0ae709c9e",
-      "relation_type": "recorded_decision",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "meeting_2026-07-30_15-20-45",
-      "target_id": "f442c94a-3e4b-43ad-9588-a508882b2477",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "a4300f60-4d17-4c1c-8320-0870e71a9f9c",
+      "target_id": "8def17ef-91b8-4a9f-8ece-20137344c1b6",
       "relation_type": "recorded_decision",
       "confidence": 0.96,
       "properties": {}
     },
     {
       "source_id": "test_meeting",
-      "target_id": "a44e8303-77ec-4699-bae9-04298b95ac99",
+      "target_id": "1117431d-349c-4655-a636-ce97f8ce4c77",
       "relation_type": "assigned_task",
       "confidence": 0.94,
       "properties": {}
@@ -1194,65 +164,58 @@
     },
     {
       "source_id": "test_meeting",
-      "target_id": "9bc11c1b-cf58-4ec6-aebe-095e9486b051",
+      "target_id": "d1dc81ee-079c-4895-869c-8f92cb5e8210",
       "relation_type": "recorded_decision",
       "confidence": 0.96,
       "properties": {}
     },
     {
       "source_id": "test_meeting",
-      "target_id": "bb117a0a-55ef-4505-9998-4bfd1a26efa5",
+      "target_id": "34c8d5dd-b6a8-4d39-afaf-6417946f8b70",
       "relation_type": "assigned_task",
       "confidence": 0.94,
       "properties": {}
     },
     {
       "source_id": "test_meeting",
-      "target_id": "4f31d80e-c7e5-480a-a8e7-034a8da8c536",
+      "target_id": "e5553022-6eeb-4eca-afe1-b4a8b5c5d3fe",
       "relation_type": "recorded_decision",
       "confidence": 0.96,
       "properties": {}
     },
     {
       "source_id": "test_meeting",
-      "target_id": "c8a884b0-c7fa-4890-8191-5bd4bc51e2c1",
+      "target_id": "87428000-4c1b-4ae0-804f-710bf7dca96a",
       "relation_type": "assigned_task",
       "confidence": 0.94,
       "properties": {}
     },
     {
       "source_id": "test_meeting",
-      "target_id": "42946296-daac-4131-b5a0-2c72c2307847",
+      "target_id": "caf240f4-5185-4088-9c80-8b18ce21e91e",
       "relation_type": "recorded_decision",
       "confidence": 0.96,
       "properties": {}
     },
     {
       "source_id": "test_meeting",
-      "target_id": "ca237314-82a3-4e86-8609-c78d844aa29d",
+      "target_id": "056df26d-088a-4953-aba0-aa10c81f8be5",
       "relation_type": "assigned_task",
       "confidence": 0.94,
       "properties": {}
     },
     {
       "source_id": "test_meeting",
-      "target_id": "3522c760-48a2-4f6c-9fda-077a98378ca8",
+      "target_id": "35845cfc-c1c4-4392-bf78-37963d50bb3f",
       "relation_type": "recorded_decision",
       "confidence": 0.96,
       "properties": {}
     },
     {
       "source_id": "test_meeting",
-      "target_id": "7375b2f9-3bdf-4cab-a803-cec75ba78e6e",
+      "target_id": "f7c4bdf2-a11b-49e3-a043-4cdd9dc3b4ba",
       "relation_type": "assigned_task",
       "confidence": 0.94,
-      "properties": {}
-    },
-    {
-      "source_id": "meeting_2026-07-30_17-42-15",
-      "target_id": "7783f199-9e97-4735-94eb-158079fd14eb",
-      "relation_type": "assigned_task",
-      "confidence": 0.95,
       "properties": {}
     }
   ]
