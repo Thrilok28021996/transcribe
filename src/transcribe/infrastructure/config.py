@@ -19,13 +19,18 @@ class AudioConfig(BaseModel):
     )
 
 
+import os
+os.environ["HF_HOME"] = "/Volumes/personal/huggingface"
+
+
 class SpeechConfig(BaseModel):
     """Speech recognition plugin settings."""
     provider: str = "faster-whisper"  # e.g., "faster-whisper", "whisper.cpp", "mock"
-    model_size: str = "base"
+    model_size: str = "large-v3-turbo"
     device: Literal["cpu", "cuda", "mps", "auto"] = "auto"
     compute_type: str = "default"
     language: str = "en"
+    download_root: str = "/Volumes/personal/huggingface"
 
 
 class DiarizationConfig(BaseModel):

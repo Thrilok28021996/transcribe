@@ -567,7 +567,7 @@
       "label": "Meeting",
       "properties": {
         "title": "CLI Sync Meeting",
-        "date": "2026-07-30T10:05:38.504785+00:00"
+        "date": "2026-07-30T10:33:17.551013+00:00"
       }
     },
     {
@@ -591,7 +591,7 @@
       "label": "Meeting",
       "properties": {
         "title": "Architecture Sync",
-        "date": "2026-07-30T10:05:48.673726+00:00"
+        "date": "2026-07-30T10:33:27.167478+00:00"
       }
     },
     {
@@ -711,6 +711,70 @@
       "properties": {
         "title": "Live Meeting (3:41:29 pm)",
         "date": "2026-07-30T10:11:29.416033+00:00"
+      }
+    },
+    {
+      "id": "4f31d80e-c7e5-480a-a8e7-034a8da8c536",
+      "label": "Decision",
+      "properties": {
+        "description": "Adopt Python for AI pipeline backend infrastructure.",
+        "owner": "Alice"
+      }
+    },
+    {
+      "id": "c8a884b0-c7fa-4890-8191-5bd4bc51e2c1",
+      "label": "Task",
+      "properties": {
+        "description": "Create initial repository structure and configure CI pipeline.",
+        "owner": "Bob"
+      }
+    },
+    {
+      "id": "42946296-daac-4131-b5a0-2c72c2307847",
+      "label": "Decision",
+      "properties": {
+        "description": "Adopt Python for AI pipeline backend infrastructure.",
+        "owner": "Alice"
+      }
+    },
+    {
+      "id": "ca237314-82a3-4e86-8609-c78d844aa29d",
+      "label": "Task",
+      "properties": {
+        "description": "Create initial repository structure and configure CI pipeline.",
+        "owner": "Bob"
+      }
+    },
+    {
+      "id": "3522c760-48a2-4f6c-9fda-077a98378ca8",
+      "label": "Decision",
+      "properties": {
+        "description": "Adopt Python for AI pipeline backend infrastructure.",
+        "owner": "Alice"
+      }
+    },
+    {
+      "id": "7375b2f9-3bdf-4cab-a803-cec75ba78e6e",
+      "label": "Task",
+      "properties": {
+        "description": "Create initial repository structure and configure CI pipeline.",
+        "owner": "Bob"
+      }
+    },
+    {
+      "id": "meeting_2026-07-30_17-42-15",
+      "label": "Meeting",
+      "properties": {
+        "title": "Live Meeting (5:42:15 pm)",
+        "date": "2026-07-30T12:12:15.159744+00:00"
+      }
+    },
+    {
+      "id": "7783f199-9e97-4735-94eb-158079fd14eb",
+      "label": "Task",
+      "properties": {
+        "description": "Generate transcript summary and decisions",
+        "owner": null
       }
     }
   ],
@@ -1140,6 +1204,55 @@
       "target_id": "bb117a0a-55ef-4505-9998-4bfd1a26efa5",
       "relation_type": "assigned_task",
       "confidence": 0.94,
+      "properties": {}
+    },
+    {
+      "source_id": "test_meeting",
+      "target_id": "4f31d80e-c7e5-480a-a8e7-034a8da8c536",
+      "relation_type": "recorded_decision",
+      "confidence": 0.96,
+      "properties": {}
+    },
+    {
+      "source_id": "test_meeting",
+      "target_id": "c8a884b0-c7fa-4890-8191-5bd4bc51e2c1",
+      "relation_type": "assigned_task",
+      "confidence": 0.94,
+      "properties": {}
+    },
+    {
+      "source_id": "test_meeting",
+      "target_id": "42946296-daac-4131-b5a0-2c72c2307847",
+      "relation_type": "recorded_decision",
+      "confidence": 0.96,
+      "properties": {}
+    },
+    {
+      "source_id": "test_meeting",
+      "target_id": "ca237314-82a3-4e86-8609-c78d844aa29d",
+      "relation_type": "assigned_task",
+      "confidence": 0.94,
+      "properties": {}
+    },
+    {
+      "source_id": "test_meeting",
+      "target_id": "3522c760-48a2-4f6c-9fda-077a98378ca8",
+      "relation_type": "recorded_decision",
+      "confidence": 0.96,
+      "properties": {}
+    },
+    {
+      "source_id": "test_meeting",
+      "target_id": "7375b2f9-3bdf-4cab-a803-cec75ba78e6e",
+      "relation_type": "assigned_task",
+      "confidence": 0.94,
+      "properties": {}
+    },
+    {
+      "source_id": "meeting_2026-07-30_17-42-15",
+      "target_id": "7783f199-9e97-4735-94eb-158079fd14eb",
+      "relation_type": "assigned_task",
+      "confidence": 0.95,
       "properties": {}
     }
   ]

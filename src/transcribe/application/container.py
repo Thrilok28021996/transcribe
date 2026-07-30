@@ -77,6 +77,7 @@ class ServiceContainer:
             device=self.config.speech.device,
             compute_type=self.config.speech.compute_type,
             language=self.config.speech.language,
+            download_root=self.config.speech.download_root,
         )
         self.speech_recognizers.register("faster-whisper", faster_whisper)
 

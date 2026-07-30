@@ -19,16 +19,18 @@ class FasterWhisperSpeechRecognizer:
 
     def __init__(
         self,
-        model_size: str = "base",
+        model_size: str = "large-v3-turbo",
         device: str = "auto",
         compute_type: str = "default",
         language: str | None = "en",
+        download_root: str | Path | None = "/Volumes/personal/huggingface",
         audio_processor: AudioProcessor | None = None,
     ) -> None:
         self.model_size = model_size
         self.device = self._resolve_device(device)
         self.compute_type = compute_type
         self.language = language
+        self.download_root = str(download_root) if download_root else None
         self.audio_processor = audio_processor or AudioProcessor()
         self._model: Any = None
 
@@ -52,13 +54,17 @@ class FasterWhisperSpeechRecognizer:
                     "faster-whisper package is not installed. Install via 'pip install faster-whisper'."
                 ) from err
 
+            if self.download_root:
+                Path(self.download_root).mkdir(parents=True, exist_ok=True)
+
             logger.info(
-                f"Loading Faster-Whisper model '{self.model_size}' (device={self.device}, compute_type={self.compute_type})..."
+                f"Loading Faster-Whisper model '{self.model_size}' from '{self.download_root}' (device={self.device}, compute_type={self.compute_type})..."
             )
             self._model = WhisperModel(
                 self.model_size,
                 device=self.device,
                 compute_type=self.compute_type,
+                download_root=self.download_root,
             )
         return self._model
 
