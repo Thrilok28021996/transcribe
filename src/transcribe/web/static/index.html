@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Transcribe AI — Local-first AI Meeting Memory Platform">
+  <title>Transcribe AI — Meeting Memory Platform</title>
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Transcribe AI</h1>
+          <span class="badge">Local Memory</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs" id="navTabs">
+        <button class="nav-btn active" data-tab="dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-btn record-tab-btn" data-tab="record">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+          🔴 Record Live Meeting
+        </button>
+        <button class="nav-btn" data-tab="vault">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Recordings Vault
+        </button>
+        <button class="nav-btn" data-tab="meetings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Meeting Memory
+        </button>
+        <button class="nav-btn" data-tab="graph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><line x1="8.5" y1="7.5" x2="15.5" y2="16.5"/><line x1="8.5" y1="16.5" x2="15.5" y2="7.5"/></svg>
+          Knowledge Graph
+        </button>
+        <button class="nav-btn" data-tab="assistant">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          AI Assistant
+        </button>
+        <button class="nav-btn" data-tab="speakers">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Speakers
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Tab Content Area -->
+    <main class="main-content">
+      <!-- TAB 1: DASHBOARD -->
+      <section id="tab-dashboard" class="tab-panel active">
+        <div class="hero-card">
+          <div class="hero-text">
+            <h2>Local AI Meeting Memory Hub</h2>
+            <p>Transforming spoken audio into structured decisions, action items, semantic vector indices, and persistent knowledge graphs.</p>
+            <div class="hero-actions" style="margin-top: 14px;">
+              <button class="btn record-btn" onclick="window.switchTab('record')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
+                Record Live Meeting Now
+              </button>
+            </div>
+          </div>
+          <div class="status-indicator">
+            <span class="status-dot green"></span>
+            <span id="lmStudioStatusText">LM Studio Connected</span>
+          </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Meetings Processed</span>
+            <span class="metric-value" id="metricMeetings">0</span>
+            <span class="metric-sub">Local Markdown Notes</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Tracked Speakers</span>
+            <span class="metric-value" id="metricSpeakers">0</span>
+            <span class="metric-sub">Persistent Voice Vectors</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Vector Documents</span>
+            <span class="metric-value" id="metricVectors">0</span>
+            <span class="metric-sub">Nomic Text Embeddings</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Graph Nodes</span>
+            <span class="metric-value" id="metricGraphNodes">0</span>
+            <span class="metric-sub">Entity Relationships</span>
+          </div>
+        </div>
+
+        <!-- Dashboard Content Row -->
+        <div class="dashboard-row">
+          <div class="panel-card flex-2">
+            <h3>Recent Meeting Memory Notes</h3>
+            <div class="meeting-list" id="dashboardMeetingList">
+              <div class="loading-spinner">Loading meetings...</div>
+            </div>
+          </div>
+
+          <div class="panel-card flex-1">
+            <h3>Quick Memory Search</h3>
+            <div class="search-box">
+              <input type="text" id="dashSearchInput" placeholder="Search decisions, tasks, technologies...">
+              <button id="dashSearchBtn" class="btn primary">Search</button>
+            </div>
+            <div class="search-results-preview" id="dashSearchResults">
+              <p class="placeholder-text">Enter a query above to search meeting vector index.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: LIVE MICROPHONE RECORDER -->
+      <section id="tab-record" class="tab-panel">
+        <div class="panel-card recorder-card">
+          <div class="recorder-header">
+            <div class="header-title">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+              <h2>Live Microphone Recorder</h2>
+            </div>
+            <span class="rec-badge green-badge" id="recBadge">Microphone Ready (Idle)</span>
+          </div>
+          <p class="subtitle">Click the green button below to start live recording. The button will turn red while recording. Click it again to stop and automatically generate transcript, summary, and decisions.</p>
+
+          <div class="recorder-body">
+            <div class="timer-display" id="recTimer">00:00</div>
+            <div class="wave-visualizer hidden" id="waveVisualizer">
+              <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+
+            <div class="recorder-controls">
+              <button id="recToggleBtn" class="btn rec-toggle-btn green lg">
+                <span class="dot"></span>
+                <span id="recToggleText">START RECORDING LIVE</span>
+              </button>
+            </div>
+            <div id="micErrorAlert" class="error-msg hidden" style="margin-top: 14px; text-align: center;"></div>
+          </div>
+        </div>
+
+        <!-- Processing Timeline -->
+        <div id="recProcessingTimeline" class="processing-timeline hidden">
+          <h3>Processing Pipeline Stages</h3>
+          <div class="stages-list">
+            <div class="stage-item" id="recStage1"><span class="stage-num">1</span> Ingest & Resample Audio (FFmpeg 16kHz)</div>
+            <div class="stage-item" id="recStage2"><span class="stage-num">2</span> Speech Recognition & Timestamps (Faster-Whisper)</div>
+            <div class="stage-item" id="recStage3"><span class="stage-num">3</span> Speaker Diarization & Persistent Profile Matching</div>
+            <div class="stage-item" id="recStage4"><span class="stage-num">4</span> Knowledge Extraction (LM Studio Open-Source LLM)</div>
+            <div class="stage-item" id="recStage5"><span class="stage-num">5</span> Vector Indexing & Knowledge Graph Storage</div>
+          </div>
+          <div id="recProcessingResultMsg" class="result-msg hidden"></div>
+        </div>
+      </section>
+
+      <!-- TAB 3: RECORDINGS VAULT & UPLOAD -->
+      <section id="tab-vault" class="tab-panel">
+        <!-- Stored Raw Recordings Vault Panel -->
+        <div class="panel-card vault-card">
+          <div class="section-header">
+            <h2>Raw Recordings Vault (Stored in <code>data/recordings/</code>)</h2>
+            <button id="refreshRecordingsBtn" class="btn secondary sm">Refresh Vault</button>
+          </div>
+          <p class="subtitle">All recorded and uploaded audio files are saved locally. You can re-run any recording file below anytime to regenerate transcripts, summaries, decisions, and knowledge graphs.</p>
+
+          <div class="recordings-grid" id="recordingsGrid">
+            <div class="loading-spinner">Loading stored recording files...</div>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <h2>Upload Recorded Audio File</h2>
+          <p class="subtitle">Upload meeting recordings (WAV, MP3, M4A, AAC, MP4) for automated processing.</p>
+
+          <form id="ingestForm" class="ingest-form">
+            <div class="form-group">
+              <label for="meetingTitleInput">Meeting Title (Optional)</label>
+              <input type="text" id="meetingTitleInput" placeholder="e.g. Architecture Sync & Roadmap Review">
+            </div>
+
+            <div class="drop-zone" id="dropZone">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <p>Drag and drop audio file here or <span class="browse-link">browse computer</span></p>
+              <input type="file" id="audioFileInput" accept=".wav,.mp3,.m4a,.aac,.mp4,.flac,.ogg" class="file-input">
+              <div class="format-tags">
+                <span class="tag">.WAV</span>
+                <span class="tag">.MP3</span>
+                <span class="tag">.M4A</span>
+                <span class="tag">.AAC</span>
+                <span class="tag">.MP4</span>
+              </div>
+            </div>
+
+            <div id="selectedFileInfo" class="file-info hidden">
+              <span>Selected File: <strong id="selectedFileName">filename.mp3</strong></span>
+            </div>
+
+            <button type="submit" id="startProcessBtn" class="btn primary lg" disabled>
+              Start Local Processing Pipeline
+            </button>
+          </form>
+
+          <!-- Processing Timeline -->
+          <div id="vaultProcessingTimeline" class="processing-timeline hidden">
+            <h3>Processing Pipeline Stages</h3>
+            <div class="stages-list">
+              <div class="stage-item" id="vaultStage1"><span class="stage-num">1</span> Ingest & Resample Audio (FFmpeg 16kHz)</div>
+              <div class="stage-item" id="vaultStage2"><span class="stage-num">2</span> Speech Recognition & Timestamps (Faster-Whisper)</div>
+              <div class="stage-item" id="vaultStage3"><span class="stage-num">3</span> Speaker Diarization & Persistent Profile Matching</div>
+              <div class="stage-item" id="vaultStage4"><span class="stage-num">4</span> Knowledge Extraction (LM Studio Open-Source LLM)</div>
+              <div class="stage-item" id="vaultStage5"><span class="stage-num">5</span> Vector Indexing & Knowledge Graph Storage</div>
+            </div>
+            <div id="vaultProcessingResultMsg" class="result-msg hidden"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: MEETING MEMORY HUB -->
+      <section id="tab-meetings" class="tab-panel">
+        <div class="memory-layout">
+          <div class="sidebar-list">
+            <h3>All Meetings</h3>
+            <div id="memoryMeetingList" class="meeting-items">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+
+          <div class="memory-detail panel-card">
+            <div id="memoryDetailContainer">
+              <div class="placeholder-state">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <p>Select a meeting from the sidebar to view executive summary, decisions, tasks, and full transcript.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: KNOWLEDGE GRAPH EXPLORER -->
+      <section id="tab-graph" class="tab-panel">
+        <div class="panel-card">
+          <div class="section-header">
+            <h2>Knowledge Graph Explorer</h2>
+            <div class="graph-metrics" id="graphMetrics">Nodes: 0 | Edges: 0</div>
+          </div>
+
+          <p class="subtitle">Exploring connected entities (People, Tasks, Decisions, Projects, Technologies) across all meetings.</p>
+
+          <div class="graph-nodes-grid" id="graphNodesGrid">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: AI ASSISTANT -->
+      <section id="tab-assistant" class="tab-panel">
+        <div class="chat-layout">
+          <div class="chat-header panel-card">
+            <div class="chat-title">
+              <h2>Local RAG Meeting Assistant</h2>
+              <span class="model-badge" id="chatModelBadge">LM Studio (Local LLM)</span>
+            </div>
+            <p class="subtitle">Ask questions about past decisions, action items, technologies, or specific discussions. Answers are strictly grounded in meeting notes.</p>
+            
+            <div class="suggested-pills">
+              <button class="pill-btn">What key decisions were made recently?</button>
+              <button class="pill-btn">List all pending action items and assignees</button>
+              <button class="pill-btn">What technologies are being used?</button>
+            </div>
+          </div>
+
+          <div class="chat-history" id="chatHistory">
+            <div class="chat-msg system">
+              <div class="avatar">AI</div>
+              <div class="msg-body">
+                Hello! I am your local AI Meeting Assistant. I can search across all meeting transcripts, decisions, tasks, and graph relationships to answer your questions accurately.
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Ask a question about your meeting memory...">
+            <button id="sendChatBtn" class="btn primary">Send Question</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: SPEAKERS DIRECTORY -->
+      <section id="tab-speakers" class="tab-panel">
+        <div class="panel-card">
+          <h2>Tracked Speaker Directory</h2>
+          <p class="subtitle">Persistent voice embedding profiles recognized across meetings.</p>
+
+          <div class="speakers-grid" id="speakersGrid">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

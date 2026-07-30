@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: transcribe-ai
+Version: 0.1.0
+Summary: Local-first, open-source AI meeting memory platform
+Author: Transcribe AI Authors
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=2.6.0
+Requires-Dist: pydantic-settings>=2.2.0
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: click>=8.1.7
+Requires-Dist: rich>=13.7.0
+Requires-Dist: typing-extensions>=4.9.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: mypy>=1.8.0; extra == "dev"
+Requires-Dist: ruff>=0.2.0; extra == "dev"
+
+# Meeting transcribe
