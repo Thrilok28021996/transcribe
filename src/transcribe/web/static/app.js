@@ -11,12 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
   loadGraph();
   initAudioDropZone();
   initLiveRecorder();
+  loadAudioDevices();
   initChat();
   initSearch();
+  initSettings();
 
   const refreshBtn = document.getElementById('refreshRecordingsBtn');
   if (refreshBtn) refreshBtn.addEventListener('click', loadRecordings);
 });
+
 
 // Tab Switching
 function initTabs() {
@@ -537,6 +540,21 @@ async function loadGraph() {
   }
 }
 
+// Ensure mediaDevices & getUserMedia polyfill for older WebKit / macOS WKWebView
+if (!navigator.mediaDevices) {
+  navigator.mediaDevices = {};
+}
+if (!navigator.mediaDevices.getUserMedia) {
+  const legacyGetUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.getUserMedia;
+  if (legacyGetUserMedia) {
+    navigator.mediaDevices.getUserMedia = function(constraints) {
+      return new Promise((resolve, reject) => {
+        legacyGetUserMedia.call(navigator, constraints, resolve, reject);
+      });
+    };
+  }
+}
+
 // Live Microphone Recorder Implementation
 function initLiveRecorder() {
   const toggleBtn = document.getElementById('recToggleBtn');
@@ -551,6 +569,7 @@ function initLiveRecorder() {
   let timerInterval = null;
   let secondsElapsed = 0;
   let isRecording = false;
+  let useBackendRecording = false;
 
   if (!toggleBtn) return;
 
@@ -558,64 +577,101 @@ function initLiveRecorder() {
     if (!isRecording) {
       // START RECORDING (Green -> Red)
       if (errAlert) errAlert.classList.add('hidden');
+      useBackendRecording = false;
 
-      try {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          throw new Error('Microphone API is not supported in this browser. Please use Chrome, Edge, Safari, or Firefox.');
-        }
+      const hasBrowserMic = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        audioChunks = [];
-
-        let options = {};
-        if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported) {
-          if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-            options = { mimeType: 'audio/webm;codecs=opus' };
-          } else if (MediaRecorder.isTypeSupported('audio/webm')) {
-            options = { mimeType: 'audio/webm' };
-          } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-            options = { mimeType: 'audio/mp4' };
-          }
-        }
-
+      if (hasBrowserMic) {
         try {
-          mediaRecorder = new MediaRecorder(stream, options);
-        } catch (e) {
-          mediaRecorder = new MediaRecorder(stream);
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          audioChunks = [];
+
+          let options = {};
+          if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported) {
+            if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+              options = { mimeType: 'audio/webm;codecs=opus' };
+            } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+              options = { mimeType: 'audio/webm' };
+            } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+              options = { mimeType: 'audio/mp4' };
+            }
+          }
+
+          try {
+            mediaRecorder = new MediaRecorder(stream, options);
+          } catch (e) {
+            mediaRecorder = new MediaRecorder(stream);
+          }
+
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) audioChunks.push(e.data);
+          };
+
+          mediaRecorder.onstop = async () => {
+            clearInterval(timerInterval);
+
+            // Stop audio stream tracks
+            stream.getTracks().forEach(track => track.stop());
+
+            const actualMimeType = mediaRecorder.mimeType || 'audio/webm';
+            const ext = actualMimeType.includes('mp4') ? 'mp4' : (actualMimeType.includes('wav') ? 'wav' : 'webm');
+
+            const audioBlob = new Blob(audioChunks, { type: actualMimeType });
+            const recordedFile = new File([audioBlob], `live_meeting_${Date.now()}.${ext}`, { type: actualMimeType });
+
+            // Process recorded audio file
+            await processRecordedFile(recordedFile);
+          };
+
+          // Collect audio chunks every 250ms
+          mediaRecorder.start(250);
+          isRecording = true;
+
+          // Visual Transition: GREEN -> RED
+          toggleBtn.className = 'btn rec-toggle-btn red lg';
+          toggleText.textContent = 'STOP RECORDING & PROCESS MEETING';
+          recBadge.textContent = 'RECORDING LIVE';
+          recBadge.className = 'rec-badge recording';
+          waveVis.classList.remove('hidden');
+
+          // Start timer
+          secondsElapsed = 0;
+          updateTimer();
+          timerInterval = setInterval(() => {
+            secondsElapsed++;
+            updateTimer();
+          }, 1000);
+
+          return;
+
+        } catch (err) {
+          console.warn('Browser getUserMedia failed/blocked, falling back to native backend audio recording...', err);
+        }
+      }
+
+      // NATIVE BACKEND RECORDING FALLBACK (for Mac Desktop App WKWebView & native hardware capture)
+      try {
+        const formData = new FormData();
+        formData.append('mode', 'mic');
+        const startRes = await fetch('/api/audio/record_start', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!startRes.ok) {
+          const errData = await startRes.json();
+          throw new Error(errData.detail || 'Failed to start native backend recording.');
         }
 
-        mediaRecorder.ondataavailable = (e) => {
-          if (e.data && e.data.size > 0) audioChunks.push(e.data);
-        };
-
-        mediaRecorder.onstop = async () => {
-          clearInterval(timerInterval);
-
-          // Stop audio stream tracks
-          stream.getTracks().forEach(track => track.stop());
-
-          const actualMimeType = mediaRecorder.mimeType || 'audio/webm';
-          const ext = actualMimeType.includes('mp4') ? 'mp4' : (actualMimeType.includes('wav') ? 'wav' : 'webm');
-
-          const audioBlob = new Blob(audioChunks, { type: actualMimeType });
-          const recordedFile = new File([audioBlob], `live_meeting_${Date.now()}.${ext}`, { type: actualMimeType });
-
-          // Process recorded audio file
-          await processRecordedFile(recordedFile);
-        };
-
-        // Collect audio chunks every 250ms
-        mediaRecorder.start(250);
+        useBackendRecording = true;
         isRecording = true;
 
-        // Visual Transition: GREEN -> RED
         toggleBtn.className = 'btn rec-toggle-btn red lg';
         toggleText.textContent = 'STOP RECORDING & PROCESS MEETING';
-        recBadge.textContent = 'RECORDING LIVE';
+        recBadge.textContent = 'RECORDING LIVE (Native Engine)';
         recBadge.className = 'rec-badge recording';
         waveVis.classList.remove('hidden');
 
-        // Start timer
         secondsElapsed = 0;
         updateTimer();
         timerInterval = setInterval(() => {
@@ -624,26 +680,139 @@ function initLiveRecorder() {
         }, 1000);
 
       } catch (err) {
-        console.error('Microphone access failed:', err);
-        isRecording = false;
-        recBadge.textContent = 'Microphone Error';
-        recBadge.className = 'rec-badge';
-        if (errAlert) {
-          errAlert.textContent = `Microphone Error: ${err.message}. Please check browser permissions for http://127.0.0.1:8000.`;
-          errAlert.classList.remove('hidden');
-        }
+        console.error('Microphone access & backend recording failed:', err);
+        displayMicError(err);
       }
+
     } else {
       // STOP RECORDING (Red -> Processing -> Green)
-      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-        mediaRecorder.stop();
-      }
+      clearInterval(timerInterval);
       isRecording = false;
       toggleBtn.className = 'btn rec-toggle-btn green lg';
       toggleText.textContent = 'PROCESSING RECORDING...';
       toggleBtn.disabled = true;
+
+      if (useBackendRecording) {
+        // Stop native backend recording and trigger meeting memory processing
+        await stopNativeBackendRecording();
+      } else if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
     }
   });
+
+  function displayMicError(err) {
+    isRecording = false;
+    recBadge.textContent = 'Microphone Error';
+    recBadge.className = 'rec-badge';
+    if (errAlert) {
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.userAgent.includes('Macintosh');
+      let errDetail = '';
+      const msg = (err.message || '').toLowerCase();
+
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError' || msg.includes('permission') || msg.includes('blocked')) {
+        errDetail = isMac
+          ? `<strong>Permission Denied:</strong> macOS or your browser/app blocked microphone access.<br>
+             👉 <strong>How to Fix on macOS:</strong><br>
+             1. Open <strong>System Settings → Privacy & Security → Microphone</strong>.<br>
+             2. Enable permission for <strong>Transcribe AI</strong> (or your terminal / browser app like Terminal, iTerm2, or Chrome).<br>
+             3. If using Terminal/CLI, run <code>transcribe record --mode mic</code> to trigger macOS permission prompt.<br>
+             4. Restart the app or refresh page.`
+          : '<strong>Permission Denied:</strong> Browser blocked microphone access.<br>👉 <strong>Fix:</strong> Click the lock/tune icon in the browser address bar and set Microphone to <em>Allow</em>.';
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError' || msg.includes('not found')) {
+        errDetail = '<strong>No Microphone Found:</strong> No audio input device detected.<br>👉 <strong>Fix:</strong> Plug in a microphone or headset and verify system sound settings.';
+      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError' || msg.includes('busy')) {
+        errDetail = '<strong>Microphone Busy:</strong> The microphone is currently locked by another application.<br>👉 <strong>Fix:</strong> Close Teams, Zoom, FaceTime, or other apps using the mic and try again.';
+      } else if (err.name === 'SecurityError' || (!window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1')) {
+        errDetail = '<strong>Insecure Origin:</strong> Microphone access requires HTTPS when accessed outside localhost/127.0.0.1.<br>👉 <strong>Fix:</strong> Access the app via <code>http://127.0.0.1:8000</code> or setup HTTPS.';
+      } else {
+        errDetail = `<strong>Microphone Error (${err.name || 'Error'}):</strong> ${err.message || 'Unable to access microphone input.'}`;
+      }
+
+      errAlert.innerHTML = `
+        <div style="padding: 12px 16px; border-radius: 8px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; line-height: 1.5; font-size: 0.88rem;">
+          ${errDetail}
+          <div style="margin-top: 8px; font-size: 0.82rem; color: #cbd5e1;">
+            💡 <em>Alternative: You can also use the <strong>Recordings Vault</strong> tab to upload pre-recorded meeting audio files.</em>
+          </div>
+        </div>
+      `;
+      errAlert.classList.remove('hidden');
+    }
+  }
+
+  async function stopNativeBackendRecording() {
+    const timeline = document.getElementById('recProcessingTimeline');
+    const resultMsg = document.getElementById('recProcessingResultMsg');
+
+    if (timeline) timeline.classList.remove('hidden');
+    if (resultMsg) resultMsg.classList.add('hidden');
+
+    setStageActive('rec', 1);
+
+    let stageTimer = setInterval(() => {
+      if (document.getElementById('recStage1') && document.getElementById('recStage1').classList.contains('active')) {
+        setStageActive('rec', 2);
+      } else if (document.getElementById('recStage2') && document.getElementById('recStage2').classList.contains('active')) {
+        setStageActive('rec', 3);
+      } else if (document.getElementById('recStage3') && document.getElementById('recStage3').classList.contains('active')) {
+        setStageActive('rec', 4);
+      } else if (document.getElementById('recStage4') && document.getElementById('recStage4').classList.contains('active')) {
+        setStageActive('rec', 5);
+      }
+    }, 2000);
+
+    try {
+      const formData = new FormData();
+      formData.append('title', `Live Meeting (${new Date().toLocaleTimeString()})`);
+      const res = await fetch('/api/audio/record_stop', {
+        method: 'POST',
+        body: formData,
+      });
+
+      clearInterval(stageTimer);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Processing failed');
+
+      setStageDone('rec', 5);
+
+      if (resultMsg) {
+        resultMsg.className = 'result-msg success';
+        resultMsg.innerHTML = `
+          <strong>Live Recording Processed Successfully!</strong><br>
+          Meeting Title: <em>${escapeHtml(data.title)}</em><br>
+          Decisions Extracted: ${data.decisions_count} | Action Items: ${data.tasks_count}<br>
+          Markdown exported at <code>${escapeHtml(data.markdown_path)}</code>
+        `;
+        resultMsg.classList.remove('hidden');
+      }
+
+      loadStats();
+      loadMeetings();
+      loadRecordings();
+    } catch (err) {
+      clearInterval(stageTimer);
+      if (resultMsg) {
+        resultMsg.className = 'result-msg error';
+        resultMsg.textContent = `Processing error: ${err.message}`;
+        resultMsg.classList.remove('hidden');
+      }
+    } finally {
+      toggleBtn.className = 'btn rec-toggle-btn green lg';
+      toggleText.textContent = 'START RECORDING LIVE';
+      toggleBtn.disabled = false;
+      recBadge.textContent = 'Microphone Ready (Idle)';
+      recBadge.className = 'rec-badge green-badge';
+      waveVis.classList.add('hidden');
+    }
+  }
+
+  const checkDiagBtn = document.getElementById('checkMicDiagBtn');
+  if (checkDiagBtn) {
+    checkDiagBtn.addEventListener('click', () => {
+      loadAudioDevices(true);
+    });
+  }
 
   function updateTimer() {
     const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
@@ -722,6 +891,71 @@ function initLiveRecorder() {
   }
 }
 
+// Inspect system audio hardware & test browser microphone access
+async function loadAudioDevices(promptPermission = false) {
+  const diagContainer = document.getElementById('micDiagDetails');
+  if (!diagContainer) return;
+
+  let micTestStatus = 'Testing...';
+  let micPermissionOk = false;
+
+  if (promptPermission && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    try {
+      const testStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      testStream.getTracks().forEach(track => track.stop());
+      micPermissionOk = true;
+      micTestStatus = '✅ Browser Microphone Access Granted';
+    } catch (err) {
+      micPermissionOk = false;
+      micTestStatus = `❌ Permission Error (${err.name || 'Error'}): ${err.message}`;
+    }
+  }
+
+  try {
+    const res = await fetch('/api/audio/devices');
+    if (!res.ok) throw new Error('Failed to fetch audio devices');
+    const data = await res.json();
+
+    const devices = data.devices || [];
+    const status = data.setup_status || {};
+    const inputDevs = devices.filter(d => d.kind === 'input');
+    const loopbackDevs = devices.filter(d => d.kind === 'loopback');
+
+    let html = `<div style="display: flex; flex-direction: column; gap: 8px;">`;
+    
+    if (promptPermission) {
+      const statusColor = micPermissionOk ? '#10b981' : '#f43f5e';
+      html += `<div style="color: ${statusColor}; font-weight: 600;">${micTestStatus}</div>`;
+    }
+
+    html += `<div><strong>Detected Hardware Devices:</strong> ${inputDevs.length} Input Mic(s), ${loopbackDevs.length} System Loopback Device(s)</div>`;
+
+    if (inputDevs.length > 0) {
+      html += `<ul style="margin: 4px 0 8px 18px; padding: 0;">`;
+      inputDevs.forEach(d => {
+        html += `<li>🎙️ <strong>${escapeHtml(d.name)}</strong> (ID: <code>${escapeHtml(d.id)}</code>)</li>`;
+      });
+      html += `</ul>`;
+    } else {
+      html += `<div style="color: #fbbf24; margin-top: 4px;">⚠️ No hardware microphone listed by system scan.</div>`;
+    }
+
+    if (status.recommendations && status.recommendations.length > 0) {
+      html += `<div style="margin-top: 4px;"><strong>System Call Diagnostics:</strong>`;
+      html += `<ul style="margin: 2px 0 0 18px; padding: 0;">`;
+      status.recommendations.forEach(r => {
+        html += `<li>• ${escapeHtml(r)}</li>`;
+      });
+      html += `</ul></div>`;
+    }
+
+    html += `</div>`;
+    diagContainer.innerHTML = html;
+  } catch (err) {
+    diagContainer.innerHTML = `<span style="color: #94a3b8;">System Audio Hook scan: ${escapeHtml(err.message)}</span>`;
+  }
+}
+
 function escapeHtml(str) {
   if (!str) return '';
   return String(str)
@@ -731,3 +965,186 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
+
+// Settings & Model Manager logic
+async function initSettings() {
+  const saveBtn = document.getElementById('saveSettingsBtn');
+  const tempSlider = document.getElementById('settingLlmTemp');
+  const tempLabel = document.getElementById('tempValLabel');
+
+  if (tempSlider && tempLabel) {
+    tempSlider.addEventListener('input', () => {
+      tempLabel.textContent = tempSlider.value;
+    });
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', saveSettings);
+  }
+
+  const cleanRecordingsBtn = document.getElementById('cleanRecordingsBtn');
+  if (cleanRecordingsBtn) {
+    cleanRecordingsBtn.addEventListener('click', () => triggerCleanup(false));
+  }
+
+  const cleanAllBtn = document.getElementById('cleanAllBtn');
+  if (cleanAllBtn) {
+    cleanAllBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to delete ALL meeting recordings, transcripts, vector DBs, and speaker profiles? This action cannot be undone.')) {
+        triggerCleanup(true);
+      }
+    });
+  }
+
+  await loadSettings();
+}
+
+async function triggerCleanup(deleteAll) {
+  const alertDiv = document.getElementById('settingsAlert');
+  try {
+    const formData = new FormData();
+    formData.append('delete_all', deleteAll ? 'true' : 'false');
+    formData.append('delete_recordings', 'true');
+
+    const res = await fetch('/api/cleanup', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Cleanup failed');
+
+    if (alertDiv) {
+      alertDiv.className = 'result-msg success';
+      alertDiv.innerHTML = `<strong>🧹 ${data.message}</strong>`;
+      alertDiv.classList.remove('hidden');
+    }
+
+    loadStats();
+    loadMeetings();
+    loadRecordings();
+    if (typeof loadSpeakers === 'function') loadSpeakers();
+    if (typeof loadGraph === 'function') loadGraph();
+
+  } catch (err) {
+    if (alertDiv) {
+      alertDiv.className = 'result-msg error';
+      alertDiv.textContent = `Error performing cleanup: ${err.message}`;
+      alertDiv.classList.remove('hidden');
+    }
+  }
+}
+
+
+async function loadSettings() {
+  try {
+    const res = await fetch('/api/settings');
+    if (!res.ok) return;
+    const data = await res.json();
+
+    const storage = data.storage || {};
+    const stt = data.speech || {};
+    const llm = data.llm || {};
+
+    if (storage.base_dir) document.getElementById('settingStorageDir').value = storage.base_dir;
+    if (stt.model_size) {
+      const presets = ['large-v3-turbo', 'large-v3', 'medium', 'small', 'base', 'tiny'];
+      if (presets.includes(stt.model_size)) {
+        document.getElementById('settingSttModel').value = stt.model_size;
+        document.getElementById('settingSttModelCustom').value = '';
+      } else {
+        document.getElementById('settingSttModelCustom').value = stt.model_size;
+      }
+    }
+    if (stt.device) document.getElementById('settingSttDevice').value = stt.device;
+    if (stt.provider) document.getElementById('settingSttProvider').value = stt.provider;
+    if (stt.language) document.getElementById('settingSttLang').value = stt.language;
+
+
+    const llmModelSelect = document.getElementById('settingLlmModel');
+    if (llmModelSelect && llm.available_models) {
+      llmModelSelect.innerHTML = llm.available_models.map(m =>
+        `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`
+      ).join('');
+      if (llm.model_name) llmModelSelect.value = llm.model_name;
+    }
+
+    if (llm.api_base) document.getElementById('settingLlmApiBase').value = llm.api_base;
+    if (llm.provider) document.getElementById('settingLlmProvider').value = llm.provider;
+    if (llm.temperature !== undefined) {
+      const slider = document.getElementById('settingLlmTemp');
+      const label = document.getElementById('tempValLabel');
+      if (slider) slider.value = llm.temperature;
+      if (label) label.textContent = llm.temperature;
+    }
+  } catch (err) {
+    console.error('Failed to load settings:', err);
+  }
+}
+
+async function saveSettings() {
+  const saveBtn = document.getElementById('saveSettingsBtn');
+  const alertDiv = document.getElementById('settingsAlert');
+
+  if (saveBtn) saveBtn.disabled = true;
+
+  const storageDir = document.getElementById('settingStorageDir').value.trim();
+  const sttModelPreset = document.getElementById('settingSttModel').value;
+  const sttModelCustom = document.getElementById('settingSttModelCustom').value.trim();
+  const sttModel = sttModelCustom || sttModelPreset;
+
+  const sttDevice = document.getElementById('settingSttDevice').value;
+  const sttProvider = document.getElementById('settingSttProvider').value;
+  const sttLang = document.getElementById('settingSttLang').value;
+
+
+  const llmModelSelect = document.getElementById('settingLlmModel').value;
+  const llmModelCustom = document.getElementById('settingLlmModelCustom').value.trim();
+  const llmModel = llmModelCustom || llmModelSelect;
+
+  const llmApiBase = document.getElementById('settingLlmApiBase').value;
+  const llmProvider = document.getElementById('settingLlmProvider').value;
+  const llmTemp = parseFloat(document.getElementById('settingLlmTemp').value);
+
+  const payload = {
+    storage_dir: storageDir,
+    stt_model_size: sttModel,
+    stt_device: sttDevice,
+    stt_provider: sttProvider,
+    stt_language: sttLang,
+    llm_model_name: llmModel,
+    llm_provider: llmProvider,
+    llm_api_base: llmApiBase,
+    llm_temperature: llmTemp,
+  };
+
+  try {
+    const res = await fetch('/api/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Failed to save settings');
+
+    if (alertDiv) {
+      alertDiv.className = 'result-msg success';
+      alertDiv.innerHTML = `<strong>✓ Settings Saved!</strong> Data storage location set to <code>${escapeHtml(data.storage_dir || storageDir)}</code>. Speech model set to <em>${escapeHtml(sttModel)}</em> (${escapeHtml(sttDevice)}) and LLM set to <em>${escapeHtml(llmModel)}</em>. Saved to <code>transcribe.yaml</code>.`;
+      alertDiv.classList.remove('hidden');
+    }
+
+    loadStats();
+    loadMeetings();
+    loadRecordings();
+  } catch (err) {
+    if (alertDiv) {
+      alertDiv.className = 'result-msg error';
+      alertDiv.textContent = `Error saving settings: ${err.message}`;
+      alertDiv.classList.remove('hidden');
+    }
+  } finally {
+    if (saveBtn) saveBtn.disabled = false;
+  }
+}
+
+

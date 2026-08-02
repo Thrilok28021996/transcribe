@@ -127,3 +127,14 @@ class KnowledgeGraphStore:
             "total_nodes": len(self._nodes),
             "total_edges": len(self._edges),
         }
+
+    def clear(self) -> None:
+        """Clear all graph nodes and edges and delete persistence file."""
+        self._nodes.clear()
+        self._edges.clear()
+        if self.db_file.exists():
+            try:
+                self.db_file.unlink()
+            except OSError:
+                pass
+

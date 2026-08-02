@@ -1,0 +1,14 @@
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/deps/thiserror-3756cfd641a81bc6.d: /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/lib.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/aserror.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/display.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/var.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/private.rs /Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/thiserror-1df6c0a8b118df7c/out/private.rs
+
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/deps/libthiserror-3756cfd641a81bc6.rlib: /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/lib.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/aserror.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/display.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/var.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/private.rs /Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/thiserror-1df6c0a8b118df7c/out/private.rs
+
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/deps/libthiserror-3756cfd641a81bc6.rmeta: /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/lib.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/aserror.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/display.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/var.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/private.rs /Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/thiserror-1df6c0a8b118df7c/out/private.rs
+
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/lib.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/aserror.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/display.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/var.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.19/src/private.rs:
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/thiserror-1df6c0a8b118df7c/out/private.rs:
+
+# env-dep:OUT_DIR=/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/thiserror-1df6c0a8b118df7c/out

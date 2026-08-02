@@ -1,0 +1,41 @@
+app_name: Transcribe AI
+environment: development
+debug: false
+audio:
+  sample_rate: 16000
+  channels: 1
+  format_supported:
+  - wav
+  - mp3
+  - m4a
+  - aac
+  - mp4
+speech:
+  provider: faster-whisper
+  model_size: deepdml/faster-whisper-large-v3-turbo-ct2
+  device: auto
+  compute_type: default
+  language: en
+  download_root: /Volumes/personal/huggingface
+diarization:
+  provider: mock
+  min_speakers: null
+  max_speakers: null
+llm:
+  provider: lm-studio
+  model_name: default
+  api_base: http://localhost:1234/v1
+  temperature: 0.1
+  max_tokens: 2048
+vector_store:
+  provider: mock
+  collection_name: meeting_knowledge
+  host: localhost
+  port: 6333
+  storage_path: data/qdrant
+storage:
+  base_dir: /Users/thrilok/.transcribe
+  meetings_dir: /Users/thrilok/.transcribe/meetings
+  recordings_dir: /Users/thrilok/.transcribe/recordings
+  speakers_dir: /Users/thrilok/.transcribe/speakers
+  markdown_dir: /Users/thrilok/.transcribe/markdown

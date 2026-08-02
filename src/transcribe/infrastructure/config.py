@@ -58,13 +58,21 @@ class VectorStoreConfig(BaseModel):
     storage_path: Path = Path("./data/qdrant")
 
 
+def default_storage_base_dir() -> Path:
+    """Return default storage root directory (~/.transcribe or env var)."""
+    env_dir = os.environ.get("TRANSCRIBE_STORAGE_DIR")
+    if env_dir:
+        return Path(env_dir).expanduser().resolve()
+    return (Path.home() / ".transcribe").resolve()
+
+
 class StorageConfig(BaseModel):
     """File storage and output directory settings."""
-    base_dir: Path = Path("./data")
-    meetings_dir: Path = Path("./data/meetings")
-    recordings_dir: Path = Path("./data/recordings")
-    speakers_dir: Path = Path("./data/speakers")
-    markdown_dir: Path = Path("./data/markdown")
+    base_dir: Path = Field(default_factory=default_storage_base_dir)
+    meetings_dir: Path | None = None
+    recordings_dir: Path | None = None
+    speakers_dir: Path | None = None
+    markdown_dir: Path | None = None
 
 
 class AppConfig(BaseSettings):
@@ -87,8 +95,8 @@ class AppConfig(BaseSettings):
     storage: StorageConfig = Field(default_factory=StorageConfig)
 
 
-def load_config(config_path: Path | str | None = None) -> AppConfig:
-    """Load configuration from YAML file and override with env variables."""
+def load_config(config_path: Path | str | None = None, storage_dir: Path | str | None = None) -> AppConfig:
+    """Load configuration from YAML file and override with env variables or custom storage_dir."""
     config_dict: dict[str, Any] = {}
 
     if config_path:
@@ -99,14 +107,98 @@ def load_config(config_path: Path | str | None = None) -> AppConfig:
                 if isinstance(loaded, dict):
                     config_dict = loaded
 
-    # Expand relative storage paths if needed
     config = AppConfig(**config_dict)
 
-    # Ensure output directories exist
-    config.storage.base_dir.mkdir(parents=True, exist_ok=True)
+    if storage_dir:
+        config.storage.base_dir = Path(storage_dir).expanduser().resolve()
+
+    b_dir = config.storage.base_dir
+    config.storage.meetings_dir = b_dir / "meetings"
+    config.storage.recordings_dir = b_dir / "recordings"
+    config.storage.speakers_dir = b_dir / "speakers"
+    config.storage.markdown_dir = b_dir / "markdown"
+
+    # Ensure storage output directories exist
+    b_dir.mkdir(parents=True, exist_ok=True)
     config.storage.meetings_dir.mkdir(parents=True, exist_ok=True)
     config.storage.recordings_dir.mkdir(parents=True, exist_ok=True)
     config.storage.speakers_dir.mkdir(parents=True, exist_ok=True)
     config.storage.markdown_dir.mkdir(parents=True, exist_ok=True)
 
     return config
+
+
+def save_config(config: AppConfig, config_path: Path | str | None = None) -> Path:
+    """Save configuration model to YAML file."""
+    target_path = Path(config_path) if config_path else Path("transcribe.yaml")
+    data = config.model_dump(mode="json")
+    with open(target_path, "w", encoding="utf-8") as f:
+        yaml.safe_dump(data, f, default_flow_style=False, sort_keys=False)
+    return target_path
+
+
+def cleanup_storage(config: AppConfig, delete_recordings: bool = True, delete_all: bool = False) -> dict[str, int]:
+    """Clean up accumulated raw audio recordings, vector DBs, knowledge graphs, and storage files."""
+    import shutil
+
+    freed_bytes = 0
+    deleted_files = 0
+
+    candidate_bases = [
+        config.storage.base_dir.resolve(),
+        Path("./data").resolve(),
+        (Path.home() / ".transcribe").resolve(),
+    ]
+
+    seen_bases: set[Path] = set()
+
+    for base_path in candidate_bases:
+        if not base_path or not base_path.exists() or base_path in seen_bases:
+            continue
+        seen_bases.add(base_path)
+
+        dirs_to_clean: list[Path] = []
+        if delete_recordings or delete_all:
+            dirs_to_clean.append(base_path / "recordings")
+        if delete_all:
+            dirs_to_clean.extend([
+                base_path / "meetings",
+                base_path / "speakers",
+                base_path / "markdown",
+                base_path / "vector_db",
+                base_path / "graph_db",
+                base_path / "qdrant",
+            ])
+
+        for target_dir in dirs_to_clean:
+            if target_dir.exists():
+                for p in list(target_dir.rglob("*")):
+                    try:
+                        if p.is_file():
+                            freed_bytes += p.stat().st_size
+                            p.unlink()
+                            deleted_files += 1
+                    except Exception:
+                        pass
+                try:
+                    shutil.rmtree(target_dir, ignore_errors=True)
+                except Exception:
+                    pass
+
+        if delete_all:
+            for pattern in ["*graph.json", "*vectors.json", "*speakers.json", "*.db"]:
+                for target_file in list(base_path.rglob(pattern)):
+                    if target_file.is_file():
+                        try:
+                            freed_bytes += target_file.stat().st_size
+                            target_file.unlink()
+                            deleted_files += 1
+                        except Exception:
+                            pass
+
+
+    return {"deleted_files": deleted_files, "freed_bytes": freed_bytes}
+
+
+
+

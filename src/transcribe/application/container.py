@@ -128,9 +128,22 @@ class ServiceContainer:
         mock_embed = MockEmbeddingProvider()
         self.embedding_providers.register("mock", mock_embed)
 
-    # Active component resolvers based on AppConfig
+    def reload_plugins(self) -> None:
+        """Re-register plugins with updated configuration settings."""
+        self.speech_recognizers.clear()
+        self.alignment_engines.clear()
+        self.diarization_engines.clear()
+        self.speaker_identifiers.clear()
+        self.knowledge_extractors.clear()
+        self.markdown_exporters.clear()
+        self.embedding_providers.clear()
+        self.llm_providers.clear()
+        self._register_default_plugins()
+
+
     def get_speech_recognizer(self) -> SpeechRecognizer:
         return self.speech_recognizers.get(self.config.speech.provider)
+
 
     def get_alignment_engine(self) -> AlignmentEngine:
         return self.alignment_engines.get("mock")

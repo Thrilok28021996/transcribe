@@ -62,7 +62,11 @@ def test_cli_audio_devices() -> None:
     assert "Teams/Zoom Call Capture Diagnostics" in result.output
 
 
-def test_cli_record_with_system_audio_mode(tmp_path: Path) -> None:
+def test_cli_record_with_system_audio_mode() -> None:
+    from transcribe.infrastructure.config import default_storage_base_dir
+    rec_dir = default_storage_base_dir() / "recordings"
+    rec_dir.mkdir(parents=True, exist_ok=True)
+
     runner = CliRunner()
     result = runner.invoke(
         cli,
@@ -71,6 +75,8 @@ def test_cli_record_with_system_audio_mode(tmp_path: Path) -> None:
     assert result.exit_code == 0
     assert "Recording live meeting audio (MIXED mode)" in result.output
     assert "✓ Meeting processed!" in result.output or "✓ Live audio capture complete!" in result.output
+
+
 
 
 def test_web_audio_devices_endpoint() -> None:
@@ -82,3 +88,20 @@ def test_web_audio_devices_endpoint() -> None:
     assert "devices" in data
     assert "setup_status" in data
     assert len(data["devices"]) > 0
+
+
+def test_web_backend_recording_endpoints() -> None:
+    app = create_app()
+    client = TestClient(app)
+    start_resp = client.post("/api/audio/record_start", data={"mode": "mic"})
+    assert start_resp.status_code == 200
+    start_data = start_resp.json()
+    assert start_data["status"] == "started"
+    assert "filename" in start_data
+
+    stop_resp = client.post("/api/audio/record_stop", data={"title": "Test Web Backend Meeting"})
+    assert stop_resp.status_code == 200
+    stop_data = stop_resp.json()
+    assert "meeting_id" in stop_data
+    assert stop_data["title"] == "Test Web Backend Meeting"
+

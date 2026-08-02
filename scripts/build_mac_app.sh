@@ -25,9 +25,37 @@ end run
 
 osacompile -e "$APPLESCRIPT" -o "$APP_DIR"
 
+if [ -f "$PROJECT_DIR/src-tauri/icons/icon.icns" ]; then
+    cp "$PROJECT_DIR/src-tauri/icons/icon.icns" "$APP_DIR/Contents/Resources/applet.icns"
+    cp "$PROJECT_DIR/src-tauri/icons/icon.icns" "$APP_DIR/Contents/Resources/droplet.icns" 2>/dev/null || true
+fi
+
+# Ensure Info.plist has NSMicrophoneUsageDescription
+PLIST="$APP_DIR/Contents/Info.plist"
+if [ -f "$PLIST" ]; then
+    /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string 'Transcribe AI requires access to your microphone to capture live speech and transcribe meeting notes locally.'" "$PLIST" 2>/dev/null || \
+    /usr/libexec/PlistBuddy -c "Set :NSMicrophoneUsageDescription 'Transcribe AI requires access to your microphone to capture live speech and transcribe meeting notes locally.'" "$PLIST" 2>/dev/null || true
+fi
+
+# Ad-hoc sign app bundle with microphone entitlements
+if command -v codesign &> /dev/null && [ -f "$PROJECT_DIR/src-tauri/Entitlements.plist" ]; then
+    codesign --force --deep --options runtime --entitlements "$PROJECT_DIR/src-tauri/Entitlements.plist" -s - "$APP_DIR" 2>/dev/null || true
+fi
+touch "$APP_DIR"
+
+
+# Install CLI symlink to ~/.local/bin/transcribe
+mkdir -p "$HOME/.local/bin"
+rm -f "$HOME/.local/bin/transcribe"
+ln -s "$PROJECT_DIR/.venv/bin/transcribe" "$HOME/.local/bin/transcribe" 2>/dev/null || true
+
 echo "✅ Transcribe AI.app successfully generated at:"
 echo "   $APP_DIR"
+echo "✅ 'transcribe' CLI command linked to:"
+echo "   $HOME/.local/bin/transcribe"
 echo ""
-echo "To run:"
+echo "To run App:"
 echo "   open \"$APP_DIR\""
-echo "Or drag '$APP_DIR' into your Mac's /Applications folder!"
+echo "To run CLI:"
+echo "   transcribe record --mode mixed"
+

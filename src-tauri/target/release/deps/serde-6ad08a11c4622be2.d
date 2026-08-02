@@ -1,0 +1,14 @@
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/deps/serde-6ad08a11c4622be2.d: /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/serde-2254701bcbbb2859/out/private.rs
+
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/deps/libserde-6ad08a11c4622be2.rlib: /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/serde-2254701bcbbb2859/out/private.rs
+
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/deps/libserde-6ad08a11c4622be2.rmeta: /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/serde-2254701bcbbb2859/out/private.rs
+
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs:
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/serde-2254701bcbbb2859/out/private.rs:
+
+# env-dep:OUT_DIR=/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/build/serde-2254701bcbbb2859/out

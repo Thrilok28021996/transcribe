@@ -16,8 +16,45 @@ Transcribe AI transforms meeting audio, video calls (Microsoft Teams, Zoom, Goog
 - **🔍 Cross-Meeting Semantic Search**: Retrieve past discussions and decisions across your entire meeting archive with hybrid vector search and knowledge graph relationship mapping.
 - **💬 Local RAG Assistant**: Ask questions about historical meetings with source citations and structured knowledge graph context (`transcribe ask "What decisions were made regarding backend architecture?"`).
 - **💻 Interactive Web UX & CLI**: Beautiful FastAPI modern web SPA dashboard (`transcribe serve`) and a terminal CLI (`transcribe`).
+- **🦀 Tauri v2 Desktop App**: Ultra-lightweight native Desktop App bundle (`.app`, `.dmg`, `.msi`, `.exe`, `.AppImage`) for macOS, Windows, and Linux with system tray integration.
 
 ---
+
+## 🦀 Tauri v2 Cross-Platform Desktop App (macOS, Windows, Linux)
+
+Transcribe AI includes a full **Tauri v2** desktop integration in `src-tauri/`. It packages the local Web SPA and Python backend server into a lightweight (~15 MB) native desktop app with system tray controls.
+
+### 1. Run in Development Mode
+```bash
+./scripts/build_tauri_app.sh
+```
+Or manually using the Tauri v2 CLI:
+```bash
+npx @tauri-apps/cli@v2 dev
+```
+
+### 2. Build Production Desktop Installers
+Build native packages for your target operating system:
+```bash
+npx @tauri-apps/cli@v2 build
+```
+This outputs production installers:
+- **macOS**: `src-tauri/target/release/bundle/dmg/Transcribe AI.dmg` & `.app`
+- **Windows**: `src-tauri/target/release/bundle/msi/Transcribe AI.msi` & `.exe`
+- **Linux**: `src-tauri/target/release/bundle/appimage/Transcribe AI.AppImage` & `.deb`
+
+### 3. Automated CI/CD Builds via GitHub Actions ⚡
+Every time you push code to GitHub (`git push`), a GitHub Actions workflow automatically:
+1. Runs the full `pytest` test suite across **macOS**, **Windows**, and **Linux**.
+2. Builds native desktop app packages (**`.dmg`**, **`.app`**, **`.msi`**, **`.exe`**, **`.AppImage`**, **`.deb`**).
+3. Attaches the built downloadable installers directly to your GitHub Action build artifacts and release pages.
+
+See workflow file: [.github/workflows/desktop_release.yml](file:///.github/workflows/desktop_release.yml)
+
+---
+
+
+
 
 ## 🎧 System Audio Hook & Teams Call Capture Setup
 

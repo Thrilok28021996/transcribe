@@ -140,3 +140,13 @@ class SpeakerDatabase:
         self._speakers[speaker_id] = updated_speaker
         self._save()
         return updated_speaker
+
+    def clear(self) -> None:
+        """Clear all speaker profiles and delete persistence file."""
+        self._speakers.clear()
+        if self.db_file.exists():
+            try:
+                self.db_file.unlink()
+            except OSError:
+                pass
+

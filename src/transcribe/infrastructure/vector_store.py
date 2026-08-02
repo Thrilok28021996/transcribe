@@ -96,3 +96,13 @@ class LocalVectorStore:
     def count(self) -> int:
         """Total number of documents in vector store."""
         return len(self._documents)
+
+    def clear(self) -> None:
+        """Clear all documents in index and delete persistence file."""
+        self._documents.clear()
+        if self.db_file.exists():
+            try:
+                self.db_file.unlink()
+            except OSError:
+                pass
+

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Transcribe AI",
+  "version": "0.1.0",
+  "identifier": "com.transcribe.ai",
+  "build": {
+    "frontendDist": "http://127.0.0.1:8000",
+    "devUrl": "http://127.0.0.1:8000",
+    "beforeDevCommand": "",
+    "beforeBuildCommand": ""
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Transcribe AI — Meeting Memory Platform",
+        "width": 1280,
+        "height": 830,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "visible": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "category": "Productivity",
+    "copyright": "Copyright © 2026 Transcribe AI Authors",
+    "shortDescription": "Local-first AI Meeting Memory Platform",
+    "longDescription": "Transcribe AI captures live Teams/Zoom call audio, extracts decisions & action items locally using Faster-Whisper and LM Studio, and provides cross-meeting search and RAG assistant.",
+    "macOS": {
+      "frameworks": [],
+      "minimumSystemVersion": "10.15",
+      "exceptionDomain": "",
+      "infoPlist": "Info.plist",
+      "entitlements": "Entitlements.plist"
+    },
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    }
+  }
+}

@@ -65,6 +65,111 @@ def config_show(container: ServiceContainer) -> None:
 
 
 @cli.command()
+@click.option("--stt-model", help="STT Whisper model size (e.g. large-v3-turbo, medium, small, base, tiny).")
+@click.option("--stt-device", help="STT compute device (auto, mps, cuda, cpu).")
+@click.option("--stt-provider", help="Speech recognition provider (faster-whisper, mock).")
+@click.option("--llm-model", help="Local LLM model name (e.g. default, qwen2.5-7b-instruct).")
+@click.option("--llm-provider", help="LLM provider (lm-studio, ollama, mock).")
+@click.option("--llm-base", help="LM Studio API Base URL (e.g. http://localhost:1234/v1).")
+@click.pass_obj
+def config_set(
+    container: ServiceContainer,
+    stt_model: str | None,
+    stt_device: str | None,
+    stt_provider: str | None,
+    llm_model: str | None,
+    llm_provider: str | None,
+    llm_base: str | None,
+) -> None:
+    """Update active STT and LM Studio local model settings."""
+    from transcribe.infrastructure.config import save_config
+
+    cfg = container.config
+    updated = False
+
+    if stt_model:
+        cfg.speech.model_size = stt_model
+        updated = True
+    if stt_device:
+        cfg.speech.device = stt_device  # type: ignore
+        updated = True
+    if stt_provider:
+        cfg.speech.provider = stt_provider
+        updated = True
+    if llm_model:
+        cfg.llm.model_name = llm_model
+        updated = True
+    if llm_provider:
+        cfg.llm.provider = llm_provider
+        updated = True
+    if llm_base:
+        cfg.llm.api_base = llm_base
+        updated = True
+
+    if updated:
+        save_config(cfg)
+        container.reload_plugins()
+        console.print("[bold green]✓ Configuration updated and saved to transcribe.yaml[/bold green]")
+    else:
+        console.print("[yellow]No settings specified. Pass options like --stt-model large-v3-turbo --llm-model qwen2.5-7b[/yellow]")
+
+
+@cli.command()
+@click.option("--all", "-a", "delete_all", is_flag=True, help="Full reset: delete all recordings, meetings, vectors, speakers, and markdown notes.")
+@click.option("--recordings-only", "-r", is_flag=True, help="Delete only accumulated raw audio recording files.")
+@click.pass_obj
+def cleanup(container: ServiceContainer, delete_all: bool, recordings_only: bool) -> None:
+    """Clean up accumulated raw audio recordings and temporary storage files."""
+    from transcribe.infrastructure.config import cleanup_storage
+
+    res = cleanup_storage(container.config, delete_recordings=True, delete_all=delete_all)
+    if delete_all:
+        from transcribe.application.services.search_service import SearchService
+        search_svc = SearchService(container=container)
+        search_svc.vector_store.clear()
+        search_svc.graph_store.clear()
+        if hasattr(container.speaker_db, "clear"):
+            container.speaker_db.clear()
+
+
+    freed_mb = round(res["freed_bytes"] / (1024 * 1024), 2)
+    deleted_count = res["deleted_files"]
+
+    if delete_all:
+        console.print(f"[bold red]🧹 Full data cleanup complete![/bold red] Removed {deleted_count} files ({freed_mb} MB freed). Storage reset.")
+    else:
+        console.print(f"[bold green]🧹 Raw recordings cleanup complete![/bold green] Removed {deleted_count} audio files ({freed_mb} MB freed).")
+
+
+
+@cli.command()
+@click.pass_obj
+def install_cli(container: ServiceContainer) -> None:
+    """Install 'transcribe' CLI command symlink into user PATH (~/.local/bin/transcribe)."""
+    import sys
+    from pathlib import Path
+
+    bin_dir = Path.home() / ".local" / "bin"
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    target_symlink = bin_dir / "transcribe"
+
+    transcribe_script = Path(sys.argv[0]).resolve()
+
+    try:
+        if target_symlink.exists() or target_symlink.is_symlink():
+            target_symlink.unlink()
+
+        target_symlink.symlink_to(transcribe_script)
+        console.print(f"[bold green]✓ 'transcribe' CLI symlink installed at {target_symlink}[/bold green]")
+        console.print("[dim]Ensure ~/.local/bin is in your PATH to run 'transcribe' from any terminal.[/dim]")
+    except Exception as err:
+        console.print(f"[bold red]Failed to install CLI symlink: {err}[/bold red]")
+
+
+
+
+
+@cli.command()
 @click.pass_obj
 def plugins_list(container: ServiceContainer) -> None:
     """List registered AI plugin interfaces and available implementations."""

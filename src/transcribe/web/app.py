@@ -33,7 +33,21 @@ class AskQuestionRequest(BaseModel):
     top_k: int = 5
 
 
+class UpdateSettingsRequest(BaseModel):
+    storage_dir: str | None = None
+    stt_model_size: str | None = None
+    stt_device: str | None = None
+    stt_provider: str | None = None
+    stt_language: str | None = None
+    llm_model_name: str | None = None
+    llm_provider: str | None = None
+    llm_api_base: str | None = None
+    llm_temperature: float | None = None
+
+
+
 def create_app(container: ServiceContainer | None = None) -> FastAPI:
+
     """Create and configure the FastAPI web server instance."""
     app = FastAPI(
         title="Transcribe AI — Meeting Memory Platform",
@@ -90,6 +104,8 @@ def create_app(container: ServiceContainer | None = None) -> FastAPI:
             "speech_provider": cntr.config.speech.provider,
         }
 
+    active_backend_recording: list[dict[str, Any]] = []
+
     @app.get("/api/audio/devices")
     async def get_audio_devices() -> dict[str, Any]:
         """Get system audio hardware devices and loopback hook diagnostic status."""
@@ -101,6 +117,233 @@ def create_app(container: ServiceContainer | None = None) -> FastAPI:
             "devices": [dev.model_dump() for dev in devices],
             "setup_status": status.model_dump(),
         }
+
+    @app.post("/api/audio/record_start")
+    async def start_backend_recording(
+        mode: str = Form("mic"),
+        mic_device: str | None = Form(None),
+        system_device: str | None = Form(None),
+    ) -> dict[str, Any]:
+        """Start native backend audio recording using SystemAudioHook (FFmpeg)."""
+        import subprocess
+        import time
+        from transcribe.infrastructure.system_audio_hook import SystemAudioHook
+
+        if active_backend_recording:
+            info = active_backend_recording.pop(0)
+            p = info.get("process")
+            if p and p.poll() is None:
+                p.terminate()
+
+        hook = SystemAudioHook()
+        rec_dir = cntr.config.storage.recordings_dir
+        rec_dir.mkdir(parents=True, exist_ok=True)
+        filename = f"live_native_{int(time.time() * 1000)}.wav"
+        out_path = rec_dir / filename
+
+        cmd = hook.build_ffmpeg_record_cmd(
+            output_path=out_path,
+            duration_seconds=3600,
+            mode=mode,
+            mic_device=mic_device,
+            system_device=system_device,
+        )
+
+        try:
+            p = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+            # Brief check to ensure process didn't fail immediately due to permission error
+            time.sleep(0.35)
+            if p.poll() is not None:
+                err_bytes = p.stderr.read() if p.stderr else b""
+                err_text = err_bytes.decode("utf-8", errors="ignore")
+                logger.error(f"Backend live recording start failed: {err_text}")
+                if "Permission denied" in err_text or "Operation not permitted" in err_text:
+                    raise HTTPException(
+                        status_code=500,
+                        detail="macOS Microphone Permission Denied: Please allow microphone access for Transcribe AI (or your Terminal) in System Settings -> Privacy & Security -> Microphone."
+                    )
+                raise HTTPException(status_code=500, detail=f"Failed to start hardware recording: {err_text[:200] if err_text else 'Process exited'}")
+
+            active_backend_recording.append({
+                "process": p,
+                "output_path": out_path,
+                "filename": filename,
+                "start_time": time.time(),
+            })
+            return {"status": "started", "filename": filename, "mode": mode}
+        except HTTPException:
+            raise
+        except Exception as err:
+            logger.error(f"Backend live recording start failed: {err}")
+            raise HTTPException(status_code=500, detail=f"Failed to start native recording: {err}")
+
+    @app.post("/api/audio/record_stop")
+    async def stop_backend_recording(
+        title: str | None = Form(None),
+    ) -> dict[str, Any]:
+        """Stop native backend audio recording and process meeting memory."""
+        import time
+        if not active_backend_recording:
+            raise HTTPException(status_code=400, detail="No active backend recording process.")
+
+        rec_info = active_backend_recording.pop(0)
+        p: subprocess.Popen = rec_info["process"]
+        out_path: Path = rec_info["output_path"]
+
+        if p and p.poll() is None:
+            p.terminate()
+            try:
+                p.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                p.kill()
+
+        if not out_path.exists() or out_path.stat().st_size == 0:
+            with open(out_path, "wb") as f:
+                f.write(b'RIFF$\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00\x01\x00\x80>\x00\x00\x00}\x00\x00\x02\x00\x10\x00data\x00\x00\x00\x00')
+
+        m_title = title or f"Live Meeting ({time.strftime('%H:%M:%S')})"
+        try:
+            res = await meeting_service.process_meeting(audio_path=out_path, title=m_title)
+            return {
+                "success": True,
+                "meeting_id": res.meeting.id,
+                "title": res.meeting.title,
+                "decisions_count": len(res.extraction.decisions),
+                "tasks_count": len(res.extraction.tasks),
+                "markdown_path": str(res.markdown_path),
+            }
+        except Exception as err:
+            logger.error(f"Processing recorded meeting failed: {err}")
+            raise HTTPException(status_code=500, detail=f"Meeting processing failed: {err}")
+
+    @app.get("/api/settings")
+    async def get_settings() -> dict[str, Any]:
+        """Get system settings and available models."""
+        import json
+        import urllib.request
+
+        available_llm_models: list[str] = []
+        api_base = cntr.config.llm.api_base.rstrip("/")
+        models_url = f"{api_base}/models"
+        try:
+            req = urllib.request.Request(models_url, headers={"User-Agent": "Transcribe-AI/0.1.0"})
+            with urllib.request.urlopen(req, timeout=1.5) as resp:
+                if resp.status == 200:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    for m in data.get("data", []):
+                        if isinstance(m, dict) and "id" in m:
+                            available_llm_models.append(m["id"])
+        except Exception:
+            logger.debug("LM Studio models endpoint unavailable. Using fallback default models.")
+
+        if not available_llm_models:
+            available_llm_models = ["default", "qwen2.5-7b-instruct", "llama-3.2-3b-instruct", "mistral-7b-instruct"]
+
+        return {
+            "storage": {
+                "base_dir": str(cntr.config.storage.base_dir),
+                "meetings_dir": str(cntr.config.storage.meetings_dir),
+                "recordings_dir": str(cntr.config.storage.recordings_dir),
+                "markdown_dir": str(cntr.config.storage.markdown_dir),
+                "speakers_dir": str(cntr.config.storage.speakers_dir),
+            },
+            "speech": {
+                "provider": cntr.config.speech.provider,
+                "model_size": cntr.config.speech.model_size,
+                "device": cntr.config.speech.device,
+                "language": cntr.config.speech.language,
+                "available_models": ["tiny", "base", "small", "medium", "large-v3-turbo", "large-v3"],
+                "available_devices": ["auto", "mps", "cuda", "cpu"],
+                "available_providers": ["faster-whisper", "mock"],
+            },
+            "llm": {
+                "provider": cntr.config.llm.provider,
+                "model_name": cntr.config.llm.model_name,
+                "api_base": cntr.config.llm.api_base,
+                "temperature": cntr.config.llm.temperature,
+                "available_providers": ["lm-studio", "ollama", "mock"],
+                "available_models": available_llm_models,
+            },
+        }
+
+    @app.post("/api/settings")
+    async def update_settings(req: UpdateSettingsRequest) -> dict[str, Any]:
+        """Update system settings for STT, LM Studio local models, and user storage path."""
+        from transcribe.infrastructure.config import save_config
+
+        if req.storage_dir is not None and req.storage_dir.strip():
+            new_base = Path(req.storage_dir).expanduser().resolve()
+            cntr.config.storage.base_dir = new_base
+            cntr.config.storage.meetings_dir = new_base / "meetings"
+            cntr.config.storage.recordings_dir = new_base / "recordings"
+            cntr.config.storage.speakers_dir = new_base / "speakers"
+            cntr.config.storage.markdown_dir = new_base / "markdown"
+
+            new_base.mkdir(parents=True, exist_ok=True)
+            cntr.config.storage.meetings_dir.mkdir(parents=True, exist_ok=True)
+            cntr.config.storage.recordings_dir.mkdir(parents=True, exist_ok=True)
+            cntr.config.storage.speakers_dir.mkdir(parents=True, exist_ok=True)
+            cntr.config.storage.markdown_dir.mkdir(parents=True, exist_ok=True)
+
+        if req.stt_model_size is not None:
+            cntr.config.speech.model_size = req.stt_model_size
+        if req.stt_device is not None:
+            cntr.config.speech.device = req.stt_device  # type: ignore
+        if req.stt_provider is not None:
+            cntr.config.speech.provider = req.stt_provider
+        if req.stt_language is not None:
+            cntr.config.speech.language = req.stt_language
+
+        if req.llm_model_name is not None:
+            cntr.config.llm.model_name = req.llm_model_name
+        if req.llm_provider is not None:
+            cntr.config.llm.provider = req.llm_provider
+        if req.llm_api_base is not None:
+            cntr.config.llm.api_base = req.llm_api_base
+        if req.llm_temperature is not None:
+            cntr.config.llm.temperature = req.llm_temperature
+
+        save_config(cntr.config)
+        cntr.reload_plugins()
+
+        logger.info(f"Updated settings: Storage='{cntr.config.storage.base_dir}', STT='{cntr.config.speech.model_size}', LLM='{cntr.config.llm.model_name}'")
+
+        return {
+            "success": True,
+            "message": "System settings updated successfully.",
+            "storage_dir": str(cntr.config.storage.base_dir),
+            "speech": cntr.config.speech.model_dump(),
+            "llm": cntr.config.llm.model_dump(),
+        }
+
+
+    @app.post("/api/cleanup")
+    async def cleanup_endpoint(
+        delete_all: bool = Form(False),
+        delete_recordings: bool = Form(True),
+    ) -> dict[str, Any]:
+        """Clean up accumulated raw audio recordings or reset full data storage."""
+        from transcribe.infrastructure.config import cleanup_storage
+        res = cleanup_storage(cntr.config, delete_recordings=delete_recordings, delete_all=delete_all)
+
+        if delete_all:
+            if hasattr(search_service, "vector_store") and hasattr(search_service.vector_store, "clear"):
+                search_service.vector_store.clear()
+            if hasattr(search_service, "graph_store") and hasattr(search_service.graph_store, "clear"):
+                search_service.graph_store.clear()
+            if hasattr(cntr.speaker_db, "clear"):
+                cntr.speaker_db.clear()
+
+
+        return {
+            "success": True,
+            "deleted_files": res["deleted_files"],
+            "freed_mb": round(res["freed_bytes"] / (1024 * 1024), 2),
+            "message": f"Storage cleanup complete. Removed {res['deleted_files']} files ({round(res['freed_bytes'] / (1024 * 1024), 2)} MB freed).",
+        }
+
+
+
 
 
     @app.get("/api/meetings")

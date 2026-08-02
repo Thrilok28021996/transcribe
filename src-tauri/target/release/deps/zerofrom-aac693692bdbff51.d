@@ -1,0 +1,9 @@
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/deps/zerofrom-aac693692bdbff51.d: /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/lib.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/macro_impls.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/zero_from.rs
+
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/deps/libzerofrom-aac693692bdbff51.rlib: /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/lib.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/macro_impls.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/zero_from.rs
+
+/Volumes/personal/programmingFolders/transcribe/src-tauri/target/release/deps/libzerofrom-aac693692bdbff51.rmeta: /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/lib.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/macro_impls.rs /Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/zero_from.rs
+
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/lib.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/macro_impls.rs:
+/Users/thrilok/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.8/src/zero_from.rs:

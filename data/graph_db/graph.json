@@ -1,221 +1,79 @@
 {
   "nodes": [
     {
-      "id": "sample",
+      "id": "meeting_2026-08-02_10-27-52",
       "label": "Meeting",
       "properties": {
-        "title": "CLI Sync Meeting",
-        "date": "2026-07-30T14:29:13.149247+00:00"
+        "title": "Live Meeting (10:27:52 AM)",
+        "date": "2026-08-02T04:57:52.715575+00:00"
       }
     },
     {
-      "id": "test_meeting",
-      "label": "Meeting",
-      "properties": {
-        "title": "Architecture Sync",
-        "date": "2026-07-30T14:29:22.865718+00:00"
-      }
-    },
-    {
-      "id": "8def17ef-91b8-4a9f-8ece-20137344c1b6",
+      "id": "9a80e3a9-8876-4aa4-84ff-e8ef68de689e",
       "label": "Decision",
       "properties": {
-        "description": "Adopt Python for AI pipeline backend infrastructure.",
-        "owner": "Alice"
+        "description": "CBI filed a charge sheet naming 13 accused in the UG question paper leak case.",
+        "owner": "Central Bureau of Investigation"
       }
     },
     {
-      "id": "1117431d-349c-4655-a636-ce97f8ce4c77",
-      "label": "Task",
-      "properties": {
-        "description": "Create initial repository structure and configure CI pipeline.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "Bob",
-      "label": "Person",
+      "id": "Central Bureau of Investigation",
+      "label": "Organization",
       "properties": {}
     },
     {
-      "id": "Create initial repository structure",
-      "label": "Task",
-      "properties": {}
-    },
-    {
-      "id": "Transcribe AI Platform",
+      "id": "UG question paper leak case",
       "label": "Project",
       "properties": {}
     },
     {
-      "id": "Python",
-      "label": "Technology",
+      "id": "Shivraj Raghunath Mataugavkar",
+      "label": "Person",
       "properties": {}
     },
     {
-      "id": "d1dc81ee-079c-4895-869c-8f92cb5e8210",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for AI pipeline backend infrastructure.",
-        "owner": "Alice"
-      }
+      "id": "Renukai Career Coaching Institute",
+      "label": "Project",
+      "properties": {}
     },
     {
-      "id": "34c8d5dd-b6a8-4d39-afaf-6417946f8b70",
-      "label": "Task",
-      "properties": {
-        "description": "Create initial repository structure and configure CI pipeline.",
-        "owner": "Bob"
-      }
+      "id": "Manisha Mandare",
+      "label": "Person",
+      "properties": {}
     },
     {
-      "id": "e5553022-6eeb-4eca-afe1-b4a8b5c5d3fe",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for AI pipeline backend infrastructure.",
-        "owner": "Alice"
-      }
-    },
-    {
-      "id": "87428000-4c1b-4ae0-804f-710bf7dca96a",
-      "label": "Task",
-      "properties": {
-        "description": "Create initial repository structure and configure CI pipeline.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "caf240f4-5185-4088-9c80-8b18ce21e91e",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for AI pipeline backend infrastructure.",
-        "owner": "Alice"
-      }
-    },
-    {
-      "id": "056df26d-088a-4953-aba0-aa10c81f8be5",
-      "label": "Task",
-      "properties": {
-        "description": "Create initial repository structure and configure CI pipeline.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "meeting_2026-07-30_19-59-11",
-      "label": "Meeting",
-      "properties": {
-        "title": "Teams Weekly Sync",
-        "date": "2026-07-30T14:29:12.855614+00:00"
-      }
-    },
-    {
-      "id": "35845cfc-c1c4-4392-bf78-37963d50bb3f",
-      "label": "Decision",
-      "properties": {
-        "description": "Adopt Python for AI pipeline backend infrastructure.",
-        "owner": "Alice"
-      }
-    },
-    {
-      "id": "f7c4bdf2-a11b-49e3-a043-4cdd9dc3b4ba",
-      "label": "Task",
-      "properties": {
-        "description": "Create initial repository structure and configure CI pipeline.",
-        "owner": "Bob"
-      }
-    },
-    {
-      "id": "meeting_2026-07-30_19-59-24",
-      "label": "Meeting",
-      "properties": {
-        "title": "Teams Weekly Sync",
-        "date": "2026-07-30T14:29:26.356733+00:00"
-      }
+      "id": "National Testing Agency",
+      "label": "Organization",
+      "properties": {}
     }
   ],
   "edges": [
     {
-      "source_id": "test_meeting",
-      "target_id": "8def17ef-91b8-4a9f-8ece-20137344c1b6",
+      "source_id": "meeting_2026-08-02_10-27-52",
+      "target_id": "9a80e3a9-8876-4aa4-84ff-e8ef68de689e",
       "relation_type": "recorded_decision",
-      "confidence": 0.96,
+      "confidence": 0.95,
       "properties": {}
     },
     {
-      "source_id": "test_meeting",
-      "target_id": "1117431d-349c-4655-a636-ce97f8ce4c77",
-      "relation_type": "assigned_task",
-      "confidence": 0.94,
+      "source_id": "Central Bureau of Investigation",
+      "target_id": "UG question paper leak case",
+      "relation_type": "investigates",
+      "confidence": 0.95,
       "properties": {}
     },
     {
-      "source_id": "Bob",
-      "target_id": "Create initial repository structure",
+      "source_id": "Shivraj Raghunath Mataugavkar",
+      "target_id": "Renukai Career Coaching Institute",
       "relation_type": "owns",
       "confidence": 0.95,
       "properties": {}
     },
     {
-      "source_id": "Transcribe AI Platform",
-      "target_id": "Python",
-      "relation_type": "uses",
-      "confidence": 0.98,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "d1dc81ee-079c-4895-869c-8f92cb5e8210",
-      "relation_type": "recorded_decision",
-      "confidence": 0.96,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "34c8d5dd-b6a8-4d39-afaf-6417946f8b70",
-      "relation_type": "assigned_task",
-      "confidence": 0.94,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "e5553022-6eeb-4eca-afe1-b4a8b5c5d3fe",
-      "relation_type": "recorded_decision",
-      "confidence": 0.96,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "87428000-4c1b-4ae0-804f-710bf7dca96a",
-      "relation_type": "assigned_task",
-      "confidence": 0.94,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "caf240f4-5185-4088-9c80-8b18ce21e91e",
-      "relation_type": "recorded_decision",
-      "confidence": 0.96,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "056df26d-088a-4953-aba0-aa10c81f8be5",
-      "relation_type": "assigned_task",
-      "confidence": 0.94,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "35845cfc-c1c4-4392-bf78-37963d50bb3f",
-      "relation_type": "recorded_decision",
-      "confidence": 0.96,
-      "properties": {}
-    },
-    {
-      "source_id": "test_meeting",
-      "target_id": "f7c4bdf2-a11b-49e3-a043-4cdd9dc3b4ba",
-      "relation_type": "assigned_task",
-      "confidence": 0.94,
+      "source_id": "Manisha Mandare",
+      "target_id": "National Testing Agency",
+      "relation_type": "works for",
+      "confidence": 0.95,
       "properties": {}
     }
   ]
