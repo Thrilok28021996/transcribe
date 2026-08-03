@@ -141,6 +141,91 @@ def cleanup(container: ServiceContainer, delete_all: bool, recordings_only: bool
         console.print(f"[bold green]🧹 Raw recordings cleanup complete![/bold green] Removed {deleted_count} audio files ({freed_mb} MB freed).")
 
 
+@cli.command()
+@click.pass_obj
+def speakers(container: ServiceContainer) -> None:
+    """List all registered persistent speaker profiles."""
+    from rich.table import Table
+    spks = container.speaker_db.list_speakers()
+    if not spks:
+        console.print("[dim]No registered speaker profiles.[/dim]")
+        return
+
+    table = Table(title="Tracked Speaker Profiles")
+    table.add_column("Speaker ID", style="cyan")
+    table.add_column("Display Name", style="bold green")
+    table.add_column("Aliases", style="yellow")
+    table.add_column("Embedding", style="blue")
+    table.add_column("Meetings", style="magenta")
+
+    for s in spks:
+        aliases_str = ", ".join(s.aliases) if s.aliases else "-"
+        emb_str = "Active" if s.embedding else "None"
+        table.add_row(s.id, s.name, aliases_str, emb_str, str(len(s.confidence_history)))
+
+    console.print(table)
+
+
+@cli.command()
+@click.argument("speaker_id_or_name")
+@click.argument("new_name")
+@click.option("--alias", "-a", multiple=True, help="Optional alias names for this speaker.")
+@click.pass_obj
+def speaker_rename(container: ServiceContainer, speaker_id_or_name: str, new_name: str, alias: tuple[str, ...]) -> None:
+    """Rename a speaker profile and update aliases."""
+    spk = container.speaker_db.get_speaker(speaker_id_or_name) or container.speaker_db.find_by_name(speaker_id_or_name)
+    if not spk:
+        console.print(f"[bold red]Error:[/bold red] Speaker '{speaker_id_or_name}' not found.")
+        return
+
+    aliases_list = list(alias) if alias else None
+    updated = container.speaker_db.update_speaker_details(spk.id, name=new_name, aliases=aliases_list)
+    console.print(f"[bold green]✅ Speaker updated successfully![/bold green] '{spk.name}' -> [bold cyan]'{updated.name}'[/bold cyan] (ID: {updated.id})")
+
+
+@cli.command()
+@click.argument("audio_file", type=click.Path(exists=True, path_type=Path))
+@click.option("--name", "-n", default=None, help="Optional name to assign/enroll if voice is unknown.")
+@click.pass_obj
+def identify_voice(container: ServiceContainer, audio_file: Path, name: str | None) -> None:
+    """Identify speaker voice from an audio sample file and match against local database."""
+    import asyncio
+    from rich.table import Table
+    from transcribe.domain.entities import TranscriptSegment
+
+    console.print(f"[bold blue]🎙️ Analyzing voice sample:[/bold blue] {audio_file.name}")
+
+    speaker_id_engine = container.get_speaker_identifier()
+    dummy_seg = TranscriptSegment(meeting_id="sample", start=0.0, end=10.0, text="Voice Sample", speaker_id="SAMPLE")
+
+    matched_name = asyncio.run(speaker_id_engine.identify(dummy_seg, audio_file))
+    embedding = speaker_id_engine._extract_voice_embedding(dummy_seg, audio_file)
+    match_speaker, score = container.speaker_db.match_voice_embedding(embedding)
+
+    table = Table(title="Voice Identification Analysis")
+    table.add_column("Property", style="cyan")
+    table.add_column("Value", style="bold green")
+
+    table.add_row("Audio File", audio_file.name)
+    table.add_row("Identified Speaker", matched_name)
+
+    if match_speaker:
+        table.add_row("Match Confidence Score", f"{score * 100:.1f}%")
+        table.add_row("Speaker ID", match_speaker.id)
+        table.add_row("Known Aliases", ", ".join(match_speaker.aliases) if match_speaker.aliases else "None")
+        console.print(table)
+        console.print(f"\n[bold green]✅ Matched to existing local profile:[/bold green] [bold cyan]{match_speaker.name}[/bold cyan]")
+    else:
+        table.add_row("Match Status", "New / Unenrolled Voice")
+        console.print(table)
+        if name:
+            new_name = name.strip()
+            container.speaker_db.update_speaker_details(matched_name, name=new_name)
+            console.print(f"\n[bold green]👤 Enrolled new voice profile as:[/bold green] [bold cyan]'{new_name}'[/bold cyan]")
+        else:
+            console.print(f"\n[bold yellow]ℹ️ Voice enrolled as profile:[/bold yellow] '{matched_name}'")
+            console.print(f"   Rename anytime via: [dim]transcribe speaker-rename \"{matched_name}\" \"Real Name\"[/dim]")
+
 
 @cli.command()
 @click.pass_obj

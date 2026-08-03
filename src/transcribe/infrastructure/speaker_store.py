@@ -141,6 +141,40 @@ class SpeakerDatabase:
         self._save()
         return updated_speaker
 
+    def update_speaker_details(
+        self,
+        speaker_id: str,
+        name: str | None = None,
+        aliases: list[str] | None = None,
+    ) -> Speaker:
+        """Update speaker display name and/or alias list."""
+        speaker = self.get_speaker(speaker_id)
+        if not speaker:
+            raise KeyError(f"Speaker {speaker_id} not found.")
+
+        current_aliases = list(speaker.aliases)
+        new_name = name.strip() if name and name.strip() else speaker.name
+
+        # If name changed, preserve old name in aliases if not already present
+        if new_name != speaker.name and speaker.name not in current_aliases:
+            current_aliases.append(speaker.name)
+
+        if aliases is not None:
+            for alias in aliases:
+                a_clean = alias.strip()
+                if a_clean and a_clean not in current_aliases and a_clean != new_name:
+                    current_aliases.append(a_clean)
+
+        updated_speaker = speaker.model_copy(
+            update={
+                "name": new_name,
+                "aliases": current_aliases,
+            }
+        )
+        self._speakers[speaker_id] = updated_speaker
+        self._save()
+        return updated_speaker
+
     def clear(self) -> None:
         """Clear all speaker profiles and delete persistence file."""
         self._speakers.clear()

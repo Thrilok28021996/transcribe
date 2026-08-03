@@ -17,7 +17,7 @@ rm -rf "$APP_DIR"
 APPLESCRIPT="
 on run
     set project_dir to \"$PROJECT_DIR\"
-    do shell script \"cd \" & quoted form of project_dir & \" && source .venv/bin/activate && transcribe serve --port 8000 > /dev/null 2>&1 &\"
+    do shell script \"export PATH=\\\"\$HOME/.local/bin:\$HOME/Library/Python/3.14/bin:/opt/homebrew/bin:/usr/local/bin:\$PATH\\\"; cd \" & quoted form of project_dir & \" && (source .venv/bin/activate 2>/dev/null || true) && (transcribe serve --port 8000 > /tmp/transcribe_app.log 2>&1 &)\"
     delay 1.5
     do shell script \"open http://localhost:8000\"
 end run

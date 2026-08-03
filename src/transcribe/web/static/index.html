@@ -279,18 +279,46 @@
         </div>
       </section>
 
-      <!-- TAB 4: KNOWLEDGE GRAPH EXPLORER -->
+      <!-- TAB 4: KNOWLEDGE GRAPH EXPLORER (Obsidian-Style Interactive Force Graph) -->
       <section id="tab-graph" class="tab-panel">
-        <div class="panel-card">
-          <div class="section-header">
-            <h2>Knowledge Graph Explorer</h2>
-            <div class="graph-metrics" id="graphMetrics">Nodes: 0 | Edges: 0</div>
+        <div class="panel-card" style="padding: 20px;">
+          <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <h2>🌐 Knowledge Graph Explorer</h2>
+              <p class="subtitle" style="margin: 0;">Interactive 2D physics graph visualization of connected entities across all meeting notes (Obsidian Style).</p>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <span class="graph-metrics" id="graphMetrics" style="font-weight: 600; font-size: 0.88rem; color: #818cf8; background: rgba(99,102,241,0.15); padding: 4px 12px; border-radius: 16px; border: 1px solid rgba(99,102,241,0.3);">Nodes: 0 | Edges: 0</span>
+              <button id="resetGraphViewBtn" class="btn sm">🎯 Reset View</button>
+              <button id="toggleGraphViewBtn" class="btn sm">📱 Grid / Canvas View</button>
+            </div>
           </div>
 
-          <p class="subtitle">Exploring connected entities (People, Tasks, Decisions, Projects, Technologies) across all meetings.</p>
+          <!-- Color Legend Bar -->
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.82rem; margin-bottom: 12px; padding: 8px 14px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 6px #38bdf8;"></span> Person</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981;"></span> Meeting</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 6px #f59e0b;"></span> Decision</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 6px #ef4444;"></span> Task</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #a855f7; box-shadow: 0 0 6px #a855f7;"></span> Project</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #6366f1; box-shadow: 0 0 6px #6366f1;"></span> Technology</span>
+          </div>
 
-          <div class="graph-nodes-grid" id="graphNodesGrid">
-            <!-- Loaded dynamically -->
+          <!-- Obsidian Canvas Container -->
+          <div id="obsidianGraphContainer" style="position: relative; width: 100%; height: 560px; background: #0b0f19; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.8);">
+            <canvas id="obsidianCanvas" style="width: 100%; height: 100%; display: block; cursor: grab;"></canvas>
+
+            <!-- Floating Graph Helper Instructions Overlay -->
+            <div style="position: absolute; bottom: 12px; left: 14px; pointer-events: none; font-size: 0.76rem; color: rgba(255,255,255,0.45); background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 6px; backdrop-filter: blur(4px);">
+              💡 <strong>Controls:</strong> Drag nodes • Scroll to Zoom • Drag background to Pan • Click node to focus connections
+            </div>
+
+            <!-- Graph Tooltip Hover Card -->
+            <div id="graphTooltip" class="hidden" style="position: absolute; pointer-events: none; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(99,102,241,0.5); border-radius: 8px; padding: 10px 14px; color: #f8fafc; font-size: 0.85rem; box-shadow: 0 10px 25px rgba(0,0,0,0.6); z-index: 20; max-width: 280px; backdrop-filter: blur(8px); line-height: 1.4;"></div>
+          </div>
+
+          <div class="graph-nodes-grid hidden" id="graphNodesGrid" style="margin-top: 16px;">
+            <!-- Loaded dynamically when in grid view -->
           </div>
         </div>
       </section>
@@ -331,8 +359,24 @@
       <!-- TAB 6: SPEAKERS DIRECTORY -->
       <section id="tab-speakers" class="tab-panel">
         <div class="panel-card">
-          <h2>Tracked Speaker Directory</h2>
-          <p class="subtitle">Persistent voice embedding profiles recognized across meetings.</p>
+          <div class="section-header">
+            <div>
+              <h2>Tracked Speaker Directory</h2>
+              <p class="subtitle">Persistent voice embedding profiles recognized across meetings. Edit speaker display names & aliases below.</p>
+            </div>
+            <button id="addSpeakerBtn" class="btn primary">+ Add New Speaker</button>
+          </div>
+
+          <div id="speakerFormContainer" class="panel-card hidden" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(99,102,241,0.3); margin-bottom: 20px; padding: 16px;">
+            <h3 id="speakerFormTitle">Add New Speaker Profile</h3>
+            <input type="hidden" id="editSpeakerId">
+            <div style="display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap;">
+              <input type="text" id="speakerNameInput" placeholder="Speaker Name (e.g. Alice Smith)" style="flex: 1; min-width: 200px;">
+              <input type="text" id="speakerAliasesInput" placeholder="Aliases (comma-separated, e.g. SPEAKER_00, Alice)" style="flex: 1.5; min-width: 250px;">
+              <button id="saveSpeakerBtn" class="btn primary">Save Speaker</button>
+              <button id="cancelSpeakerBtn" class="btn">Cancel</button>
+            </div>
+          </div>
 
           <div class="speakers-grid" id="speakersGrid">
             <!-- Loaded dynamically -->

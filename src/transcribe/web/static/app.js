@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadMeetings();
   loadRecordings();
   loadSpeakers();
+  setupSpeakerFormHandlers();
   loadGraph();
   initAudioDropZone();
   initLiveRecorder();
@@ -490,18 +491,21 @@ async function loadSpeakers() {
     const speakers = await res.json();
 
     if (speakers.length === 0) {
-      container.innerHTML = '<p class="placeholder-text">No speaker profiles registered yet.</p>';
+      container.innerHTML = '<p class="placeholder-text">No speaker profiles registered yet. Click <strong>+ Add New Speaker</strong> above to add one manually.</p>';
       return;
     }
 
     container.innerHTML = speakers.map(s => `
-      <div class="speaker-card">
+      <div class="speaker-card" style="position: relative;">
         <div class="speaker-header">
           <h3>${escapeHtml(s.name)}</h3>
           <span class="status-badge">${s.has_embedding ? 'Vector Active' : 'No Vector'}</span>
         </div>
-        <p>Aliases: ${s.aliases.length > 0 ? s.aliases.join(', ') : 'None'}</p>
-        <p>Confidence: ${(s.confidence_avg * 100).toFixed(0)}% (${s.meeting_count} observations)</p>
+        <p><strong>Aliases:</strong> ${s.aliases.length > 0 ? escapeHtml(s.aliases.join(', ')) : 'None'}</p>
+        <p><strong>Confidence:</strong> ${(s.confidence_avg * 100).toFixed(0)}% (${s.meeting_count} observations)</p>
+        <div style="margin-top: 12px; display: flex; gap: 8px;">
+          <button class="btn sm" onclick="openEditSpeaker('${escapeHtml(s.id)}', '${escapeHtml(s.name)}', '${escapeHtml(s.aliases.join(', '))}')">✏️ Rename Speaker</button>
+        </div>
       </div>
     `).join('');
   } catch (err) {
@@ -509,10 +513,499 @@ async function loadSpeakers() {
   }
 }
 
+function openEditSpeaker(id, name, aliases) {
+  const form = document.getElementById('speakerFormContainer');
+  const title = document.getElementById('speakerFormTitle');
+  const editId = document.getElementById('editSpeakerId');
+  const nameInput = document.getElementById('speakerNameInput');
+  const aliasesInput = document.getElementById('speakerAliasesInput');
+
+  if (!form || !nameInput) return;
+  form.classList.remove('hidden');
+  title.textContent = `Rename Speaker: ${name}`;
+  editId.value = id;
+  nameInput.value = name;
+  aliasesInput.value = aliases || '';
+  nameInput.focus();
+}
+
+function setupSpeakerFormHandlers() {
+  const addBtn = document.getElementById('addSpeakerBtn');
+  const cancelBtn = document.getElementById('cancelSpeakerBtn');
+  const saveBtn = document.getElementById('saveSpeakerBtn');
+  const form = document.getElementById('speakerFormContainer');
+
+  if (addBtn) {
+    addBtn.addEventListener('click', () => {
+      if (!form) return;
+      document.getElementById('speakerFormTitle').textContent = 'Add New Speaker Profile';
+      document.getElementById('editSpeakerId').value = '';
+      document.getElementById('speakerNameInput').value = '';
+      document.getElementById('speakerAliasesInput').value = '';
+      form.classList.remove('hidden');
+      document.getElementById('speakerNameInput').focus();
+    });
+  }
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      if (form) form.classList.add('hidden');
+    });
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', async () => {
+      const editId = document.getElementById('editSpeakerId').value.trim();
+      const name = document.getElementById('speakerNameInput').value.trim();
+      const aliases = document.getElementById('speakerAliasesInput').value.trim();
+
+      if (!name) {
+        alert('Please enter a speaker name.');
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('aliases', aliases);
+
+        const url = editId ? `/api/speakers/${encodeURIComponent(editId)}` : '/api/speakers';
+        const res = await fetch(url, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.detail || 'Failed to save speaker.');
+        }
+
+        if (form) form.classList.add('hidden');
+        loadSpeakers();
+        loadStats();
+      } catch (err) {
+        alert(`Error saving speaker: ${err.message}`);
+      }
+    });
+  }
+}
+
+// Obsidian-Style Interactive Force-Directed Canvas Graph Visualizer
+class ObsidianGraphRenderer {
+  constructor(canvasId, containerId, tooltipId) {
+    this.canvas = document.getElementById(canvasId);
+    this.container = document.getElementById(containerId);
+    this.tooltip = document.getElementById(tooltipId);
+    if (!this.canvas) return;
+
+    this.ctx = this.canvas.getContext('2d');
+    this.nodes = [];
+    this.edges = [];
+    this.nodeMap = new Map();
+    this.animId = null;
+
+    // Viewport transform
+    this.zoom = 1.0;
+    this.panX = 0;
+    this.panY = 0;
+
+    // Interaction state
+    this.draggedNode = null;
+    this.hoveredNode = null;
+    this.focusedNode = null;
+    this.isPanning = false;
+    this.startPanX = 0;
+    this.startPanY = 0;
+
+    this.colorMap = {
+      Person: '#38bdf8',
+      Meeting: '#10b981',
+      Decision: '#f59e0b',
+      Task: '#ef4444',
+      Project: '#a855f7',
+      Technology: '#6366f1',
+    };
+
+    this.initEvents();
+  }
+
+  initEvents() {
+    window.addEventListener('resize', () => this.resizeCanvas());
+    this.resizeCanvas();
+
+    // Mouse Wheel Zoom
+    this.canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+      const newZoom = Math.min(Math.max(this.zoom * zoomFactor, 0.25), 4.0);
+
+      const rect = this.canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      this.panX = mouseX - (mouseX - this.panX) * (newZoom / this.zoom);
+      this.panY = mouseY - (mouseY - this.panY) * (newZoom / this.zoom);
+      this.zoom = newZoom;
+    }, { passive: false });
+
+    // Mouse Down (Drag Node or Pan)
+    this.canvas.addEventListener('mousedown', (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const hit = this.getHitNode(mouseX, mouseY);
+      if (hit) {
+        this.draggedNode = hit;
+        this.focusedNode = hit;
+        this.canvas.style.cursor = 'grabbing';
+      } else {
+        this.isPanning = true;
+        this.startPanX = e.clientX - this.panX;
+        this.startPanY = e.clientY - this.panY;
+        this.focusedNode = null;
+        this.canvas.style.cursor = 'grabbing';
+      }
+    });
+
+    // Mouse Move (Hover, Drag, Pan)
+    this.canvas.addEventListener('mousemove', (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      if (this.draggedNode) {
+        const worldPos = this.screenToWorld(mouseX, mouseY);
+        this.draggedNode.x = worldPos.x;
+        this.draggedNode.y = worldPos.y;
+        this.draggedNode.vx = 0;
+        this.draggedNode.vy = 0;
+        return;
+      }
+
+      if (this.isPanning) {
+        this.panX = e.clientX - this.startPanX;
+        this.panY = e.clientY - this.startPanY;
+        return;
+      }
+
+      // Hover check
+      const hit = this.getHitNode(mouseX, mouseY);
+      this.hoveredNode = hit;
+      this.canvas.style.cursor = hit ? 'pointer' : 'grab';
+
+      if (hit && this.tooltip) {
+        this.tooltip.classList.remove('hidden');
+        this.tooltip.style.left = `${mouseX + 15}px`;
+        this.tooltip.style.top = `${mouseY + 15}px`;
+        this.tooltip.innerHTML = `
+          <div style="font-weight: 700; color: ${this.getNodeColor(hit.label)}; margin-bottom: 2px;">
+            ${escapeHtml(hit.label)}
+          </div>
+          <div style="font-size: 0.92rem; font-weight: 600;">${escapeHtml(hit.id)}</div>
+          <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 4px;">
+            Connections: ${hit.neighbors.size}
+          </div>
+        `;
+      } else if (this.tooltip) {
+        this.tooltip.classList.add('hidden');
+      }
+    });
+
+    // Mouse Up
+    window.addEventListener('mouseup', () => {
+      this.draggedNode = null;
+      this.isPanning = false;
+      this.canvas.style.cursor = 'grab';
+    });
+  }
+
+  resizeCanvas() {
+    if (!this.container || !this.canvas) return;
+    this.canvas.width = this.container.clientWidth;
+    this.canvas.height = this.container.clientHeight;
+  }
+
+  screenToWorld(sx, sy) {
+    return {
+      x: (sx - this.panX) / this.zoom,
+      y: (sy - this.panY) / this.zoom,
+    };
+  }
+
+  worldToScreen(wx, wy) {
+    return {
+      x: wx * this.zoom + this.panX,
+      y: wy * this.zoom + this.panY,
+    };
+  }
+
+  getNodeColor(label) {
+    return this.colorMap[label] || '#94a3b8';
+  }
+
+  getHitNode(sx, sy) {
+    const worldPos = this.screenToWorld(sx, sy);
+    for (let i = this.nodes.length - 1; i >= 0; i--) {
+      const n = this.nodes[i];
+      const dx = worldPos.x - n.x;
+      const dy = worldPos.y - n.y;
+      const distSq = dx * dx + dy * dy;
+      const hitRadius = (n.radius + 6) / this.zoom;
+      if (distSq <= hitRadius * hitRadius) {
+        return n;
+      }
+    }
+    return null;
+  }
+
+  setData(rawNodes, rawEdges) {
+    this.resizeCanvas();
+    const cx = this.canvas.width / 2 / this.zoom;
+    const cy = this.canvas.height / 2 / this.zoom;
+
+    this.nodes = rawNodes.map((n, idx) => {
+      const angle = (idx / Math.max(1, rawNodes.length)) * Math.PI * 2;
+      const radius = 100 + Math.random() * 150;
+      return {
+        id: n.id,
+        label: n.label || 'Entity',
+        properties: n.properties || {},
+        x: cx + Math.cos(angle) * radius,
+        y: cy + Math.sin(angle) * radius,
+        vx: 0,
+        vy: 0,
+        radius: n.label === 'Meeting' ? 12 : 9,
+        neighbors: new Set(),
+      };
+    });
+
+    this.nodeMap = new Map(this.nodes.map(n => [n.id, n]));
+
+    this.edges = (rawEdges || []).map(e => {
+      const src = this.nodeMap.get(e.source_id);
+      const tgt = this.nodeMap.get(e.target_id);
+      if (src && tgt) {
+        src.neighbors.add(tgt.id);
+        tgt.neighbors.add(src.id);
+      }
+      return { source: src, target: tgt, relation_type: e.relation_type };
+    }).filter(e => e.source && e.target);
+
+    this.resetView();
+    this.startAnimation();
+  }
+
+  resetView() {
+    this.zoom = 1.0;
+    this.panX = 0;
+    this.panY = 0;
+    this.focusedNode = null;
+  }
+
+  startAnimation() {
+    if (this.animId) cancelAnimationFrame(this.animId);
+    const loop = () => {
+      this.stepPhysics();
+      this.render();
+      this.animId = requestAnimationFrame(loop);
+    };
+    loop();
+  }
+
+  stepPhysics() {
+    const kRepulsion = 4000;
+    const kSpring = 0.04;
+    const restLength = 120;
+    const damping = 0.85;
+    const gravity = 0.015;
+
+    const cx = (this.canvas.width / 2 - this.panX) / this.zoom;
+    const cy = (this.canvas.height / 2 - this.panY) / this.zoom;
+
+    // Repulsion between node pairs
+    for (let i = 0; i < this.nodes.length; i++) {
+      const n1 = this.nodes[i];
+      for (let j = i + 1; j < this.nodes.length; j++) {
+        const n2 = this.nodes[j];
+        let dx = n2.x - n1.x;
+        let dy = n2.y - n1.y;
+        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+        if (dist < 300) {
+          const force = kRepulsion / (dist * dist);
+          const fx = (dx / dist) * force;
+          const fy = (dy / dist) * force;
+
+          if (n1 !== this.draggedNode) { n1.vx -= fx; n1.vy -= fy; }
+          if (n2 !== this.draggedNode) { n2.vx += fx; n2.vy += fy; }
+        }
+      }
+
+      // Gravity towards center
+      if (n1 !== this.draggedNode) {
+        n1.vx += (cx - n1.x) * gravity;
+        n1.vy += (cy - n1.y) * gravity;
+      }
+    }
+
+    // Spring attraction along edges
+    for (const e of this.edges) {
+      const n1 = e.source;
+      const n2 = e.target;
+      let dx = n2.x - n1.x;
+      let dy = n2.y - n1.y;
+      let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+      const delta = dist - restLength;
+      const force = delta * kSpring;
+      const fx = (dx / dist) * force;
+      const fy = (dy / dist) * force;
+
+      if (n1 !== this.draggedNode) { n1.vx += fx; n1.vy += fy; }
+      if (n2 !== this.draggedNode) { n2.vx -= fx; n2.vy -= fy; }
+    }
+
+    // Apply velocities with damping
+    for (const n of this.nodes) {
+      if (n === this.draggedNode) continue;
+      n.vx *= damping;
+      n.vy *= damping;
+      n.x += n.vx;
+      n.y += n.vy;
+    }
+  }
+
+  render() {
+    const ctx = this.ctx;
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+
+    ctx.save();
+    ctx.clearRect(0, 0, w, h);
+
+    // Deep Obsidian Space Background
+    ctx.fillStyle = '#0b0f19';
+    ctx.fillRect(0, 0, w, h);
+
+    // Draw Subtle Grid Pattern
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+    ctx.lineWidth = 1;
+    const gridSize = 40 * this.zoom;
+    const startX = this.panX % gridSize;
+    const startY = this.panY % gridSize;
+
+    ctx.beginPath();
+    for (let x = startX; x < w; x += gridSize) {
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+    }
+    for (let y = startY; y < h; y += gridSize) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+    }
+    ctx.stroke();
+
+    // Active Focus / Neighborhood
+    const activeNode = this.focusedNode || this.hoveredNode;
+    const activeSet = new Set();
+    if (activeNode) {
+      activeSet.add(activeNode.id);
+      activeNode.neighbors.forEach(id => activeSet.add(id));
+    }
+
+    // Draw Edges
+    for (const e of this.edges) {
+      const p1 = this.worldToScreen(e.source.x, e.source.y);
+      const p2 = this.worldToScreen(e.target.x, e.target.y);
+
+      const isConnected = activeNode && (e.source.id === activeNode.id || e.target.id === activeNode.id);
+      const isDimmed = activeNode && !isConnected;
+
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+
+      if (isConnected) {
+        ctx.strokeStyle = 'rgba(129, 140, 248, 0.85)';
+        ctx.lineWidth = 2.5 * this.zoom;
+        ctx.shadowColor = '#818cf8';
+        ctx.shadowBlur = 8;
+      } else if (isDimmed) {
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.05)';
+        ctx.lineWidth = 1 * this.zoom;
+        ctx.shadowBlur = 0;
+      } else {
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
+        ctx.lineWidth = 1.2 * this.zoom;
+        ctx.shadowBlur = 0;
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+
+    // Draw Nodes & Labels
+    for (const n of this.nodes) {
+      const pos = this.worldToScreen(n.x, n.y);
+      const isSelected = activeNode && n.id === activeNode.id;
+      const isNeighbor = activeNode && activeSet.has(n.id) && !isSelected;
+      const isDimmed = activeNode && !activeSet.has(n.id);
+
+      const color = this.getNodeColor(n.label);
+      const drawRadius = (n.radius + (isSelected ? 4 : 0)) * this.zoom;
+
+      ctx.save();
+      ctx.globalAlpha = isDimmed ? 0.2 : 1.0;
+
+      // Glow Ring for Selected / Hovered
+      if (isSelected || isNeighbor) {
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, drawRadius + 6, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.globalAlpha = isDimmed ? 0.05 : (isSelected ? 0.35 : 0.18);
+        ctx.fill();
+        ctx.globalAlpha = isDimmed ? 0.2 : 1.0;
+      }
+
+      // Outer Node Circle
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, drawRadius, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = isSelected ? 16 : 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Inner Core Circle
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, drawRadius * 0.4, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+
+      // Node Label Text (Obsidian Style)
+      const fontSize = Math.max(10, Math.min(13, 11 * this.zoom));
+      ctx.font = `600 ${fontSize}px Inter, system-ui, sans-serif`;
+      ctx.fillStyle = isDimmed ? 'rgba(148, 163, 184, 0.3)' : '#f8fafc';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+
+      const labelText = n.id.length > 22 ? n.id.substring(0, 20) + '…' : n.id;
+      ctx.fillText(labelText, pos.x, pos.y + drawRadius + 4);
+
+      ctx.restore();
+    }
+
+    ctx.restore();
+  }
+}
+
+let globalGraphInstance = null;
+
 // Load Knowledge Graph
 async function loadGraph() {
   const container = document.getElementById('graphNodesGrid');
-  if (!container) return;
+  const canvas = document.getElementById('obsidianCanvas');
+  if (!container && !canvas) return;
 
   try {
     const res = await fetch('/api/graph');
@@ -525,18 +1018,57 @@ async function loadGraph() {
     }
 
     if (!data.nodes || data.nodes.length === 0) {
-      container.innerHTML = '<p class="placeholder-text">Knowledge Graph is currently empty.</p>';
+      if (container) container.innerHTML = '<p class="placeholder-text">Knowledge Graph is currently empty.</p>';
       return;
     }
 
-    container.innerHTML = data.nodes.map(n => `
-      <div class="graph-card">
-        <span class="label-badge">${escapeHtml(n.label)}</span>
-        <h4>${escapeHtml(n.id)}</h4>
-      </div>
-    `).join('');
+    // Populate Obsidian Canvas Graph
+    if (canvas) {
+      if (!globalGraphInstance) {
+        globalGraphInstance = new ObsidianGraphRenderer('obsidianCanvas', 'obsidianGraphContainer', 'graphTooltip');
+        setupGraphControls();
+      }
+      globalGraphInstance.setData(data.nodes, data.edges || []);
+    }
+
+    // Populate Traditional Grid (Hidden by default)
+    if (container) {
+      container.innerHTML = data.nodes.map(n => `
+        <div class="graph-card">
+          <span class="label-badge">${escapeHtml(n.label)}</span>
+          <h4>${escapeHtml(n.id)}</h4>
+        </div>
+      `).join('');
+    }
+
   } catch (err) {
     console.error('Failed to load graph:', err);
+  }
+}
+
+function setupGraphControls() {
+  const resetBtn = document.getElementById('resetGraphViewBtn');
+  const toggleBtn = document.getElementById('toggleGraphViewBtn');
+  const canvasContainer = document.getElementById('obsidianGraphContainer');
+  const gridContainer = document.getElementById('graphNodesGrid');
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (globalGraphInstance) globalGraphInstance.resetView();
+    });
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      if (!canvasContainer || !gridContainer) return;
+      if (canvasContainer.classList.contains('hidden')) {
+        canvasContainer.classList.remove('hidden');
+        gridContainer.classList.add('hidden');
+      } else {
+        canvasContainer.classList.add('hidden');
+        gridContainer.classList.remove('hidden');
+      }
+    });
   }
 }
 

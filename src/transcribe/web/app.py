@@ -521,6 +521,49 @@ def create_app(container: ServiceContainer | None = None) -> FastAPI:
             for s in speakers
         ]
 
+    @app.post("/api/speakers")
+    async def create_speaker(
+        name: str = Form(...),
+        aliases: str | None = Form(None),
+    ) -> dict[str, Any]:
+        """Create a new persistent speaker profile."""
+        import uuid
+        from transcribe.domain.models import Speaker
+        alias_list = [a.strip() for a in aliases.split(",") if a.strip()] if aliases else []
+        speaker_id = f"spk_{uuid.uuid4().hex[:8]}"
+        spk = Speaker(id=speaker_id, name=name.strip(), aliases=alias_list)
+        cntr.speaker_db.add_speaker(spk)
+        return {
+            "success": True,
+            "speaker": {
+                "id": spk.id,
+                "name": spk.name,
+                "aliases": spk.aliases,
+            }
+        }
+
+    @app.post("/api/speakers/{speaker_id}")
+    async def update_speaker(
+        speaker_id: str,
+        name: str = Form(...),
+        aliases: str | None = Form(None),
+    ) -> dict[str, Any]:
+        """Update persistent speaker display name and aliases."""
+        speaker = cntr.speaker_db.get_speaker(speaker_id)
+        if not speaker:
+            raise HTTPException(status_code=404, detail=f"Speaker '{speaker_id}' not found.")
+
+        alias_list = [a.strip() for a in aliases.split(",") if a.strip()] if aliases is not None else None
+        updated = cntr.speaker_db.update_speaker_details(speaker_id, name=name, aliases=alias_list)
+        return {
+            "success": True,
+            "speaker": {
+                "id": updated.id,
+                "name": updated.name,
+                "aliases": updated.aliases,
+            }
+        }
+
     @app.get("/api/graph")
     async def get_graph() -> dict[str, Any]:
         """Get Knowledge Graph nodes and edges."""
