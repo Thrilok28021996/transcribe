@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-and-build:
+  test-lint-and-build:
     permissions:
       contents: write
     strategy:
@@ -28,46 +28,59 @@ jobs:
         with:
           python-version: '3.10'
           cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
 
       - name: Install System Dependencies & FFmpeg (Linux)
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg libsoup-3.0-dev libwebkit2gtk-4.1-dev build-essential curl wget file libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
+          sudo apt-get install -y ffmpeg libsoup-3.0-dev libwebkit2gtk-4.1-dev build-essential curl wget file libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libjavascriptcoregtk-4.1-dev
 
       - name: Install System Dependencies & FFmpeg (macOS)
         if: matrix.platform == 'macos-latest'
         run: |
-          brew update
           brew install ffmpeg
 
       - name: Install System Dependencies & FFmpeg (Windows)
         if: matrix.platform == 'windows-latest'
         run: |
-          choco install ffmpeg
+          choco install ffmpeg --no-progress --suppress-output
 
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
-      - name: Run Test Suite
+      - name: Run Python Code Linting (Ruff & Mypy)
         run: |
-          pytest
+          python -m ruff check src tests || true
+          python -m mypy src || true
+
+      - name: Run Python Test Suite
+        run: |
+          python -m pytest
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Setup Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Install Tauri v2 CLI
-        run: npm install @tauri-apps/cli@v2
+      - name: Rust Cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Install Node Dependencies & Tauri CLI
+        run: |
+          npm install
 
       - name: Build Tauri Desktop App
-        run: npx tauri build
+        run: |
+          npx tauri build
 
       - name: Upload Desktop App Artifacts
         uses: actions/upload-artifact@v4

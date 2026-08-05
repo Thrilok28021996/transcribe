@@ -9,7 +9,9 @@ PROJECT_DIR="$( cd "$SCRIPT_DIR/.." && pwd )"
 
 cd "$PROJECT_DIR"
 
-echo "🦀 Building Transcribe AI with Tauri v2 (Cross-Platform)..."
+ACTION="${1:-build}"
+
+echo "🦀 Running Transcribe AI with Tauri v2 ($ACTION)..."
 
 # Ensure Rust & Cargo are installed
 if ! command -v cargo &> /dev/null; then
@@ -20,13 +22,13 @@ fi
 
 # Ensure Node/npx or cargo-tauri is available
 if command -v npx &> /dev/null; then
-    echo "🚀 Launching Tauri v2 Desktop App via npx..."
-    npx -y @tauri-apps/cli@v2 dev
+    echo "🚀 Executing Tauri v2 Desktop App via npx ($ACTION)..."
+    npx -y @tauri-apps/cli@v2 "$ACTION"
 elif cargo tauri --version &> /dev/null; then
-    echo "🚀 Launching Tauri v2 Desktop App via cargo-tauri..."
-    cargo tauri dev
+    echo "🚀 Executing Tauri v2 Desktop App via cargo-tauri ($ACTION)..."
+    cargo tauri "$ACTION"
 else
     echo "📦 Installing Tauri v2 CLI..."
     cargo install tauri-cli --version "^2.0.0"
-    cargo tauri dev
+    cargo tauri "$ACTION"
 fi

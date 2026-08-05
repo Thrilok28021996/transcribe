@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "identifier": "com.transcribe.ai",
   "build": {
-    "frontendDist": "http://127.0.0.1:8000",
+    "frontendDist": "../src/transcribe/web/static",
     "devUrl": "http://127.0.0.1:8000",
     "beforeDevCommand": "",
     "beforeBuildCommand": ""

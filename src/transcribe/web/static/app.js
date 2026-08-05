@@ -2,6 +2,10 @@
  * Transcribe AI — Frontend Application Logic
  */
 
+const API_BASE = (window.location.protocol === 'tauri:' || window.location.protocol === 'asset:' || window.location.protocol === 'file:' || window.location.origin.includes('tauri'))
+  ? 'http://127.0.0.1:8000'
+  : '';
+
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   loadStats();
@@ -57,7 +61,7 @@ window.switchTab = function(tabId) {
 // Load Aggregate System Stats
 async function loadStats() {
   try {
-    const res = await fetch('/api/stats');
+    const res = await fetch(`${API_BASE}/api/stats`);
     if (!res.ok) return;
     const data = await res.json();
 
@@ -83,7 +87,7 @@ async function loadRecordings() {
   container.innerHTML = '<div class="loading-spinner">Loading stored recording files...</div>';
 
   try {
-    const res = await fetch('/api/recordings');
+    const res = await fetch(`${API_BASE}/api/recordings`);
     if (!res.ok) return;
     const recordings = await res.json();
 
@@ -130,7 +134,7 @@ async function reprocessRecording(filename) {
   setTimeout(() => setStageActive('vault', 5), 5500);
 
   try {
-    const res = await fetch('/api/recordings/reprocess', {
+    const res = await fetch(`${API_BASE}/api/recordings/reprocess`, {
       method: 'POST',
       body: formData
     });
@@ -165,7 +169,7 @@ async function reprocessRecording(filename) {
 // Load Meetings List
 async function loadMeetings() {
   try {
-    const res = await fetch('/api/meetings');
+    const res = await fetch(`${API_BASE}/api/meetings`);
     if (!res.ok) return;
     const meetings = await res.json();
 
@@ -305,7 +309,7 @@ function initAudioDropZone() {
     setTimeout(() => setStageActive('vault', 5), 5500);
 
     try {
-      const res = await fetch('/api/process', {
+      const res = await fetch(`${API_BASE}/api/process`, {
         method: 'POST',
         body: formData
       });
@@ -395,7 +399,7 @@ function initChat() {
     appendChatMessage('system', 'AI Assistant', '<div class="loading-spinner">Querying meeting vector memory & LM Studio...</div>', loadingId);
 
     try {
-      const res = await fetch('/api/ask', {
+      const res = await fetch(`${API_BASE}/api/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: question, top_k: 5 })
@@ -455,7 +459,7 @@ function initSearch() {
     container.innerHTML = '<div class="loading-spinner">Searching vector index...</div>';
 
     try {
-      const res = await fetch('/api/search', {
+      const res = await fetch(`${API_BASE}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: q, top_k: 5 })
@@ -486,7 +490,7 @@ async function loadSpeakers() {
   if (!container) return;
 
   try {
-    const res = await fetch('/api/speakers');
+    const res = await fetch(`${API_BASE}/api/speakers`);
     if (!res.ok) return;
     const speakers = await res.json();
 
@@ -569,7 +573,7 @@ function setupSpeakerFormHandlers() {
         formData.append('name', name);
         formData.append('aliases', aliases);
 
-        const url = editId ? `/api/speakers/${encodeURIComponent(editId)}` : '/api/speakers';
+        const url = editId ? `${API_BASE}/api/speakers/${encodeURIComponent(editId)}` : `${API_BASE}/api/speakers`;
         const res = await fetch(url, {
           method: 'POST',
           body: formData,
@@ -1008,7 +1012,7 @@ async function loadGraph() {
   if (!container && !canvas) return;
 
   try {
-    const res = await fetch('/api/graph');
+    const res = await fetch(`${API_BASE}/api/graph`);
     if (!res.ok) return;
     const data = await res.json();
 
@@ -1185,7 +1189,7 @@ function initLiveRecorder() {
       try {
         const formData = new FormData();
         formData.append('mode', 'mic');
-        const startRes = await fetch('/api/audio/record_start', {
+        const startRes = await fetch(`${API_BASE}/api/audio/record_start`, {
           method: 'POST',
           body: formData,
         });
@@ -1297,7 +1301,7 @@ function initLiveRecorder() {
     try {
       const formData = new FormData();
       formData.append('title', `Live Meeting (${new Date().toLocaleTimeString()})`);
-      const res = await fetch('/api/audio/record_stop', {
+      const res = await fetch(`${API_BASE}/api/audio/record_stop`, {
         method: 'POST',
         body: formData,
       });
@@ -1379,7 +1383,7 @@ function initLiveRecorder() {
     }, 2000);
 
     try {
-      const res = await fetch('/api/process', {
+      const res = await fetch(`${API_BASE}/api/process`, {
         method: 'POST',
         body: formData
       });
@@ -1444,7 +1448,7 @@ async function loadAudioDevices(promptPermission = false) {
   }
 
   try {
-    const res = await fetch('/api/audio/devices');
+    const res = await fetch(`${API_BASE}/api/audio/devices`);
     if (!res.ok) throw new Error('Failed to fetch audio devices');
     const data = await res.json();
 
@@ -1538,7 +1542,7 @@ async function triggerCleanup(deleteAll) {
     formData.append('delete_all', deleteAll ? 'true' : 'false');
     formData.append('delete_recordings', 'true');
 
-    const res = await fetch('/api/cleanup', {
+    const res = await fetch(`${API_BASE}/api/cleanup`, {
       method: 'POST',
       body: formData,
     });
@@ -1569,7 +1573,7 @@ async function triggerCleanup(deleteAll) {
 
 async function loadSettings() {
   try {
-    const res = await fetch('/api/settings');
+    const res = await fetch(`${API_BASE}/api/settings`);
     if (!res.ok) return;
     const data = await res.json();
 
@@ -1650,7 +1654,7 @@ async function saveSettings() {
   };
 
   try {
-    const res = await fetch('/api/settings', {
+    const res = await fetch(`${API_BASE}/api/settings`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)

@@ -18,11 +18,18 @@ pub fn run() {
         .setup(|app| {
             // Spawn background Python backend server if not already running
             thread::spawn(|| {
-                let _ = Command::new("transcribe")
-                    .arg("serve")
-                    .arg("--port")
-                    .arg("8000")
-                    .spawn();
+                let commands: Vec<(&str, Vec<&str>)> = vec![
+                    ("transcribe", vec!["serve", "--port", "8000"]),
+                    ("python3", vec!["-m", "transcribe.cli.main", "serve", "--port", "8000"]),
+                    ("python", vec!["-m", "transcribe.cli.main", "serve", "--port", "8000"]),
+                ];
+
+                for (cmd, args) in commands {
+                    if let Ok(mut child) = Command::new(cmd).args(&args).spawn() {
+                        let _ = child.wait();
+                        break;
+                    }
+                }
             });
 
             // System Tray Menu for macOS / Windows / Linux
