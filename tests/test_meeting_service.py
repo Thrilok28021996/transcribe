@@ -1,7 +1,9 @@
 """Integration tests for MeetingService workflow."""
 
 from pathlib import Path
+
 import pytest
+
 from transcribe.application.container import ServiceContainer
 from transcribe.application.services import MeetingService
 from transcribe.infrastructure.config import load_config

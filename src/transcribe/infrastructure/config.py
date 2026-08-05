@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 from typing import Any, Literal
+
 import yaml
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -19,7 +20,6 @@ class AudioConfig(BaseModel):
     )
 
 
-import os
 os.environ["HF_HOME"] = "/Volumes/personal/huggingface"
 
 

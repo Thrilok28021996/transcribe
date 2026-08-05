@@ -1,6 +1,7 @@
 """Unit tests for settings management, model updates, CLI config-set, and REST API."""
 
 from pathlib import Path
+
 from click.testing import CliRunner
 from fastapi.testclient import TestClient
 

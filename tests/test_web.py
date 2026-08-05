@@ -2,6 +2,7 @@
 
 import pytest
 from fastapi.testclient import TestClient
+
 from transcribe.application.container import ServiceContainer
 from transcribe.infrastructure.config import load_config
 from transcribe.web.app import create_app

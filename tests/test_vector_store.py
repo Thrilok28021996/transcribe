@@ -1,6 +1,7 @@
 """Unit tests for LocalVectorStore."""
 
 from pathlib import Path
+
 from transcribe.infrastructure.vector_store import LocalVectorStore, VectorDocument
 
 

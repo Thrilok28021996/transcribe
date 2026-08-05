@@ -1,7 +1,9 @@
 """Unit tests for audio processor and ffmpeg utilities."""
 
 from pathlib import Path
+
 import pytest
+
 from transcribe.infrastructure.audio import AudioMetadata, AudioProcessor
 
 

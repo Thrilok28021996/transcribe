@@ -109,7 +109,7 @@ class MeetingService:
         # 7. Embedding Generation, Vector Store Indexing & Knowledge Graph Integration
         from transcribe.application.services.search_service import SearchService
         search_service = SearchService(container=self.container)
-        logger.info(f"Step 6/6: Indexing meeting vectors & graph relationships...")
+        logger.info("Step 6/6: Indexing meeting vectors & graph relationships...")
         await search_service.index_meeting(
             meeting=meeting,
             transcript=final_transcript,

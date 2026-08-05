@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import math
+
 import httpx
+
 from transcribe.infrastructure.logging import get_logger
 
 logger = get_logger(__name__)

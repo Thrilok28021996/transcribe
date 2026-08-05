@@ -1,6 +1,7 @@
 """Unit tests for KnowledgeGraphStore."""
 
 from pathlib import Path
+
 from transcribe.infrastructure.graph_store import GraphEdge, GraphNode, KnowledgeGraphStore
 
 

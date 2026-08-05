@@ -1,8 +1,5 @@
 """Unit and integration tests for FasterWhisperSpeechRecognizer."""
 
-from pathlib import Path
-import pytest
-from transcribe.domain.entities import Transcript
 from transcribe.infrastructure.plugins.faster_whisper_plugin import (
     FasterWhisperSpeechRecognizer,
 )

@@ -3,9 +3,8 @@
 from __future__ import annotations
 
 import json
-import os
-from pathlib import Path
 import subprocess
+from pathlib import Path
 from typing import NamedTuple
 
 from transcribe.infrastructure.logging import get_logger

@@ -1,6 +1,7 @@
 """Unit tests for type-safe plugin registry."""
 
 import pytest
+
 from transcribe.application.registry import PluginRegistry
 
 

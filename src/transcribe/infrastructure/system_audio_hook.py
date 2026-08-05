@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import os
-from pathlib import Path
 import platform
 import re
 import subprocess
-from typing import Any, Literal, NamedTuple
+from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel
 

@@ -1,9 +1,9 @@
 """Unit tests for LLMKnowledgeExtractor."""
 
 import pytest
+
 from transcribe.domain.entities import Transcript, TranscriptSegment
 from transcribe.infrastructure.plugins.llm_extractor import LLMKnowledgeExtractor
-from transcribe.infrastructure.plugins.mock_plugins import MockLLMProvider
 
 
 class CustomLLMProvider:

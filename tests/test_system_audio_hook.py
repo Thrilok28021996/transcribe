@@ -1,12 +1,18 @@
 """Unit and integration tests for SystemAudioHook, CLI audio commands, and web endpoints."""
 
 from pathlib import Path
+from typing import Any
+
+import pytest
 from click.testing import CliRunner
 from fastapi.testclient import TestClient
-import pytest
 
 from transcribe.cli.main import cli
-from transcribe.infrastructure.system_audio_hook import AudioDeviceInfo, SystemAudioHook, SystemAudioSetupStatus
+from transcribe.infrastructure.system_audio_hook import (
+    AudioDeviceInfo,
+    SystemAudioHook,
+    SystemAudioSetupStatus,
+)
 from transcribe.web.app import create_app
 
 
@@ -101,7 +107,7 @@ def test_web_backend_recording_endpoints(monkeypatch: pytest.MonkeyPatch) -> Non
             self.args = args
         def __enter__(self) -> "MockProcess":
             return self
-        def __exit__(self, *args: Any) -> None:
+        def __exit__(self, *args: object) -> None:
             pass
         def poll(self) -> None:
             return None

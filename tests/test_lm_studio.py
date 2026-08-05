@@ -1,6 +1,7 @@
 """Unit tests for LMStudioLLMProvider."""
 
 import pytest
+
 from transcribe.infrastructure.plugins.lm_studio_plugin import LMStudioLLMProvider
 
 

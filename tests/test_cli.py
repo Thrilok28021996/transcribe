@@ -1,7 +1,10 @@
 """Integration tests for CLI interface."""
 
 from pathlib import Path
+
+import pytest
 from click.testing import CliRunner
+
 from transcribe.cli.main import cli
 
 

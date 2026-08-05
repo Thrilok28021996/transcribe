@@ -1,10 +1,19 @@
 """Integration tests for SearchService."""
 
 from pathlib import Path
+
 import pytest
+
 from transcribe.application.container import ServiceContainer
 from transcribe.application.services.search_service import SearchService
-from transcribe.domain.entities import Decision, ExtractionResult, Meeting, Task, Transcript, TranscriptSegment
+from transcribe.domain.entities import (
+    Decision,
+    ExtractionResult,
+    Meeting,
+    Task,
+    Transcript,
+    TranscriptSegment,
+)
 from transcribe.infrastructure.config import load_config
 from transcribe.infrastructure.graph_store import KnowledgeGraphStore
 from transcribe.infrastructure.vector_store import LocalVectorStore

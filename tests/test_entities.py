@@ -2,9 +2,9 @@
 
 import pytest
 from pydantic import ValidationError
+
 from transcribe.domain.entities import (
     Decision,
-    Meeting,
     Speaker,
     Task,
     Transcript,

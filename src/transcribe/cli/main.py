@@ -190,7 +190,9 @@ def speaker_rename(container: ServiceContainer, speaker_id_or_name: str, new_nam
 def identify_voice(container: ServiceContainer, audio_file: Path, name: str | None) -> None:
     """Identify speaker voice from an audio sample file and match against local database."""
     import asyncio
+
     from rich.table import Table
+
     from transcribe.domain.entities import TranscriptSegment
 
     console.print(f"[bold blue]🎙️ Analyzing voice sample:[/bold blue] {audio_file.name}")
@@ -446,6 +448,7 @@ def record(
 ) -> None:
     """Record live microphone and/or Teams system call audio and process meeting memory."""
     from datetime import datetime
+
     from transcribe.application.services.meeting_service import MeetingService
     from transcribe.infrastructure.system_audio_hook import SystemAudioHook
 
@@ -490,11 +493,12 @@ def record(
 def serve(container: ServiceContainer, host: str, port: int) -> None:
     """Launch Transcribe AI Web UX Application Server."""
     import uvicorn
+
     from transcribe.web.app import create_app
 
     app = create_app(container=container)
 
-    console.print(f"[bold green]Starting Transcribe AI Web UX Server...[/bold green]")
+    console.print("[bold green]Starting Transcribe AI Web UX Server...[/bold green]")
     console.print(f"[bold underline blue]http://{host}:{port}[/bold underline blue]")
 
     uvicorn.run(app, host=host, port=port)

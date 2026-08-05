@@ -17,18 +17,6 @@ from transcribe.infrastructure.config import AppConfig, load_config
 from transcribe.infrastructure.plugins.faster_whisper_plugin import (
     FasterWhisperSpeechRecognizer,
 )
-from transcribe.infrastructure.plugins.mock_plugins import (
-    MockAlignmentEngine,
-    MockDiarizationEngine,
-    MockEmbeddingProvider,
-    MockKnowledgeExtractor,
-    MockLLMProvider,
-    MockMarkdownExporter,
-    MockSpeakerIdentifier,
-    MockSpeechRecognizer,
-)
-
-
 from transcribe.infrastructure.plugins.llm_extractor import (
     LLMKnowledgeExtractor,
 )
@@ -37,6 +25,14 @@ from transcribe.infrastructure.plugins.lm_studio_plugin import (
 )
 from transcribe.infrastructure.plugins.markdown_exporter import (
     StandardMarkdownExporter,
+)
+from transcribe.infrastructure.plugins.mock_plugins import (
+    MockAlignmentEngine,
+    MockDiarizationEngine,
+    MockEmbeddingProvider,
+    MockKnowledgeExtractor,
+    MockLLMProvider,
+    MockSpeechRecognizer,
 )
 from transcribe.infrastructure.plugins.speaker_id_plugin import (
     PersistentSpeakerIdentifier,

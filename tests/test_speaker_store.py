@@ -1,7 +1,9 @@
 """Unit tests for SpeakerDatabase and cosine similarity math."""
 
 from pathlib import Path
+
 import pytest
+
 from transcribe.domain.entities import Speaker
 from transcribe.infrastructure.speaker_store import SpeakerDatabase, cosine_similarity
 

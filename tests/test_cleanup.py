@@ -1,6 +1,7 @@
 """Unit tests for storage path resolution and automatic data cleanup."""
 
 from pathlib import Path
+
 from click.testing import CliRunner
 
 from transcribe.cli.main import cli
@@ -35,9 +36,9 @@ def test_cli_cleanup(tmp_path: Path) -> None:
 
 
 def test_full_cleanup_resets_databases(tmp_path: Path) -> None:
+    from transcribe.infrastructure.graph_store import GraphNode, KnowledgeGraphStore
+    from transcribe.infrastructure.speaker_store import Speaker, SpeakerDatabase
     from transcribe.infrastructure.vector_store import LocalVectorStore, VectorDocument
-    from transcribe.infrastructure.graph_store import KnowledgeGraphStore, GraphNode, GraphEdge
-    from transcribe.infrastructure.speaker_store import SpeakerDatabase, Speaker
 
     v_store = LocalVectorStore(storage_dir=tmp_path)
     v_store.add_documents([VectorDocument(id="doc1", text="hello", vector=[0.1, 0.2])])
@@ -64,6 +65,7 @@ def test_full_cleanup_resets_databases(tmp_path: Path) -> None:
 
 def test_web_api_cleanup() -> None:
     from fastapi.testclient import TestClient
+
     from transcribe.web.app import create_app
 
     app = create_app()

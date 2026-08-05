@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+
 from transcribe.domain.entities import ExtractionResult, Meeting, Transcript
 
 

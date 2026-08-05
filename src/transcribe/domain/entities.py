@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
 import uuid
-from pydantic import BaseModel, Field, ConfigDict
+from datetime import datetime, timezone
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TranscriptWord(BaseModel):

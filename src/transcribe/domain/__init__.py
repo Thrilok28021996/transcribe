@@ -16,16 +16,16 @@ from transcribe.domain.entities import (
 )
 
 __all__ = [
-    "Meeting",
-    "Speaker",
-    "TranscriptWord",
-    "TranscriptSegment",
-    "Transcript",
     "Decision",
-    "Task",
-    "Project",
-    "Technology",
-    "Organization",
-    "Relationship",
     "ExtractionResult",
+    "Meeting",
+    "Organization",
+    "Project",
+    "Relationship",
+    "Speaker",
+    "Task",
+    "Technology",
+    "Transcript",
+    "TranscriptSegment",
+    "TranscriptWord",
 ]

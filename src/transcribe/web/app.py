@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -16,9 +17,7 @@ from transcribe.application.services.assistant_service import RAGAssistantServic
 from transcribe.application.services.meeting_service import MeetingService
 from transcribe.application.services.search_service import SearchService
 from transcribe.infrastructure.config import load_config
-from transcribe.infrastructure.graph_store import KnowledgeGraphStore
 from transcribe.infrastructure.logging import get_logger
-from transcribe.infrastructure.vector_store import LocalVectorStore
 
 logger = get_logger(__name__)
 
@@ -127,6 +126,7 @@ def create_app(container: ServiceContainer | None = None) -> FastAPI:
         """Start native backend audio recording using SystemAudioHook (FFmpeg)."""
         import subprocess
         import time
+
         from transcribe.infrastructure.system_audio_hook import SystemAudioHook
 
         if active_backend_recording:
@@ -528,6 +528,7 @@ def create_app(container: ServiceContainer | None = None) -> FastAPI:
     ) -> dict[str, Any]:
         """Create a new persistent speaker profile."""
         import uuid
+
         from transcribe.domain.models import Speaker
         alias_list = [a.strip() for a in aliases.split(",") if a.strip()] if aliases else []
         speaker_id = f"spk_{uuid.uuid4().hex[:8]}"
