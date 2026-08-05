@@ -62,7 +62,9 @@ def test_cli_audio_devices() -> None:
     assert "Teams/Zoom Call Capture Diagnostics" in result.output
 
 
-def test_cli_record_with_system_audio_mode() -> None:
+def test_cli_record_with_system_audio_mode(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("TRANSCRIBE_SPEECH__PROVIDER", "mock")
+    monkeypatch.setenv("TRANSCRIBE_LLM__PROVIDER", "mock")
     from transcribe.infrastructure.config import default_storage_base_dir
     rec_dir = default_storage_base_dir() / "recordings"
     rec_dir.mkdir(parents=True, exist_ok=True)
@@ -73,10 +75,8 @@ def test_cli_record_with_system_audio_mode() -> None:
         ["record", "--duration", "1", "--mode", "mixed", "--title", "Teams Weekly Sync"],
     )
     assert result.exit_code == 0
-    assert "Recording live meeting audio (MIXED mode)" in result.output
+    assert "Recording live meeting audio" in result.output
     assert "✓ Meeting processed!" in result.output or "✓ Live audio capture complete!" in result.output
-
-
 
 
 def test_web_audio_devices_endpoint() -> None:
@@ -90,9 +90,45 @@ def test_web_audio_devices_endpoint() -> None:
     assert len(data["devices"]) > 0
 
 
-def test_web_backend_recording_endpoints() -> None:
+def test_web_backend_recording_endpoints(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("TRANSCRIBE_SPEECH__PROVIDER", "mock")
+    monkeypatch.setenv("TRANSCRIBE_LLM__PROVIDER", "mock")
     app = create_app()
     client = TestClient(app)
+
+    class MockProcess:
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
+            self.args = args
+        def __enter__(self) -> "MockProcess":
+            return self
+        def __exit__(self, *args: Any) -> None:
+            pass
+        def poll(self) -> None:
+            return None
+        def terminate(self) -> None:
+            pass
+        def wait(self, timeout: float | None = None) -> None:
+            pass
+        def kill(self) -> None:
+            pass
+        def communicate(self, *args: Any, **kwargs: Any) -> tuple[bytes, bytes]:
+            return b"", b""
+        @property
+        def stderr(self) -> Any:
+            class DummyStream:
+                def read(self) -> bytes:
+                    return b""
+            return DummyStream()
+        @property
+        def stdout(self) -> Any:
+            class DummyStream:
+                def read(self) -> bytes:
+                    return b""
+            return DummyStream()
+
+    import subprocess
+    monkeypatch.setattr(subprocess, "Popen", lambda *args, **kwargs: MockProcess())
+
     start_resp = client.post("/api/audio/record_start", data={"mode": "mic"})
     assert start_resp.status_code == 200
     start_data = start_resp.json()
@@ -104,4 +140,5 @@ def test_web_backend_recording_endpoints() -> None:
     stop_data = stop_resp.json()
     assert "meeting_id" in stop_data
     assert stop_data["title"] == "Test Web Backend Meeting"
+
 

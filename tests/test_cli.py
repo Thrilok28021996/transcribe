@@ -40,15 +40,20 @@ def test_cli_process(tmp_path: Path) -> None:
     assert "Processing Summary" in result.output
 
 
-def test_cli_search() -> None:
+def test_cli_search(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("TRANSCRIBE_SPEECH__PROVIDER", "mock")
+    monkeypatch.setenv("TRANSCRIBE_LLM__PROVIDER", "mock")
     runner = CliRunner()
     result = runner.invoke(cli, ["search", "Python backend"])
     assert result.exit_code == 0
     assert "Semantic Search Results" in result.output
 
 
-def test_cli_ask() -> None:
+def test_cli_ask(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("TRANSCRIBE_SPEECH__PROVIDER", "mock")
+    monkeypatch.setenv("TRANSCRIBE_LLM__PROVIDER", "mock")
     runner = CliRunner()
     result = runner.invoke(cli, ["ask", "What decisions were made?"])
     assert result.exit_code == 0
     assert "Querying Meeting Memory" in result.output
+
