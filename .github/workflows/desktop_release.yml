@@ -8,6 +8,10 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-lint-and-build:
     permissions:
@@ -94,3 +98,33 @@ jobs:
             src-tauri/target/release/bundle/appimage/*.AppImage
             src-tauri/target/release/bundle/deb/*.deb
           if-no-files-found: ignore
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test-lint-and-build
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download All Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          fail_on_unmatched_files: false
+          files: |
+            release-assets/**/*.dmg
+            release-assets/**/*.msi
+            release-assets/**/*.exe
+            release-assets/**/*.AppImage
+            release-assets/**/*.deb
