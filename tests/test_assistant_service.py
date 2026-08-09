@@ -4,10 +4,10 @@ from pathlib import Path
 
 import pytest
 
-from transcribe.application.container import ServiceContainer
-from transcribe.application.services.assistant_service import RAGAssistantService
-from transcribe.application.services.search_service import SearchService
-from transcribe.domain.entities import (
+from neural_agent_os.application.container import ServiceContainer
+from neural_agent_os.application.services.assistant_service import RAGAssistantService
+from neural_agent_os.application.services.search_service import SearchService
+from neural_agent_os.domain.entities import (
     Decision,
     ExtractionResult,
     Meeting,
@@ -15,9 +15,9 @@ from transcribe.domain.entities import (
     Transcript,
     TranscriptSegment,
 )
-from transcribe.infrastructure.config import load_config
-from transcribe.infrastructure.graph_store import KnowledgeGraphStore
-from transcribe.infrastructure.vector_store import LocalVectorStore
+from neural_agent_os.infrastructure.config import load_config
+from neural_agent_os.infrastructure.graph_store import KnowledgeGraphStore
+from neural_agent_os.infrastructure.vector_store import LocalVectorStore
 
 
 @pytest.mark.asyncio

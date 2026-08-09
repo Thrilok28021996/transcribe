@@ -4,8 +4,8 @@ from pathlib import Path
 
 from click.testing import CliRunner
 
-from transcribe.cli.main import cli
-from transcribe.infrastructure.config import cleanup_storage, load_config
+from neural_agent_os.cli.main import cli
+from neural_agent_os.infrastructure.config import cleanup_storage, load_config
 
 
 def test_default_storage_path_resolution(tmp_path: Path) -> None:
@@ -36,9 +36,9 @@ def test_cli_cleanup(tmp_path: Path) -> None:
 
 
 def test_full_cleanup_resets_databases(tmp_path: Path) -> None:
-    from transcribe.infrastructure.graph_store import GraphNode, KnowledgeGraphStore
-    from transcribe.infrastructure.speaker_store import Speaker, SpeakerDatabase
-    from transcribe.infrastructure.vector_store import LocalVectorStore, VectorDocument
+    from neural_agent_os.infrastructure.graph_store import GraphNode, KnowledgeGraphStore
+    from neural_agent_os.infrastructure.speaker_store import Speaker, SpeakerDatabase
+    from neural_agent_os.infrastructure.vector_store import LocalVectorStore, VectorDocument
 
     v_store = LocalVectorStore(storage_dir=tmp_path)
     v_store.add_documents([VectorDocument(id="doc1", text="hello", vector=[0.1, 0.2])])
@@ -66,7 +66,7 @@ def test_full_cleanup_resets_databases(tmp_path: Path) -> None:
 def test_web_api_cleanup() -> None:
     from fastapi.testclient import TestClient
 
-    from transcribe.web.app import create_app
+    from neural_agent_os.web.app import create_app
 
     app = create_app()
     client = TestClient(app)

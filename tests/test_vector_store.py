@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from transcribe.infrastructure.vector_store import LocalVectorStore, VectorDocument
+from neural_agent_os.infrastructure.vector_store import LocalVectorStore, VectorDocument
 
 
 def test_vector_store_crud_and_search(tmp_path: Path) -> None:

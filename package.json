@@ -1,7 +1,7 @@
 {
-  "name": "transcribe-ai",
+  "name": "neural-agent-os",
   "version": "0.1.0",
-  "description": "Local-first AI Meeting Memory Platform",
+  "description": "Neural Agent OS — Autonomous Personal Task Automation Platform",
   "private": true,
   "scripts": {
     "tauri": "tauri",

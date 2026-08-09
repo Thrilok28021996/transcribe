@@ -1,0 +1,3 @@
+[console_scripts]
+neural-agent = neural_agent_os.cli.main:cli
+transcribe = neural_agent_os.cli.main:cli

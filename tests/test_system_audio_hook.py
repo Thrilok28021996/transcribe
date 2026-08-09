@@ -7,13 +7,13 @@ import pytest
 from click.testing import CliRunner
 from fastapi.testclient import TestClient
 
-from transcribe.cli.main import cli
-from transcribe.infrastructure.system_audio_hook import (
+from neural_agent_os.cli.main import cli
+from neural_agent_os.infrastructure.system_audio_hook import (
     AudioDeviceInfo,
     SystemAudioHook,
     SystemAudioSetupStatus,
 )
-from transcribe.web.app import create_app
+from neural_agent_os.web.app import create_app
 
 
 def test_system_audio_hook_list_devices() -> None:
@@ -71,7 +71,7 @@ def test_cli_audio_devices() -> None:
 def test_cli_record_with_system_audio_mode(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("TRANSCRIBE_SPEECH__PROVIDER", "mock")
     monkeypatch.setenv("TRANSCRIBE_LLM__PROVIDER", "mock")
-    from transcribe.infrastructure.config import default_storage_base_dir
+    from neural_agent_os.infrastructure.config import default_storage_base_dir
     rec_dir = default_storage_base_dir() / "recordings"
     rec_dir.mkdir(parents=True, exist_ok=True)
 

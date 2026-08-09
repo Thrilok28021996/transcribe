@@ -3,9 +3,9 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from transcribe.application.container import ServiceContainer
-from transcribe.infrastructure.config import load_config
-from transcribe.web.app import create_app
+from neural_agent_os.application.container import ServiceContainer
+from neural_agent_os.infrastructure.config import load_config
+from neural_agent_os.web.app import create_app
 
 
 @pytest.fixture

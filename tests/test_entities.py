@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from transcribe.domain.entities import (
+from neural_agent_os.domain.entities import (
     Decision,
     Speaker,
     Task,

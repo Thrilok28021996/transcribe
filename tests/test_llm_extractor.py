@@ -2,8 +2,8 @@
 
 import pytest
 
-from transcribe.domain.entities import Transcript, TranscriptSegment
-from transcribe.infrastructure.plugins.llm_extractor import LLMKnowledgeExtractor
+from neural_agent_os.domain.entities import Transcript, TranscriptSegment
+from neural_agent_os.infrastructure.plugins.llm_extractor import LLMKnowledgeExtractor
 
 
 class CustomLLMProvider:

@@ -19,6 +19,7 @@ speech:
   download_root: /Volumes/personal/huggingface
 diarization:
   provider: mock
+  hf_token: ''
   min_speakers: null
   max_speakers: null
 llm:

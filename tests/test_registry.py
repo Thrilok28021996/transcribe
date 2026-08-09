@@ -2,7 +2,7 @@
 
 import pytest
 
-from transcribe.application.registry import PluginRegistry
+from neural_agent_os.application.registry import PluginRegistry
 
 
 class DummyPlugin:

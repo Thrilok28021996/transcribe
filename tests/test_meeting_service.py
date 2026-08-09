@@ -4,9 +4,9 @@ from pathlib import Path
 
 import pytest
 
-from transcribe.application.container import ServiceContainer
-from transcribe.application.services import MeetingService
-from transcribe.infrastructure.config import load_config
+from neural_agent_os.application.container import ServiceContainer
+from neural_agent_os.application.services import MeetingService
+from neural_agent_os.infrastructure.config import load_config
 
 
 @pytest.mark.asyncio

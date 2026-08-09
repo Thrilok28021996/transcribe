@@ -2,7 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    transcribe_ai_desktop::run();
+    neural_agent_os_desktop::run();
 }
 
 

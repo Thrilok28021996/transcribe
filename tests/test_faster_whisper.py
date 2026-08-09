@@ -1,6 +1,6 @@
 """Unit and integration tests for FasterWhisperSpeechRecognizer."""
 
-from transcribe.infrastructure.plugins.faster_whisper_plugin import (
+from neural_agent_os.infrastructure.plugins.faster_whisper_plugin import (
     FasterWhisperSpeechRecognizer,
 )
 

@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from click.testing import CliRunner
 
-from transcribe.cli.main import cli
+from neural_agent_os.cli.main import cli
 
 
 def test_cli_version() -> None:
@@ -59,4 +59,13 @@ def test_cli_ask(monkeypatch: pytest.MonkeyPatch) -> None:
     result = runner.invoke(cli, ["ask", "What decisions were made?"])
     assert result.exit_code == 0
     assert "Querying Meeting Memory" in result.output
+
+
+def test_cli_agent_run() -> None:
+    runner = CliRunner()
+    result = runner.invoke(cli, ["agent-run", "system_diagnostics"])
+    assert result.exit_code == 0
+    assert "Executing Personal Agent Task" in result.output
+    assert "Task Completed" in result.output
+
 

@@ -2,7 +2,7 @@
 
 import pytest
 
-from transcribe.infrastructure.plugins.lm_studio_plugin import LMStudioLLMProvider
+from neural_agent_os.infrastructure.plugins.lm_studio_plugin import LMStudioLLMProvider
 
 
 @pytest.mark.asyncio

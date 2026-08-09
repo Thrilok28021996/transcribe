@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from transcribe.infrastructure.config import load_config
+from neural_agent_os.infrastructure.config import load_config
 
 
 def test_default_config(tmp_path: Path) -> None:

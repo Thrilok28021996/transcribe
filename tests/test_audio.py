@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from transcribe.infrastructure.audio import AudioMetadata, AudioProcessor
+from neural_agent_os.infrastructure.audio import AudioMetadata, AudioProcessor
 
 
 def test_validate_format_success(tmp_path: Path) -> None:

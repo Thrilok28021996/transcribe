@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Transcribe AI — Local-first AI Meeting Memory Platform">
+  <title>Transcribe AI — Meeting Memory Platform</title>
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/jpeg" href="app_logo.jpg">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon" style="background: transparent; overflow: hidden; border-radius: 8px;">
+          <img src="app_logo.jpg" alt="Transcribe AI Logo" style="width: 36px; height: 36px; object-fit: cover; border-radius: 8px;">
+        </div>
+
+        <div class="brand-text">
+          <h1>Transcribe AI</h1>
+          <span class="badge">Local Memory</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs" id="navTabs">
+        <button class="nav-btn active" data-tab="vyron" onclick="window.switchTab('vyron')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><circle cx="12" cy="12" r="3" fill="#a78bfa"/></svg>
+          Overview // Neural OS
+        </button>
+        <button class="nav-btn" data-tab="alfred" onclick="window.switchTab('alfred')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 15-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>
+          Model Router & Autonomy
+        </button>
+        <button class="nav-btn" data-tab="agent" onclick="window.switchTab('agent')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M4 11a8 8 0 0 0 16 0"/><rect x="8" y="16" width="8" height="6" rx="1"/></svg>
+          🤖 Personal Task Agent
+        </button>
+        <button class="nav-btn" data-tab="dashboard" onclick="window.switchTab('dashboard')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-btn record-tab-btn" data-tab="record" onclick="window.switchTab('record')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+          🔴 Record Live Meeting
+        </button>
+        <button class="nav-btn" data-tab="vault" onclick="window.switchTab('vault')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Recordings Vault
+        </button>
+        <button class="nav-btn" data-tab="meetings" onclick="window.switchTab('meetings')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Meeting Memory
+        </button>
+        <button class="nav-btn" data-tab="graph" onclick="window.switchTab('graph')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><line x1="8.5" y1="7.5" x2="15.5" y2="16.5"/><line x1="8.5" y1="16.5" x2="15.5" y2="7.5"/></svg>
+          Knowledge Graph
+        </button>
+        <button class="nav-btn" data-tab="assistant" onclick="window.switchTab('assistant')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          AI Assistant
+        </button>
+        <button class="nav-btn" data-tab="speakers" onclick="window.switchTab('speakers')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Speakers
+        </button>
+        <button class="nav-btn" data-tab="connectors" onclick="window.switchTab('connectors')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          📡 Meeting Bot & Connectors
+        </button>
+        <button class="nav-btn" data-tab="settings" onclick="window.switchTab('settings')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </button>
+      </nav>
+    </header>
+
+
+    <!-- Main Tab Content Area -->
+    <main class="main-content">
+      <!-- TAB 0: VYRON NEURAL OS HUB & LANDING -->
+      <section id="tab-vyron" class="tab-panel active" style="display: block;">
+        <canvas id="vyronBackdropCanvas" class="vyron-backdrop-canvas"></canvas>
+
+        <div class="vyron-wrapper">
+          <!-- Hero Section -->
+          <section class="vyron-hero">
+            <div class="vyron-pill-badge">
+              <span class="pulse-dot"></span>
+              NEURAL AGENT OS // AUTONOMOUS OPERATIONAL AGENT
+            </div>
+
+            <h1 class="vyron-hero-title">Neural Agent OS</h1>
+            <p class="vyron-hero-subtitle">The Autonomous Neural OS & Personal Task Automation Engine</p>
+
+            <p class="vyron-hero-desc">
+              Your device. Fully under command. <span class="vyron-text-highlight">Speak or type once</span> — Neural Agent OS handles real-time audio capture, task automation, speaker diarization, cross-meeting vector memory, and RAG execution with zero friction.
+            </p>
+
+            <!-- Interactive Neural Visualizer Orb -->
+            <div class="vyron-orb-stage">
+              <div class="vyron-orb-glow"></div>
+              <canvas id="vyronOrbCanvas" width="340" height="340"></canvas>
+              
+              <!-- State Switcher Controls -->
+              <div class="vyron-orb-controls">
+                <button class="orb-state-btn active" data-state="idle">IDLE</button>
+                <button class="orb-state-btn" data-state="listening">LISTENING</button>
+                <button class="orb-state-btn" data-state="processing">PROCESSING</button>
+                <button class="orb-state-btn" data-state="speaking">SPEAKING</button>
+                <button class="orb-state-btn" data-state="recording">RECORDING</button>
+              </div>
+            </div>
+
+            <!-- Voice Status Indicator Pill -->
+            <div class="vyron-voice-status">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="vyron-mic-icon"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+              <div class="iris-wave-container">
+                <span class="iris-wave-bar"></span>
+                <span class="iris-wave-bar"></span>
+                <span class="iris-wave-bar"></span>
+                <span class="iris-wave-bar"></span>
+                <span class="iris-wave-bar"></span>
+                <span class="iris-wave-bar"></span>
+                <span class="iris-wave-bar"></span>
+              </div>
+              <span class="vyron-voice-label">VOICE-NATIVE AI</span>
+              <span class="divider">|</span>
+              <span class="vyron-voice-greeting" id="vyronGreeting">STATUS: READY TO EXECUTE</span>
+            </div>
+
+            <!-- Hero CTA Action Buttons -->
+            <div class="vyron-hero-actions">
+              <button class="vyron-btn-primary" onclick="window.switchTab('record')">
+                <div class="btn-content">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>
+                  <div class="btn-text">
+                    <span class="main-title">Record Live Meeting</span>
+                    <span class="sub-title">Launch System Audio & Mic</span>
+                  </div>
+                </div>
+                <div class="btn-arrow">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
+                <div class="shimmer-effect"></div>
+              </button>
+
+              <button class="vyron-btn-secondary" onclick="document.getElementById('vyronConsoleSection').scrollIntoView({behavior:'smooth'})">
+                <div class="btn-content">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                  <div class="btn-text">
+                    <span class="main-title">Terminal Console</span>
+                    <span class="sub-title">CLI Execution Engine</span>
+                  </div>
+                </div>
+                <div class="btn-arrow">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
+              </button>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="vyron-hero-stats">
+              <div class="vyron-stat-pill"><span class="label">Latency</span><span class="val">&lt;1.5s</span></div>
+              <div class="vyron-stat-pill"><span class="label">Context</span><span class="val">128k+</span></div>
+              <div class="vyron-stat-pill"><span class="label">Accuracy</span><span class="val">99.2%</span></div>
+              <div class="vyron-stat-pill"><span class="label">Local AI</span><span class="val">100% Private</span></div>
+            </div>
+          </section>
+
+          <!-- 3D System Mockup Stage -->
+          <section class="vyron-mockup-section">
+            <div class="vyron-section-header">
+              <span class="vyron-pill-tag">System Interface</span>
+              <h2>Your AI. Your Rules.</h2>
+              <p>One Voice. Total Control Over Meeting Memory & Local Workflows.</p>
+            </div>
+
+            <div class="vyron-3d-stage">
+              <div class="vyron-laptop-frame">
+                <div class="laptop-screen">
+                  <div class="screen-top-bar">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="screen-title">Transcribe AI Neural Control Center</span>
+                  </div>
+                  <div class="screen-body-preview">
+                    <div class="mock-dash">
+                      <div class="mock-card glow">
+                        <span class="mock-badge">ACTIVE RECORDING</span>
+                        <div class="mock-title">Executive Strategy & Architecture Sync</div>
+                        <div class="mock-waveform">
+                          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="mock-grid">
+                        <div class="mock-mini-card">
+                          <span class="label">Diarization</span>
+                          <span class="val">3 Speakers Tracked</span>
+                        </div>
+                        <div class="mock-mini-card">
+                          <span class="label">RAG Index</span>
+                          <span class="val">Vectorized 1,420 chunks</span>
+                        </div>
+                        <div class="mock-mini-card">
+                          <span class="label">Action Items</span>
+                          <span class="val">4 Tasks Extracted</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="laptop-base">
+                  <div class="trackpad"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Developer Console & Terminal Section -->
+          <section id="vyronConsoleSection" class="vyron-console-section">
+            <div class="vyron-section-header">
+              <span class="vyron-pill-tag">Developer Console</span>
+              <h2>Run Neural Agent OS directly from Terminal</h2>
+              <p>Execute real-time meeting transcription, task automation, and RAG queries from your shell.</p>
+            </div>
+
+            <div class="vyron-terminal-box">
+              <div class="terminal-header">
+                <div class="terminal-dots">
+                  <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                </div>
+                <span class="terminal-title">bash ~ transcribe-cli</span>
+                <div class="terminal-actions">
+                  <button class="terminal-tab-btn active" data-cmd="record">record</button>
+                  <button class="terminal-tab-btn" data-cmd="ask">ask</button>
+                  <button class="terminal-tab-btn" data-cmd="serve">serve</button>
+                </div>
+              </div>
+
+              <div class="terminal-body">
+                <div class="terminal-command-line">
+                  <span class="cmd-text" id="terminalCmdText">transcribe record --mode mixed --title "Executive Roadmap Sync"</span>
+                  <button class="copy-btn" id="copyCmdBtn" title="Copy command">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                  </button>
+                </div>
+                <div class="terminal-logs" id="terminalLogOutput">
+                  <p class="comment"># Initialize visionary reasoning operational neural-network...</p>
+                  <p class="log">[INFO] Initializing Faster-Whisper (large-v3-turbo) on MPS/GPU</p>
+                  <p class="log">[INFO] Hooked into System Audio Loopback + Microphone Array</p>
+                  <p class="log">[SUCCESS] Diarization engine loaded (PyAnnote persistent voiceprints)</p>
+                  <p class="log">[STATUS] Recording in progress... Press Ctrl+C to finish and summarize</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Bleeding Edge Tech Stack Cloud -->
+          <section class="vyron-tech-section">
+            <p class="tech-title">Built with a bleeding-edge modern AI stack</p>
+            <div class="tech-tags">
+              <span class="tech-tag">Faster-Whisper</span>
+              <span class="tech-tag">PyTorch MPS/CUDA</span>
+              <span class="tech-tag">LM Studio / Ollama</span>
+              <span class="tech-tag">Speaker Diarization</span>
+              <span class="tech-tag">Chroma / FAISS RAG</span>
+              <span class="tech-tag">System Audio Hook</span>
+              <span class="tech-tag">FastAPI Core</span>
+              <span class="tech-tag">Tauri v2 Desktop</span>
+            </div>
+          </section>
+
+          <!-- Bento Grid System Capabilities -->
+          <section id="capabilities" class="vyron-bento-section">
+            <div class="vyron-section-header left-align">
+              <span class="vyron-pill-tag">NEURAL_AGENT_OS // ACTIVE_MODULES</span>
+              <h2>System Capabilities</h2>
+              <p>Neural Agent OS is a deep-system personal task automation engine. Kernel-level execution hooks, automated keystrokes, meeting memory, and multi-model autonomy matrix.</p>
+            </div>
+
+            <div class="bento-grid">
+              <div class="bento-card">
+                <span class="bento-badge">Core Interface</span>
+                <h3>Always-on-Top Sleek UI</h3>
+                <p>Adjustable, drag-and-resize responsive window designed to float seamlessly over Microsoft Teams, Zoom, or Google Meet with customizable opacity.</p>
+              </div>
+
+              <div class="bento-card">
+                <span class="bento-badge">Acoustic Stream</span>
+                <h3>Faster-Whisper Audio Array</h3>
+                <p>High-speed audio recognition engine with GPU/MPS acceleration delivering transcribe response times under 1.5s.</p>
+              </div>
+
+              <div class="bento-card">
+                <span class="bento-badge">Global Overlays</span>
+                <h3>System Shortcut Hotkeys</h3>
+                <p>Universal hardware keyboard hooks letting you toggle live recording and mute from any background app instantly.</p>
+              </div>
+
+              <div class="bento-card">
+                <span class="bento-badge">Automation</span>
+                <h3>Direct Keystroke Control</h3>
+                <p>Deep local automation for opening meetings, triggering summaries, and running keyboard shortcuts hands-free.</p>
+              </div>
+
+              <div class="bento-card">
+                <span class="bento-badge">Security Gates</span>
+                <h3>100% Local Privacy</h3>
+                <p>All speech recognition, speaker profiles, and vector embeddings run strictly on your machine with zero cloud transmission.</p>
+              </div>
+
+              <div class="bento-card">
+                <span class="bento-badge">Cross-Meeting RAG</span>
+                <h3>Persistent Memory Matrix</h3>
+                <p>Ask questions across your entire meeting archive with hybrid vector search and knowledge graph relationship mapping.</p>
+              </div>
+
+              <div class="bento-card">
+                <span class="bento-badge">Acoustic Alerts</span>
+                <h3>Voice Summary Speeches</h3>
+                <p>Background task completion featuring out-loud speech synthesis feedback, verbally alerting you when processing finishes.</p>
+              </div>
+
+              <div class="bento-card">
+                <span class="bento-badge">File Operations</span>
+                <h3>Doc & Markdown Exporter</h3>
+                <p>Export meeting memory instantly into structured Markdown notes, JSON payloads, or high-fidelity document summaries.</p>
+              </div>
+
+              <div class="bento-card">
+                <span class="bento-badge">Loopback Engine</span>
+                <h3>System Audio Capture</h3>
+                <p>Silently hook into macOS BlackHole or Windows Stereo Mix to capture both remote callers and local mic simultaneously.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Marquee Footer -->
+          <footer class="vyron-footer">
+            <div class="marquee-track">
+              <div class="marquee-content">
+                <span>NEURAL AGENT OS</span><span class="dot">•</span>
+                <span>LOCAL MEETING MEMORY</span><span class="dot">•</span>
+                <span>NEURAL OS EXECUTION</span><span class="dot">•</span>
+                <span>FASTER WHISPER</span><span class="dot">•</span>
+                <span>100% PRIVATE & LOCAL</span><span class="dot">•</span>
+                <span>NEURAL AGENT OS</span><span class="dot">•</span>
+                <span>LOCAL MEETING MEMORY</span><span class="dot">•</span>
+                <span>NEURAL OS EXECUTION</span><span class="dot">•</span>
+                <span>FASTER WHISPER</span><span class="dot">•</span>
+                <span>100% PRIVATE & LOCAL</span><span class="dot">•</span>
+              </div>
+            </div>
+      <!-- TAB MODEL ROUTER: MULTI-MODEL ROUTER & AUTONOMY ENGINE -->
+      <section id="tab-alfred" class="tab-panel" style="display: none;">
+        <div class="alfred-wrapper">
+          <!-- Header Banner -->
+          <div class="alfred-header">
+            <div class="header-tag">
+              <span class="pulse-ring"></span>
+              NEURAL AGENT OS // MULTI-MODEL ROUTER & AUTONOMY ENGINE
+            </div>
+            <h2>Model Router & Autonomy Engine</h2>
+            <p>Configure Progressive Autonomy Tiers, BYOM Model Profiles (OpenSource & Cloud), and Ambient Sidecars for your personal agent.</p>
+          </div>
+
+          <!-- Progressive Autonomy Tier Selector -->
+          <div class="alfred-card autonomy-card">
+            <div class="card-title-row">
+              <h3>🛡️ Progressive Autonomy Tier (Safety Ceiling)</h3>
+              <span class="status-pill green" id="alfredActiveTierBadge">ACTIVE TIER: CONFIRMING</span>
+            </div>
+            <p class="subtitle">The autonomy tier is a ceiling enforced in code. No confidence score can promote an action beyond your configured ceiling.</p>
+
+            <div class="autonomy-tiers-grid">
+              <div class="tier-box" data-tier="Asking" id="tierBoxAsking">
+                <div class="tier-header">
+                  <span class="tier-icon">❓</span>
+                  <span class="tier-name">Asking</span>
+                </div>
+                <p class="tier-desc">"What should I do here?" — Always asks for your explicit instruction before performing any action.</p>
+                <span class="tier-code">conf &gt;= 0.95 | fail_closed=true</span>
+              </div>
+
+              <div class="tier-box active" data-tier="Confirming" id="tierBoxConfirming">
+                <div class="tier-header">
+                  <span class="tier-icon">⚠️</span>
+                  <span class="tier-name">Confirming</span>
+                </div>
+                <p class="tier-desc">"I'm about to do X — ok?" — Prepares actions and presents 1-click confirmation cards.</p>
+                <span class="tier-code">conf &gt;= 0.85 | human_card=true</span>
+              </div>
+
+              <div class="tier-box" data-tier="Acting" id="tierBoxActing">
+                <div class="tier-header">
+                  <span class="tier-icon">⚡</span>
+                  <span class="tier-name">Acting</span>
+                </div>
+                <p class="tier-desc">"Handled it; here's what I did" — Executes autonomous tasks and logs to audit ledger.</p>
+                <span class="tier-code">conf &gt;= 0.90 | auto_log=true</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dual Model Routing & Provider Selection (OpenSource & Cloud) -->
+          <div class="alfred-card">
+            <h3>🤖 Bring Your Own Model — Open Source & Cloud Providers</h3>
+            <p class="subtitle">Assign distinct LLMs for reasoning, extraction, and local speech recognition. Choose local offline models or cloud APIs.</p>
+
+            <div class="model-profiles-grid">
+              <!-- Profile 1: Main Reasoner -->
+              <div class="model-profile-card">
+                <div class="profile-header">
+                  <span class="profile-icon">🧠</span>
+                  <h4>Main Reasoner Model</h4>
+                </div>
+                <p class="profile-desc">Handles complex decision trees, knowledge graph synthesis, and RAG answers.</p>
+
+                <div class="form-group">
+                  <label for="alfredMainProvider">Provider</label>
+                  <select id="alfredMainProvider" class="form-select">
+                    <optgroup label="Local / Open Source">
+                      <option value="ollama">Ollama (Local LLM)</option>
+                      <option value="lmstudio" selected>LM Studio (Local Open-Source)</option>
+                      <option value="vllm">vLLM Engine</option>
+                    </optgroup>
+                    <optgroup label="Cloud Providers">
+                      <option value="gemini">Google Gemini 1.5/2.0</option>
+                      <option value="openai">OpenAI (GPT-4o)</option>
+                      <option value="anthropic">Anthropic (Claude 3.5 Sonnet)</option>
+                      <option value="deepseek">DeepSeek (R1 / V3)</option>
+                      <option value="groq">Groq Llama 3.3</option>
+                      <option value="openrouter">OpenRouter Router</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="alfredMainModel">Model ID / Identifier</label>
+                  <input type="text" id="alfredMainModel" value="qwen2.5-coder-32b-instruct" placeholder="e.g. llama3:70b, gpt-4o, claude-3-5-sonnet">
+                </div>
+              </div>
+
+              <!-- Profile 2: Speed Worker -->
+              <div class="model-profile-card">
+                <div class="profile-header">
+                  <span class="profile-icon">⚡</span>
+                  <h4>Speed Worker Model</h4>
+                </div>
+                <p class="profile-desc">Fast, low-latency model for noise filtering, entity tag extraction, and quick summaries.</p>
+
+                <div class="form-group">
+                  <label for="alfredWorkerProvider">Provider</label>
+                  <select id="alfredWorkerProvider" class="form-select">
+                    <optgroup label="Local / Open Source">
+                      <option value="ollama" selected>Ollama (Local Llama-3)</option>
+                      <option value="lmstudio">LM Studio (Local)</option>
+                    </optgroup>
+                    <optgroup label="Cloud Providers">
+                      <option value="groq">Groq Llama 3 8B</option>
+                      <option value="mistral">Mistral Small</option>
+                      <option value="together">Together AI</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="alfredWorkerModel">Model ID / Identifier</label>
+                  <input type="text" id="alfredWorkerModel" value="llama3:8b-instruct-q4_K_M" placeholder="e.g. llama3:8b, mistral-7b">
+                </div>
+              </div>
+
+              <!-- Profile 3: Audio & Speech -->
+              <div class="model-profile-card">
+                <div class="profile-header">
+                  <span class="profile-icon">🎙️</span>
+                  <h4>Audio Recognition Engine</h4>
+                </div>
+                <p class="profile-desc">Converts live system calls and voice notes into timestamps with speaker diarization.</p>
+
+                <div class="form-group">
+                  <label for="alfredSpeechProvider">Speech Engine</label>
+                  <select id="alfredSpeechProvider" class="form-select">
+                    <option value="faster_whisper" selected>Faster-Whisper (Local GPU / MPS)</option>
+                    <option value="openai_whisper">OpenAI Whisper API</option>
+                    <option value="deepgram">Deepgram Nova-2</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="alfredSpeechPreset">Whisper Model Preset</label>
+                  <select id="alfredSpeechPreset" class="form-select">
+                    <option value="large-v3-turbo" selected>large-v3-turbo (Fast & High Precision)</option>
+                    <option value="medium">medium (Balanced)</option>
+                    <option value="base">base (Ultra Fast)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer-actions">
+              <button id="saveAlfredModelsBtn" class="btn primary lg">
+                💾 Apply Model Configuration
+              </button>
+              <div id="alfredModelsAlert" class="result-msg hidden"></div>
+            </div>
+          </div>
+
+          <!-- Sidecars & Connectors -->
+          <div class="alfred-card">
+            <h3>📦 Ambient Sidecars & Tool Connectors</h3>
+            <p class="subtitle">Alfred Black manages local storage vaults and connects to 1000+ app tools seamlessly.</p>
+
+            <div class="sidecars-grid">
+              <div class="sidecar-item active">
+                <div class="sidecar-icon">📓</div>
+                <div class="sidecar-info">
+                  <span class="title">Obsidian Vault Curator</span>
+                  <span class="desc">Distills raw transcripts into structured markdown notes in <code>data/meetings/</code></span>
+                </div>
+                <span class="status-badge active">RUNNING</span>
+              </div>
+
+              <div class="sidecar-item active">
+                <div class="sidecar-icon">💾</div>
+                <div class="sidecar-info">
+                  <span class="title">SQLite Audit Ledger</span>
+                  <span class="desc">Stores atomic run events, signal actions, and confidence audit records</span>
+                </div>
+                <span class="status-badge active">RUNNING</span>
+              </div>
+
+              <div class="sidecar-item active">
+                <div class="sidecar-icon">🔐</div>
+                <div class="sidecar-info">
+                  <span class="title">Vaultwarden Secrets Manager</span>
+                  <span class="desc">AES-256 encrypted credential storage on disk</span>
+                </div>
+                <span class="status-badge active">CONNECTED</span>
+              </div>
+
+              <div class="sidecar-item active">
+                <div class="sidecar-icon">🔗</div>
+                <div class="sidecar-info">
+                  <span class="title">Composio / MCP Integration Mesh</span>
+                  <span class="desc">Slack, Gmail, GitHub, Notion, Linear tool connectors</span>
+                </div>
+                <span class="status-badge active">READY</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Audit Ledger Console -->
+          <div class="alfred-card">
+            <div class="card-title-row">
+              <h3>📜 Signal Action Audit Ledger</h3>
+              <button id="refreshLedgerBtn" class="btn secondary sm">Refresh Ledger</button>
+            </div>
+            <p class="subtitle">Auditable record of every decision, confidence gate, and tier enforcement.</p>
+
+            <div class="ledger-console" id="alfredLedgerConsole">
+              <div class="ledger-line"><span class="time">[10:04:12]</span> <span class="tag human">signal-action: human</span> (tier_gate_confirming) — conf=0.94 bar=0.85 tier=Confirming mode=live</div>
+              <div class="ledger-line"><span class="time">[10:04:15]</span> <span class="tag system">autonomy-check</span>: Ceiling=Confirming -&gt; Action gated for human approval</div>
+              <div class="ledger-line"><span class="time">[10:04:22]</span> <span class="tag auto">vault-curator</span>: Vectorized 18 transcript chunks into Chroma memory</div>
+              <div class="ledger-line"><span class="time">[10:04:30]</span> <span class="tag success">audit-sweep</span>: 0 unhandled failures, ledger intact</div>
+            </div>
+          </div>
+      <!-- TAB AGENT: PERSONAL TASK AUTOMATION ENGINE -->
+      <section id="tab-agent" class="tab-panel" style="display: none;">
+        <div class="agent-wrapper">
+          <!-- Header Banner -->
+          <div class="agent-header">
+            <div class="header-tag">
+              <span class="pulse-ring"></span>
+              PERSONAL AGENT OS // TASK AUTOMATION HUB
+            </div>
+            <h2>Personal Task Automation Agent</h2>
+            <p>Speak or type any task intent — your AI agent formulates execution plans, cleans storage, generates executive briefs, and automates real system actions.</p>
+          </div>
+
+          <!-- Custom Task Intent Command Bar -->
+          <div class="agent-card command-card">
+            <h3>💬 Execute Custom Task Intent</h3>
+            <p class="subtitle">Ask your personal agent to automate any task across your system, apps, and meeting archive.</p>
+
+            <div class="agent-input-row">
+              <input type="text" id="agentPromptInput" placeholder="e.g. 'Organize my recordings folder by format', 'Generate daily briefing', 'Purge temp cache'">
+              <button id="runAgentCustomBtn" class="btn primary lg">
+                ⚡ Execute Agent Task
+              </button>
+            </div>
+            <div class="suggested-agent-pills">
+              <span class="pill-btn" onclick="document.getElementById('agentPromptInput').value='Generate executive briefing and action matrix'; window.runAgentTask('executive_briefing');">📊 Executive Briefing</span>
+              <span class="pill-btn" onclick="document.getElementById('agentPromptInput').value='Organize storage and recordings folders'; window.runAgentTask('organize_files');">🧹 Organize Files</span>
+              <span class="pill-btn" onclick="document.getElementById('agentPromptInput').value='Purge temporary scratch files'; window.runAgentTask('system_cleanup');">🗑️ Purge Temp Cache</span>
+              <span class="pill-btn" onclick="document.getElementById('agentPromptInput').value='Run system and audio diagnostics'; window.runAgentTask('system_diagnostics');">🩺 Run Diagnostics</span>
+            </div>
+          </div>
+
+          <!-- Pre-Built Automated Workflows Grid -->
+          <div class="agent-card">
+            <h3>⚡ Pre-Configured Automated Workflows</h3>
+            <p class="subtitle">Launch automated 1-click system tasks managed by your local personal agent.</p>
+
+            <div class="workflows-grid">
+              <div class="workflow-card" onclick="window.runAgentTask('executive_briefing')">
+                <div class="wf-icon">📊</div>
+                <div class="wf-info">
+                  <h4>Daily Executive Briefing</h4>
+                  <p>Indexes all meeting archives, decision logs, and active action items into a consolidated markdown executive brief.</p>
+                </div>
+                <button class="btn primary sm">Run Workflow</button>
+              </div>
+
+              <div class="workflow-card" onclick="window.runAgentTask('organize_files')">
+                <div class="wf-icon">🧹</div>
+                <div class="wf-info">
+                  <h4>Workspace Storage Sanitizer</h4>
+                  <p>Scans raw audio and inbox storage, automatically categorizing files into structured subfolders by format.</p>
+                </div>
+                <button class="btn secondary sm">Run Workflow</button>
+              </div>
+
+              <div class="workflow-card" onclick="window.runAgentTask('system_cleanup')">
+                <div class="wf-icon">🗑️</div>
+                <div class="wf-info">
+                  <h4>Silent Temp Cache Purge</h4>
+                  <p>Cleans temporary workspace scratch folders, deleting stale cache files and reporting freed disk space.</p>
+                </div>
+                <button class="btn secondary sm">Run Workflow</button>
+              </div>
+
+              <div class="workflow-card" onclick="window.runAgentTask('system_diagnostics')">
+                <div class="wf-icon">🩺</div>
+                <div class="wf-info">
+                  <h4>Hardware & Audio Hook Check</h4>
+                  <p>Runs system audio loopback diagnostics, microphone permission checks, and local model engine status checks.</p>
+                </div>
+                <button class="btn secondary sm">Run Workflow</button>
+              </div>
+
+              <div class="workflow-card" onclick="window.runAgentTask('convert_document')">
+                <div class="wf-icon">📄</div>
+                <div class="wf-info">
+                  <h4>Word & PDF Document Converter</h4>
+                  <p>Converts documents between .docx, .txt, and high-fidelity PDF formats while preserving structure.</p>
+                </div>
+                <button class="btn secondary sm">Run Workflow</button>
+              </div>
+
+              <div class="workflow-card" onclick="window.runAgentTask('voice_reminder')">
+                <div class="wf-icon">🔊</div>
+                <div class="wf-info">
+                  <h4>Acoustic Voice Reminders</h4>
+                  <p>Synthesizes out-loud audio announcements for background timer alerts and task updates.</p>
+                </div>
+                <button class="btn secondary sm">Run Workflow</button>
+              </div>
+
+              <div class="workflow-card" onclick="window.runAgentTask('biometric_gate')">
+                <div class="wf-icon">🔐</div>
+                <div class="wf-info">
+                  <h4>Zero-Trust Biometrics Check</h4>
+                  <p>Performs camera facial verification to authorize high-consequence system actions.</p>
+                </div>
+                <button class="btn secondary sm">Run Workflow</button>
+              </div>
+
+              <div class="workflow-card" onclick="window.runAgentTask('desktop_automation')">
+                <div class="wf-icon">⌨️</div>
+                <div class="wf-info">
+                  <h4>Keystrokes & App Control</h4>
+                  <p>Triggers automated desktop app management, keystroke injection, and window positioning.</p>
+                </div>
+                <button class="btn secondary sm">Run Workflow</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Task Execution Progress & Results -->
+          <div class="agent-card" id="agentExecutionCard">
+            <div class="card-title-row">
+              <h3>🖥️ Agent Execution Terminal</h3>
+              <span class="status-pill green" id="agentTaskStatusBadge">AGENT IDLE</span>
+            </div>
+            <p class="subtitle">Real-time log stream showing step-by-step execution, action gates, and output artifacts.</p>
+
+            <div class="agent-console" id="agentConsoleOutput">
+              <p class="comment"># Personal Agent OS task execution engine ready...</p>
+              <p class="log">[READY] Select a workflow above or type a custom task intent to execute.</p>
+            </div>
+
+            <div id="agentResultDetails" class="result-msg hidden" style="margin-top: 16px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 1: DASHBOARD -->
+      <section id="tab-dashboard" class="tab-panel" style="display: none;">
+        <div class="hero-card">
+          <div class="hero-text">
+            <h2>Local AI Meeting Memory Hub</h2>
+            <p>Transforming spoken audio into structured decisions, action items, semantic vector indices, and persistent knowledge graphs.</p>
+            <div class="hero-actions" style="margin-top: 14px;">
+              <button class="btn record-btn" onclick="window.switchTab('record')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
+                Record Live Meeting Now
+              </button>
+            </div>
+          </div>
+          <div class="status-indicator">
+            <span class="status-dot green"></span>
+            <span id="lmStudioStatusText">LM Studio Connected</span>
+          </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Meetings Processed</span>
+            <span class="metric-value" id="metricMeetings">0</span>
+            <span class="metric-sub">Local Markdown Notes</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Tracked Speakers</span>
+            <span class="metric-value" id="metricSpeakers">0</span>
+            <span class="metric-sub">Persistent Voice Vectors</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Vector Documents</span>
+            <span class="metric-value" id="metricVectors">0</span>
+            <span class="metric-sub">Nomic Text Embeddings</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Graph Nodes</span>
+            <span class="metric-value" id="metricGraphNodes">0</span>
+            <span class="metric-sub">Entity Relationships</span>
+          </div>
+        </div>
+
+        <!-- Dashboard Content Row -->
+        <div class="dashboard-row">
+          <div class="panel-card flex-2">
+            <h3>Recent Meeting Memory Notes</h3>
+            <div class="meeting-list" id="dashboardMeetingList">
+              <div class="loading-spinner">Loading meetings...</div>
+            </div>
+          </div>
+
+          <div class="panel-card flex-1">
+            <h3>Quick Memory Search</h3>
+            <div class="search-box">
+              <input type="text" id="dashSearchInput" placeholder="Search decisions, tasks, technologies...">
+              <button id="dashSearchBtn" class="btn primary">Search</button>
+            </div>
+            <div class="search-results-preview" id="dashSearchResults">
+              <p class="placeholder-text">Enter a query above to search meeting vector index.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: LIVE MICROPHONE RECORDER -->
+      <section id="tab-record" class="tab-panel" style="display: none;">
+        <div class="panel-card recorder-card">
+          <div class="recorder-header">
+            <div class="header-title">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+              <h2>Live Microphone Recorder</h2>
+            </div>
+            <span class="rec-badge green-badge" id="recBadge">Microphone Ready (Idle)</span>
+          </div>
+          <p class="subtitle">Click the green button below to start live recording. The button will turn red while recording. Click it again to stop and automatically generate transcript, summary, and decisions.</p>
+
+          <div class="recorder-body">
+            <div class="timer-display" id="recTimer">00:00</div>
+            <div class="wave-visualizer hidden" id="waveVisualizer">
+              <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+
+            <div class="recorder-controls">
+              <button id="recToggleBtn" class="btn rec-toggle-btn green lg">
+                <span class="dot"></span>
+                <span id="recToggleText">START RECORDING LIVE</span>
+              </button>
+            </div>
+            <div id="micErrorAlert" class="error-msg hidden" style="margin-top: 14px; text-align: left; width: 100%;"></div>
+
+            <!-- Audio Devices & Microphone Diagnostic helper -->
+            <div id="micDiagPanel" class="mic-diag-panel" style="margin-top: 20px; width: 100%; padding: 14px 18px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  Audio Hardware & Permission Diagnostics
+                </span>
+                <button id="checkMicDiagBtn" class="btn sm secondary" style="font-size: 0.78rem; padding: 4px 10px;">
+                  🔄 Test Mic & Devices
+                </button>
+              </div>
+              <div id="micDiagDetails" style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted);">
+                Scanning audio input hardware and system permission status...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Processing Timeline -->
+        <div id="recProcessingTimeline" class="processing-timeline hidden">
+          <h3>Processing Pipeline Stages</h3>
+          <div class="stages-list">
+            <div class="stage-item" id="recStage1"><span class="stage-num">1</span> Ingest & Resample Audio (FFmpeg 16kHz)</div>
+            <div class="stage-item" id="recStage2"><span class="stage-num">2</span> Speech Recognition & Timestamps (Faster-Whisper)</div>
+            <div class="stage-item" id="recStage3"><span class="stage-num">3</span> Speaker Diarization & Persistent Profile Matching</div>
+            <div class="stage-item" id="recStage4"><span class="stage-num">4</span> Knowledge Extraction (LM Studio Open-Source LLM)</div>
+            <div class="stage-item" id="recStage5"><span class="stage-num">5</span> Vector Indexing & Knowledge Graph Storage</div>
+          </div>
+          <div id="recProcessingResultMsg" class="result-msg hidden"></div>
+        </div>
+      </section>
+
+      <!-- TAB 3: RECORDINGS VAULT & UPLOAD -->
+      <section id="tab-vault" class="tab-panel" style="display: none;">
+        <!-- Stored Raw Recordings Vault Panel -->
+        <div class="panel-card vault-card">
+          <div class="section-header">
+            <h2>Raw Recordings Vault (Stored in <code>data/recordings/</code>)</h2>
+            <button id="refreshRecordingsBtn" class="btn secondary sm">Refresh Vault</button>
+          </div>
+          <p class="subtitle">All recorded and uploaded audio files are saved locally. You can re-run any recording file below anytime to regenerate transcripts, summaries, decisions, and knowledge graphs.</p>
+
+          <div class="recordings-grid" id="recordingsGrid">
+            <div class="loading-spinner">Loading stored recording files...</div>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <h2>Upload Recorded Audio File</h2>
+          <p class="subtitle">Upload meeting recordings (WAV, MP3, M4A, AAC, MP4) for automated processing.</p>
+
+          <form id="ingestForm" class="ingest-form">
+            <div class="form-group">
+              <label for="meetingTitleInput">Meeting Title (Optional)</label>
+              <input type="text" id="meetingTitleInput" placeholder="e.g. Architecture Sync & Roadmap Review">
+            </div>
+
+            <div class="drop-zone" id="dropZone">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <p>Drag and drop audio file here or <span class="browse-link">browse computer</span></p>
+              <input type="file" id="audioFileInput" accept=".wav,.mp3,.m4a,.aac,.mp4,.flac,.ogg" class="file-input">
+              <div class="format-tags">
+                <span class="tag">.WAV</span>
+                <span class="tag">.MP3</span>
+                <span class="tag">.M4A</span>
+                <span class="tag">.AAC</span>
+                <span class="tag">.MP4</span>
+              </div>
+            </div>
+
+            <div id="selectedFileInfo" class="file-info hidden">
+              <span>Selected File: <strong id="selectedFileName">filename.mp3</strong></span>
+            </div>
+
+            <button type="submit" id="startProcessBtn" class="btn primary lg" disabled>
+              Start Local Processing Pipeline
+            </button>
+          </form>
+
+          <!-- Processing Timeline -->
+          <div id="vaultProcessingTimeline" class="processing-timeline hidden">
+            <h3>Processing Pipeline Stages</h3>
+            <div class="stages-list">
+              <div class="stage-item" id="vaultStage1"><span class="stage-num">1</span> Ingest & Resample Audio (FFmpeg 16kHz)</div>
+              <div class="stage-item" id="vaultStage2"><span class="stage-num">2</span> Speech Recognition & Timestamps (Faster-Whisper)</div>
+              <div class="stage-item" id="vaultStage3"><span class="stage-num">3</span> Speaker Diarization & Persistent Profile Matching</div>
+              <div class="stage-item" id="vaultStage4"><span class="stage-num">4</span> Knowledge Extraction (LM Studio Open-Source LLM)</div>
+              <div class="stage-item" id="vaultStage5"><span class="stage-num">5</span> Vector Indexing & Knowledge Graph Storage</div>
+            </div>
+            <div id="vaultProcessingResultMsg" class="result-msg hidden"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: MEETING MEMORY HUB -->
+      <section id="tab-meetings" class="tab-panel" style="display: none;">
+        <div class="memory-layout">
+          <div class="sidebar-list">
+            <h3>All Meetings</h3>
+            <div id="memoryMeetingList" class="meeting-items">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+
+          <div class="memory-detail panel-card">
+            <div id="memoryDetailContainer">
+              <div class="placeholder-state">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <p>Select a meeting from the sidebar to view executive summary, decisions, tasks, and full transcript.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: KNOWLEDGE GRAPH EXPLORER (Obsidian-Style Interactive Force Graph) -->
+      <section id="tab-graph" class="tab-panel" style="display: none;">
+        <div class="panel-card" style="padding: 20px;">
+          <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <h2>🌐 Knowledge Graph Explorer</h2>
+              <p class="subtitle" style="margin: 0;">Interactive 2D physics graph visualization of connected entities across all meeting notes (Obsidian Style).</p>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <span class="graph-metrics" id="graphMetrics" style="font-weight: 600; font-size: 0.88rem; color: #818cf8; background: rgba(99,102,241,0.15); padding: 4px 12px; border-radius: 16px; border: 1px solid rgba(99,102,241,0.3);">Nodes: 0 | Edges: 0</span>
+              <button id="resetGraphViewBtn" class="btn sm">🎯 Reset View</button>
+              <button id="toggleGraphViewBtn" class="btn sm">📱 Grid / Canvas View</button>
+            </div>
+          </div>
+
+          <!-- Color Legend Bar -->
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.82rem; margin-bottom: 12px; padding: 8px 14px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 6px #38bdf8;"></span> Person</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981;"></span> Meeting</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 6px #f59e0b;"></span> Decision</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 6px #ef4444;"></span> Task</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #a855f7; box-shadow: 0 0 6px #a855f7;"></span> Project</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #6366f1; box-shadow: 0 0 6px #6366f1;"></span> Technology</span>
+          </div>
+
+          <!-- Obsidian Canvas Container -->
+          <div id="obsidianGraphContainer" style="position: relative; width: 100%; height: 560px; background: #0b0f19; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.8);">
+            <canvas id="obsidianCanvas" style="width: 100%; height: 100%; display: block; cursor: grab;"></canvas>
+
+            <!-- Floating Graph Helper Instructions Overlay -->
+            <div style="position: absolute; bottom: 12px; left: 14px; pointer-events: none; font-size: 0.76rem; color: rgba(255,255,255,0.45); background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 6px; backdrop-filter: blur(4px);">
+              💡 <strong>Controls:</strong> Drag nodes • Scroll to Zoom • Drag background to Pan • Click node to focus connections
+            </div>
+
+            <!-- Graph Tooltip Hover Card -->
+            <div id="graphTooltip" class="hidden" style="position: absolute; pointer-events: none; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(99,102,241,0.5); border-radius: 8px; padding: 10px 14px; color: #f8fafc; font-size: 0.85rem; box-shadow: 0 10px 25px rgba(0,0,0,0.6); z-index: 20; max-width: 280px; backdrop-filter: blur(8px); line-height: 1.4;"></div>
+          </div>
+
+          <div class="graph-nodes-grid hidden" id="graphNodesGrid" style="margin-top: 16px;">
+            <!-- Loaded dynamically when in grid view -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: AI ASSISTANT -->
+      <section id="tab-assistant" class="tab-panel" style="display: none;">
+        <div class="chat-layout">
+          <div class="chat-header panel-card">
+            <div class="chat-title">
+              <h2>Local RAG Meeting Assistant</h2>
+              <span class="model-badge" id="chatModelBadge">LM Studio (Local LLM)</span>
+            </div>
+            <p class="subtitle">Ask questions about past decisions, action items, technologies, or specific discussions. Answers are strictly grounded in meeting notes.</p>
+            
+            <div class="suggested-pills">
+              <button class="pill-btn">What key decisions were made recently?</button>
+              <button class="pill-btn">List all pending action items and assignees</button>
+              <button class="pill-btn">What technologies are being used?</button>
+            </div>
+          </div>
+
+          <div class="chat-history" id="chatHistory">
+            <div class="chat-msg system">
+              <div class="avatar">AI</div>
+              <div class="msg-body">
+                Hello! I am your local AI Meeting Assistant. I can search across all meeting transcripts, decisions, tasks, and graph relationships to answer your questions accurately.
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Ask a question about your meeting memory...">
+            <button id="sendChatBtn" class="btn primary">Send Question</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: SPEAKERS DIRECTORY -->
+      <section id="tab-speakers" class="tab-panel" style="display: none;">
+        <div class="panel-card">
+          <div class="section-header">
+            <div>
+              <h2>Tracked Speaker Directory</h2>
+              <p class="subtitle">Persistent voice embedding profiles recognized across meetings. Edit speaker display names & aliases below.</p>
+            </div>
+            <button id="addSpeakerBtn" class="btn primary">+ Add New Speaker</button>
+          </div>
+
+          <div id="speakerFormContainer" class="panel-card hidden" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(99,102,241,0.3); margin-bottom: 20px; padding: 16px;">
+            <h3 id="speakerFormTitle">Add New Speaker Profile</h3>
+            <input type="hidden" id="editSpeakerId">
+            <div style="display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap;">
+              <input type="text" id="speakerNameInput" placeholder="Speaker Name (e.g. Alice Smith)" style="flex: 1; min-width: 200px;">
+              <input type="text" id="speakerAliasesInput" placeholder="Aliases (comma-separated, e.g. SPEAKER_00, Alice)" style="flex: 1.5; min-width: 250px;">
+              <button id="saveSpeakerBtn" class="btn primary">Save Speaker</button>
+              <button id="cancelSpeakerBtn" class="btn">Cancel</button>
+            </div>
+          </div>
+
+          <div class="speakers-grid" id="speakersGrid">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6.5: MEETING BOT & EXTERNAL CONNECTORS -->
+      <section id="tab-connectors" class="tab-panel" style="display: none;">
+        <div class="panel-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: 24px;">
+          <div class="section-header">
+            <h2>📡 Meeting Bot & External Connectors Hub</h2>
+            <span class="badge" style="background: rgba(167, 139, 250, 0.2); color: #a78bfa;">Neural Agent Bot + OAuth</span>
+          </div>
+          <p class="subtitle">Join live Google Meet / Teams / Zoom calls as a named bot, auto-record, transcribe, and dispatch follow-up emails and calendar events.</p>
+
+          <!-- Connector OAuth Status Row -->
+          <div class="dashboard-row" style="gap: 16px; margin-top: 20px;">
+            <div class="panel-card flex-1" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); padding: 16px;">
+              <h4 style="margin: 0 0 12px; color: rgba(255,255,255,0.7); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">🔗 Connector Status</h4>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 0.9rem;">📧 Gmail API</span>
+                  <span id="gmailStatusBadge" class="status-pill" style="font-size: 0.78rem;">Checking...</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 0.9rem;">📅 Google Calendar</span>
+                  <span id="gcalStatusBadge" class="status-pill" style="font-size: 0.78rem;">Checking...</span>
+                </div>
+              </div>
+              <p style="font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 12px;">
+                To enable Google connectors: place <code>credentials.json</code> in your home directory or <code>~/.transcribe/</code>, then restart the server.
+              </p>
+            </div>
+
+            <!-- Upcoming Calendar Events -->
+            <div class="panel-card flex-2" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h4 style="margin: 0; color: rgba(255,255,255,0.7); font-size: 0.85rem; text-transform: uppercase;">📅 Upcoming Meetings</h4>
+                <button class="btn secondary sm" onclick="loadCalendarEvents()">🔄 Refresh</button>
+              </div>
+              <div id="upcomingEventsList" style="max-height: 220px; overflow-y: auto;">
+                <p class="placeholder-text">Loading upcoming events...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bot Controller -->
+          <div class="dashboard-row" style="gap: 20px; margin-top: 20px;">
+            <!-- Meeting Bot Launcher -->
+            <div class="panel-card flex-1" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(167, 139, 250, 0.2);">
+              <h3>🤖 Neural Agent Bot Launcher</h3>
+              <p class="subtitle">Enter a meeting URL — the bot joins as "Neural Agent Bot", records the audio, and auto-processes the meeting when stopped.</p>
+              
+              <div class="form-group" style="margin-top: 14px;">
+                <label for="vexaMeetingUrl">Meeting URL</label>
+                <input type="text" id="vexaMeetingUrl" class="form-control" placeholder="https://meet.google.com/abc-defg-hij or Zoom / Teams link...">
+              </div>
+              <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;">
+                <button class="btn primary" id="joinBotBtn" onclick="window.joinVexaBotCall()">🚀 Join & Record</button>
+                <button class="btn danger" id="stopBotBtn" onclick="window.stopVexaBot()" style="background: rgba(220,53,69,0.2); border-color: rgba(220,53,69,0.5); color: #f87171; display: none;">⏹ Stop & Process Meeting</button>
+              </div>
+              <div id="vexaBotStatus" class="result-msg hidden" style="margin-top: 12px;"></div>
+            </div>
+
+            <!-- Steno Passive Call Detector -->
+            <div class="panel-card flex-1" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(56, 189, 248, 0.2);">
+              <h3>📡 Steno Background Call Detector</h3>
+              <p class="subtitle">Monitors running Mac processes (Zoom, Teams, Meet) and auto-starts system loopback recording when a call begins.</p>
+              
+              <div style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between;">
+                <span id="stenoStatusText" style="font-weight: 600; color: #38bdf8;">Status: Ready</span>
+                <button class="btn secondary sm" onclick="window.triggerStenoCheck()">🔄 Check Status</button>
+              </div>
+              <div id="stenoCallBadge" class="status-pill" style="margin-top: 12px; display: inline-block;">No Active Calls</div>
+            </div>
+          </div>
+
+          <!-- Email Action Approval Queue -->
+          <div class="panel-card" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); margin-top: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3>✉️ Email Action Approval Queue</h3>
+              <button class="btn secondary sm" onclick="loadApprovalQueue()">🔄 Refresh Queue</button>
+            </div>
+            <p class="subtitle">1-click approve follow-up emails drafted automatically from meeting action items. Sent via Gmail API or Apple Mail.</p>
+            
+            <div id="emailApprovalQueueContainer" style="margin-top: 14px;">
+              <p class="placeholder-text">Loading approval queue...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: SETTINGS & MODEL MANAGER -->
+      <section id="tab-settings" class="tab-panel" style="display: none;">
+        <div class="panel-card">
+          <div class="section-header">
+            <h2>⚙️ Local AI Model & Platform Settings</h2>
+            <button id="saveSettingsBtn" class="btn primary lg">Save Model Settings</button>
+          </div>
+          <p class="subtitle">Customize STT models, LLM endpoints, diarization provider, and Google API credentials.</p>
+
+          <div id="settingsAlert" class="result-msg hidden" style="margin-bottom: 20px;"></div>
+
+          <!-- User Storage Path Config Card -->
+          <div class="panel-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
+            <h3>📁 App Data Storage Directory</h3>
+            <p class="subtitle">Choose where Transcribe AI stores recordings, transcripts, markdown notes, speakers, and vector databases.</p>
+            <div class="form-group" style="margin-top: 14px;">
+              <label for="settingStorageDir">Storage Folder Path</label>
+              <input type="text" id="settingStorageDir" placeholder="e.g. ~/.transcribe or /Users/yourusername/Documents/TranscribeData">
+              <span style="font-size: 0.82rem; color: rgba(255,255,255,0.5); display: block; margin-top: 6px;">
+                Subdirectories (<code>recordings/</code>, <code>meetings/</code>, <code>markdown/</code>, <code>speakers/</code>) will be created inside this folder.
+              </span>
+            </div>
+          </div>
+
+          <!-- Diarization Settings Card (NEW) -->
+          <div class="panel-card" style="background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.25); margin-bottom: 20px;">
+            <h3>🎤 Speaker Diarization (Who Said What)</h3>
+            <p class="subtitle">Choose between mock diarization (no setup needed) or real pyannote.audio diarization (requires Hugging Face token).</p>
+            <div id="diarizationAlert" class="result-msg hidden" style="margin-bottom: 12px;"></div>
+            <div class="dashboard-row" style="gap: 16px; margin-top: 14px;">
+              <div class="form-group flex-1">
+                <label for="settingDiarizationProvider">Diarization Provider</label>
+                <select id="settingDiarizationProvider" class="form-control">
+                  <option value="mock">mock — Always works, no setup required</option>
+                  <option value="pyannote">pyannote.audio 3.1 — Real diarization (requires HF token)</option>
+                </select>
+              </div>
+              <div class="form-group flex-2">
+                <label for="settingHFToken">Hugging Face Token (for pyannote)</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="password" id="settingHFToken" placeholder="hf_xxxxxxxxxxxxxxxxxxxxxxxx" style="flex: 1;">
+                  <button class="btn primary" onclick="saveDiarizationSettings()">Save Diarization</button>
+                </div>
+                <span style="font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-top: 4px; display: block;">
+                  Get a free token at <a href="https://huggingface.co/settings/tokens" target="_blank" style="color: #a78bfa;">huggingface.co/settings/tokens</a> and accept the <a href="https://huggingface.co/pyannote/speaker-diarization-3.1" target="_blank" style="color: #a78bfa;">pyannote model license</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Cleanup Card -->
+          <div class="panel-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
+            <h3>🧹 Storage Cleanup & Data Purge</h3>
+            <p class="subtitle">Purge accumulated raw audio recording files or perform a complete reset of all transcripts, vector indices, and speaker profiles.</p>
+            <div style="display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+              <button id="cleanRecordingsBtn" class="btn secondary">🎙️ Purge Audio Recordings Only</button>
+              <button id="cleanAllBtn" class="btn danger" style="background: #dc3545; color: white;">💥 Full Reset (Purge All Data & DBs)</button>
+            </div>
+          </div>
+
+          <div class="dashboard-row" style="gap: 20px;">
+
+
+            <!-- Speech-to-Text (STT) Settings Card -->
+            <div class="panel-card flex-1" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+              <h3>🎙️ Speech-to-Text (STT) Settings</h3>
+              <div class="form-group" style="margin-top: 14px;">
+                <label for="settingSttModel">Whisper Preset Size</label>
+                <select id="settingSttModel" class="form-control">
+                  <option value="large-v3-turbo">large-v3-turbo (Recommended - High Accuracy)</option>
+                  <option value="large-v3">large-v3 (Full Accuracy)</option>
+                  <option value="medium">medium (Balanced)</option>
+                  <option value="small">small (Fast)</option>
+                  <option value="base">base (Ultra Fast)</option>
+                  <option value="tiny">tiny (Minimal)</option>
+                </select>
+                <label for="settingSttModelCustom" style="margin-top: 10px; display: block;">Hugging Face Model Repo ID / Custom Model</label>
+                <input type="text" id="settingSttModelCustom" placeholder="Or enter Hugging Face ID (e.g. Systran/faster-whisper-large-v3)...">
+                <span style="font-size: 0.8rem; color: rgba(255,255,255,0.5); display: block; margin-top: 4px;">
+                  Supports any Hugging Face repo containing CTranslate2/Whisper models.
+                </span>
+              </div>
+
+
+              <div class="form-group">
+                <label for="settingSttDevice">Compute Device</label>
+                <select id="settingSttDevice" class="form-control">
+                  <option value="auto">auto (Auto-detect Best GPU/MPS/CPU)</option>
+                  <option value="mps">mps (Apple Silicon Metal GPU)</option>
+                  <option value="cuda">cuda (NVIDIA CUDA GPU)</option>
+                  <option value="cpu">cpu (Standard Processor)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="settingSttProvider">Speech Engine Provider</label>
+                <select id="settingSttProvider" class="form-control">
+                  <option value="faster-whisper">faster-whisper (CTranslate2 Engine)</option>
+                  <option value="mock">mock (Test / Simulation Engine)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="settingSttLang">Audio Language Code</label>
+                <input type="text" id="settingSttLang" value="en" placeholder="e.g. en, es, fr, de">
+              </div>
+            </div>
+
+            <!-- LM Studio / Local LLM Settings Card -->
+            <div class="panel-card flex-1" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+              <h3>🧠 LM Studio / Local LLM Settings</h3>
+              <div class="form-group" style="margin-top: 14px;">
+                <label for="settingLlmModel">LM Studio Model Name</label>
+                <select id="settingLlmModel" class="form-control">
+                  <option value="default">default (Active loaded model in LM Studio)</option>
+                </select>
+                <input type="text" id="settingLlmModelCustom" placeholder="Or enter custom model identifier..." style="margin-top: 8px;">
+              </div>
+
+              <div class="form-group">
+                <label for="settingLlmApiBase">LM Studio API Base URL</label>
+                <input type="text" id="settingLlmApiBase" value="http://localhost:1234/v1" placeholder="http://localhost:1234/v1">
+              </div>
+
+              <div class="form-group">
+                <label for="settingLlmProvider">LLM Provider Engine</label>
+                <select id="settingLlmProvider" class="form-control">
+                  <option value="lm-studio">lm-studio (Local OpenAI-Compatible Server)</option>
+                  <option value="ollama">ollama (Ollama Local Server)</option>
+                  <option value="mock">mock (Mock Offline Generator)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="settingLlmTemp">Generation Temperature (<span id="tempValLabel">0.1</span>)</label>
+                <input type="range" id="settingLlmTemp" min="0" max="1" step="0.05" value="0.1" style="width: 100%;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

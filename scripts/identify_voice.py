@@ -8,8 +8,8 @@ from pathlib import Path
 # Add src to path if needed
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from transcribe.application.container import ServiceContainer
-from transcribe.domain.entities import TranscriptSegment
+from neural_agent_os.application.container import ServiceContainer
+from neural_agent_os.domain.entities import TranscriptSegment
 
 
 def main():

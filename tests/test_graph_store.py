@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from transcribe.infrastructure.graph_store import GraphEdge, GraphNode, KnowledgeGraphStore
+from neural_agent_os.infrastructure.graph_store import GraphEdge, GraphNode, KnowledgeGraphStore
 
 
 def test_graph_store_nodes_and_edges(tmp_path: Path) -> None:

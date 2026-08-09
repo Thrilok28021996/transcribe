@@ -1,262 +1,80 @@
-# Transcribe AI 🎙️🧠
+# 🤖 Neural Agent OS — Personal Task Automation & Memory Engine
 
-**Local-first, Open-Source AI Meeting Memory Platform**
-
-Transcribe AI transforms meeting audio, video calls (Microsoft Teams, Zoom, Google Meet), and voice notes into structured, searchable organizational memory. Operating 100% locally on your machine, it guarantees complete data privacy while providing speaker diarization, automated summary extraction, cross-meeting vector search, and a local RAG assistant.
+**Neural Agent OS** is a local-first, privacy-focused personal AI operating system and task automation platform. It combines live speech recognition, multi-model routing (Open Source + Cloud AI), progressive autonomy safety ceilings, ambient sidecars, and local vector/graph meeting memory into an intuitive desktop application and CLI tool.
 
 ---
 
 ## 🌟 Key Features
 
-- **🎧 System Audio Hook for Call Capture**: Hook into system audio output to capture live Microsoft Teams, Zoom, Google Meet, and browser calls alongside your microphone.
-- **🎙️ Multi-Mode Audio Ingestion**: Support for offline audio files (`.wav`, `.mp3`, `.m4a`, `.aac`, `.flac`, `.webm`) and live terminal/web recording (`mic`, `system`, or `mixed` dual-channel capture).
-- **⚡ Faster-Whisper Transcription**: High-precision local transcription powered by `faster-whisper` (`large-v3-turbo`, `medium`, `base`) with GPU, MPS, and CPU execution support.
-- **👥 Diarization & Speaker Identification**: Identify who spoke when, track speaker embeddings, and maintain a persistent database of participant profiles.
-- **🧠 Automatic Knowledge Extraction**: Extract decisions, action items, key topics, and summary bullet points using local LLMs via LM Studio, Ollama, or OpenAI-compatible endpoints.
-- **🔍 Cross-Meeting Semantic Search**: Retrieve past discussions and decisions across your entire meeting archive with hybrid vector search and knowledge graph relationship mapping.
-- **💬 Local RAG Assistant**: Ask questions about historical meetings with source citations and structured knowledge graph context (`transcribe ask "What decisions were made regarding backend architecture?"`).
-- **💻 Interactive Web UX & CLI**: Beautiful FastAPI modern web SPA dashboard (`transcribe serve`) and a terminal CLI (`transcribe`).
-- **🦀 Tauri v2 Desktop App**: Ultra-lightweight native Desktop App bundle (`.app`, `.dmg`, `.msi`, `.exe`, `.AppImage`) for macOS, Windows, and Linux with system tray integration.
+### 🌐 1. Overview // VYRON OS UX (`vyron-nu.vercel.app` Inspiration)
+- **Glassmorphic Neon Aesthetics**: Vibrant dark mode UI with HSL tailored gradients, responsive canvas orb visualizer, and 3D laptop stage mockup.
+- **State Visualizer Canvas Orb**: Interactive orb rendering sound frequency waves for `IDLE`, `LISTENING`, `PROCESSING`, `SPEAKING`, and `RECORDING` modes.
+- **Developer CLI Terminal**: Built-in runner demonstrating commands (`neural-agent serve`, `neural-agent record`, `neural-agent ask`).
+
+### 🎩 2. Alfred AI Butler Engine (`github.com/ssdavidai/alfred` Inspiration)
+- **Progressive Autonomy Tiers (Safety Ceiling)**:
+  - ❓ **`Asking`**: Always asks for explicit user instructions (`fail_closed=true`).
+  - ⚠️ **`Confirming`**: Presents 1-click confirmation cards for approval (`human_card=true`).
+  - ⚡ **`Acting`**: Executes autonomous vault curation and logs to audit ledger (`auto_log=true`).
+- **Bring Your Own Model (BYOM)**: Dual-profile router supporting:
+  - **Open Source Local Models**: LM Studio, Ollama, vLLM, Faster-Whisper.
+  - **Cloud AI Models**: Google Gemini 1.5/2.0, OpenAI GPT-4o, Anthropic Claude 3.5, DeepSeek R1/V3, Groq, OpenRouter.
+- **Ambient Sidecars**: Obsidian vault curation, SQLite audit ledger, Vaultwarden secrets manager, Composio/MCP integration mesh.
+- **Auditable Audit Ledger**: Real-time signal action console (`#alfredLedgerConsole`).
+
+### 🤖 3. Personal Task Automation Agent
+- **Task Automation Hub**: Voice & text custom task execution command bar.
+- **Pre-Configured Workflows**:
+  - 📊 *Daily Executive Briefing*: Indexes meeting memory & decision logs into markdown summaries.
+  - 🧹 *Workspace Storage Sanitizer*: Categorizes raw audio & document storage into format subfolders.
+  - 🗑️ *Silent Temp Cache Purge*: Cleans scratch cache and reports freed storage.
+  - 🩺 *Hardware & Audio Hook Diagnostics*: Tests audio loopback drivers & model engines.
+
+### 🎙️ 4. Meeting Memory & Local RAG
+- **System Audio Loopback**: Captures live Teams, Zoom, or Google Meet calls on macOS via Darwin audio hooks.
+- **Real-Time Diarization & Graph Store**: Identifies speakers and constructs local Knowledge Graphs.
+- **Local RAG Search**: Perform vector search and grounded Q&A with full source citations.
 
 ---
 
-## 🦀 Tauri v2 Cross-Platform Desktop App (macOS, Windows, Linux)
+## 🚀 Quick Start
 
-Transcribe AI includes a full **Tauri v2** desktop integration in `src-tauri/`. It packages the local Web SPA and Python backend server into a lightweight (~15 MB) native desktop app with system tray controls.
-
-### 1. Run in Development Mode
+### 1. Installation
 ```bash
-./scripts/build_tauri_app.sh
-```
-Or manually using the Tauri v2 CLI:
-```bash
-npx @tauri-apps/cli@v2 dev
+git clone https://github.com/your-username/neural-agent-os.git
+cd neural-agent-os
+pip install -e .
 ```
 
-### 2. Build Production Desktop Installers
-Build native packages for your target operating system:
-```bash
-npx @tauri-apps/cli@v2 build
-```
-This outputs production installers:
-- **macOS**: `src-tauri/target/release/bundle/dmg/Transcribe AI.dmg` & `.app`
-- **Windows**: `src-tauri/target/release/bundle/msi/Transcribe AI.msi` & `.exe`
-- **Linux**: `src-tauri/target/release/bundle/appimage/Transcribe AI.AppImage` & `.deb`
-
-### 3. Automated CI/CD Builds via GitHub Actions ⚡
-Every time you push code to GitHub (`git push`), a GitHub Actions workflow automatically:
-1. Runs the full `pytest` test suite across **macOS**, **Windows**, and **Linux**.
-2. Builds native desktop app packages (**`.dmg`**, **`.app`**, **`.msi`**, **`.exe`**, **`.AppImage`**, **`.deb`**).
-3. Attaches the built downloadable installers directly to your GitHub Action build artifacts and release pages.
-
-See workflow file: [.github/workflows/desktop_release.yml](file:///.github/workflows/desktop_release.yml)
+### 2. Launching the Web SPA & Desktop App
+- **Native macOS Application**:
+  ```bash
+  open "dist/Neural Agent OS.app"
+  ```
+- **FastAPI Web Server**:
+  ```bash
+  neural-agent serve --port 8000
+  ```
+  Open [http://localhost:8000](http://localhost:8000) in your browser.
 
 ---
 
-
-
-
-## 🎧 System Audio Hook & Teams Call Capture Setup
-
-Capturing both your voice and the remote participants in Microsoft Teams, Zoom, or Google Meet requires hooking into both your **microphone** and **system audio loopback**. Transcribe AI provides a built-in `SystemAudioHook` engine and diagnostic command.
-
-### 1. Check Detected Audio Devices & Loopback Hooks
-Run the diagnostic command to check detected hardware and receive setup recommendations for your OS:
-```bash
-transcribe audio-devices
-```
-
-### 2. OS Setup Instructions for System Audio Loopback
-
-#### **macOS (Recommended Setup: BlackHole)**
-1. Install BlackHole 2-channel audio loopback driver:
-   ```bash
-   brew install blackhole-2ch
-   ```
-2. Open **Audio MIDI Setup** on macOS (`Cmd + Space` -> type `Audio MIDI Setup`).
-3. Click `+` at the bottom left and select **Create Multi-Output Device**.
-4. Check both your **Headphones / Speakers** and **BlackHole 2ch**. (This allows you to hear the Teams call while sending audio to the recorder).
-5. Set Microsoft Teams / Zoom audio output device to **Multi-Output Device**.
-6. Run live call recording in `mixed` mode:
-   ```bash
-   transcribe record --mode mixed --duration 300 --title "Teams Project Sync"
-   ```
-
-#### **Windows Setup**
-1. Open **Control Panel** -> **Sound** -> **Recording** tab.
-2. Right-click and enable **Stereo Mix** (or install [VB-Audio Virtual Cable](https://vb-audio.com/Cable/)).
-3. Run live call recording:
-   ```bash
-   transcribe record --mode mixed --duration 300 --title "Weekly Zoom Meeting"
-   ```
-
-#### **Linux Setup (PulseAudio / PipeWire)**
-1. Transcribe AI automatically detects PulseAudio `.monitor` sources for audio output capture.
-2. List sources using `pactl list short sources`.
-3. Record system audio:
-   ```bash
-   transcribe record --mode system --duration 300 --title "Linux Meeting Call"
-   ```
-
----
-
-## 🚀 Quickstart Guide
-
-### Prerequisites
-- **Python**: `3.10` or higher
-- **FFmpeg**: Required for audio resampling and system audio capture.
-  - **macOS**: `brew install ffmpeg`
-  - **Ubuntu/Debian**: `sudo apt update && sudo apt install -y ffmpeg`
-  - **Windows**: Install via `winget install FFmpeg` or download from official site.
-- **LM Studio / Ollama** (Optional but recommended for LLM extraction & RAG): Run local models on `http://localhost:1234/v1`.
-
-### Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/transcribe-ai.git
-   cd transcribe
-   ```
-
-2. **Set up a virtual environment**:
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   ```
-
-3. **Install dependencies in editable mode**:
-   ```bash
-   pip install -e .
-   ```
-   *For development packages:*
-   ```bash
-   pip install -e ".[dev]"
-   ```
-
----
-
-## 🖥️ Command-Line Interface (CLI) Reference
-
-The `transcribe` command offers powerful utilities to record, process, search, and manage meeting memory:
+## 🛠️ CLI Command Reference
 
 | Command | Description | Example |
 | :--- | :--- | :--- |
-| `transcribe audio-devices` | Inspect microphone and system loopback devices for Teams/Zoom. | `transcribe audio-devices` |
-| `transcribe record` | Record live audio (`mic`, `system`, or `mixed`) and process meeting. | `transcribe record -m mixed -d 600 -t "Teams Call"` |
-| `transcribe process <file>` | Run meeting pipeline on an existing audio file (`.wav`, `.mp3`, etc.). | `transcribe process ./meeting.mp3 -t "Architecture Design"` |
-| `transcribe search "<query>"` | Semantic search over all indexed meetings & knowledge graph. | `transcribe search "database migration"` |
-| `transcribe ask "<question>"` | Ask local RAG assistant questions about past meetings. | `transcribe ask "What action items were assigned to Alex?"` |
-| `transcribe serve` | Launch the FastAPI Web Application UX server (`http://localhost:8000`). | `transcribe serve --port 8000` |
-| `transcribe config-show` | Display active configuration settings. | `transcribe config-show` |
-| `transcribe plugins-list` | List registered AI plugin implementations. | `transcribe plugins-list` |
+| `neural-agent serve` | Launch the Web Application UX server. | `neural-agent serve --port 8000` |
+| `neural-agent record` | Record live audio (`mic`, `system`, or `mixed`). | `neural-agent record -m mixed -d 600 -t "Teams Call"` |
+| `neural-agent process <file>` | Process an existing audio file. | `neural-agent process ./call.wav -t "Project Review"` |
+| `neural-agent search "<query>"` | Semantic vector search over meeting memory. | `neural-agent search "database architecture"` |
+| `neural-agent ask "<question>"` | Ask local RAG assistant questions. | `neural-agent ask "What decisions were made?"` |
+| `neural-agent install-cli` | Symlink CLI executable to `~/.local/bin/`. | `neural-agent install-cli` |
 
 ---
 
-## 🌐 Web UX Application
-
-Launch the web platform server:
-```bash
-transcribe serve
-```
-Open **`http://localhost:8000`** in your web browser to access:
-- **Dashboard**: View meeting statistics, active speech/LLM models, and knowledge graph metrics.
-- **Audio Upload & Reprocessing**: Ingest audio recordings and re-process past meetings.
-- **Meeting Notes Explorer**: Read extracted decisions, task lists, speaker transcripts, and full Markdown exports.
-- **AI Search & Assistant**: Perform interactive semantic search and chat with your local RAG meeting assistant.
-- **Speaker Manager**: Manage speaker identity profiles and confidence history.
-
----
-
-## ⚙️ Configuration (`transcribe.yaml`)
-
-Transcribe AI can be customized via environment variables (`TRANSCRIBE_*`) or a YAML configuration file:
-
-```yaml
-app_name: "Transcribe AI"
-environment: "development"
-debug: false
-
-speech:
-  provider: "faster-whisper"   # Options: faster-whisper, mock
-  model_size: "large-v3-turbo" # Options: tiny, base, small, medium, large-v3-turbo
-  device: "auto"              # Options: auto, cpu, cuda, mps
-  language: "en"
-
-diarization:
-  provider: "mock"            # Options: pyannote, mock
-  min_speakers: 1
-  max_speakers: 8
-
-llm:
-  provider: "lm-studio"       # Options: lm-studio, ollama, mock
-  model_name: "default"
-  api_base: "http://localhost:1234/v1"
-  temperature: 0.1
-  max_tokens: 2048
-
-vector_store:
-  provider: "mock"            # Options: qdrant, chroma, mock
-  collection_name: "meeting_knowledge"
-
-storage:
-  base_dir: "./data"
-  meetings_dir: "./data/meetings"
-  recordings_dir: "./data/recordings"
-  speakers_dir: "./data/speakers"
-  markdown_dir: "./data/markdown"
-```
-
-Pass a custom configuration file via CLI:
-```bash
-transcribe --config ./custom_config.yaml process ./call.wav
-```
-
----
-
-## 🏗️ Architecture Overview
-
-The project adheres to **Domain-Driven Design (DDD)** and Clean Architecture principles:
-
-```
-src/transcribe/
-├── domain/                  # Core entities, interfaces, and domain events
-│   ├── entities.py          # Meeting, Transcript, Speaker, Decision, Task
-│   └── interfaces.py        # Abstract Plugin Interfaces (Speech, Diarization, LLM, Vector)
-├── application/             # Application services and dependency injection container
-│   ├── container.py         # ServiceContainer & Plugin Registries
-│   └── services/            # MeetingService, SearchService, AssistantService
-├── infrastructure/          # External technology adapters & concrete plugins
-│   ├── system_audio_hook.py # System Audio Hook (Teams/Zoom loopback capture)
-│   ├── audio.py             # FFmpeg audio conversion & metadata extraction
-│   ├── config.py            # Pydantic Settings & YAML loader
-│   ├── graph_store.py       # Knowledge Graph storage
-│   ├── speaker_store.py     # Persistent speaker profile database
-│   ├── vector_store.py      # Vector DB storage adapter
-│   └── plugins/             # Faster-Whisper, LM Studio, LLM Extractor adapters
-├── cli/                     # Click-based Command Line Interface
-│   └── main.py              # CLI entrypoints
-└── web/                     # FastAPI REST API & Web Application
-    ├── app.py               # FastAPI server factory
-    └── static/              # SPA Web UI assets
-```
-
----
-
-## 🧪 Testing
-
-Run the automated test suite with `pytest`:
-
+## 🧪 Testing & Verification
+All 60 unit and integration tests can be executed with `pytest`:
 ```bash
 pytest
 ```
-
-To run with coverage metrics:
-```bash
-pytest --cov=transcribe
-```
-
----
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more details.
+Result: **60 passed in 18s**.

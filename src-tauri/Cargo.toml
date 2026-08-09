@@ -1,5 +1,5 @@
 [package]
-name = "transcribe-ai-desktop"
+name = "neural-agent-os-desktop"
 version = "0.1.0"
 description = "Transcribe AI — Local-first AI Meeting Memory Platform Desktop App"
 authors = ["Transcribe AI Authors"]

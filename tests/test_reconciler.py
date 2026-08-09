@@ -1,7 +1,7 @@
 """Unit tests for transcript-diarization temporal reconciler."""
 
-from transcribe.domain.entities import Transcript, TranscriptSegment
-from transcribe.domain.reconciler import compute_time_overlap, reconcile_transcript_with_diarization
+from neural_agent_os.domain.entities import Transcript, TranscriptSegment
+from neural_agent_os.domain.reconciler import compute_time_overlap, reconcile_transcript_with_diarization
 
 
 def test_compute_time_overlap() -> None:

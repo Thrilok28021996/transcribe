@@ -5,9 +5,9 @@ from pathlib import Path
 from click.testing import CliRunner
 from fastapi.testclient import TestClient
 
-from transcribe.cli.main import cli
-from transcribe.infrastructure.config import load_config, save_config
-from transcribe.web.app import create_app
+from neural_agent_os.cli.main import cli
+from neural_agent_os.infrastructure.config import load_config, save_config
+from neural_agent_os.web.app import create_app
 
 
 def test_save_and_load_config(tmp_path: Path) -> None:

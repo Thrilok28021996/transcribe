@@ -3,13 +3,13 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "transcribe-ai"
+name = "neural-agent-os"
 version = "0.1.0"
-description = "Local-first, open-source AI meeting memory platform"
-readme = "READMe.md"
+description = "Neural Agent OS — Autonomous Personal Task Automation & Memory Engine"
+readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    { name = "Transcribe AI Authors" }
+    { name = "Neural Agent OS Authors" }
 ]
 dependencies = [
     "fastapi>=0.100.0",
@@ -34,9 +34,30 @@ dev = [
     "mypy>=1.8.0",
     "ruff>=0.2.0",
 ]
+bot = [
+    "playwright>=1.40.0",
+]
+diarization = [
+    "pyannote.audio>=3.1.0",
+    "torch>=2.0.0",
+]
+google = [
+    "google-api-python-client>=2.100.0",
+    "google-auth-oauthlib>=1.1.0",
+    "google-auth-httplib2>=0.2.0",
+]
+all = [
+    "playwright>=1.40.0",
+    "pyannote.audio>=3.1.0",
+    "torch>=2.0.0",
+    "google-api-python-client>=2.100.0",
+    "google-auth-oauthlib>=1.1.0",
+    "google-auth-httplib2>=0.2.0",
+]
 
 [project.scripts]
-transcribe = "transcribe.cli.main:cli"
+neural-agent = "neural_agent_os.cli.main:cli"
+transcribe = "neural_agent_os.cli.main:cli"
 
 [tool.setuptools.packages.find]
 where = ["src"]

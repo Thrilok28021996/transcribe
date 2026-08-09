@@ -18,14 +18,25 @@ pub fn run() {
         .setup(|app| {
             // Spawn background Python backend server if not already running
             thread::spawn(|| {
-                let commands: Vec<(&str, Vec<&str>)> = vec![
-                    ("transcribe", vec!["serve", "--port", "8000"]),
-                    ("python3", vec!["-m", "transcribe.cli.main", "serve", "--port", "8000"]),
-                    ("python", vec!["-m", "transcribe.cli.main", "serve", "--port", "8000"]),
+                let home = std::env::var("HOME").unwrap_or_default();
+                let home_local_agent = format!("{}/.local/bin/neural-agent", home);
+                let home_local_py = format!("{}/.local/bin/python3", home);
+
+                let candidates: Vec<(String, Vec<&str>)> = vec![
+                    ("/Volumes/personal/programmingFolders/transcribe/.venv/bin/neural-agent".to_string(), vec!["serve", "--port", "8000"]),
+                    ("/Volumes/personal/programmingFolders/transcribe/.venv/bin/python3".to_string(), vec!["-m", "neural_agent_os.cli.main", "serve", "--port", "8000"]),
+                    (home_local_agent, vec!["serve", "--port", "8000"]),
+                    (home_local_py, vec!["-m", "neural_agent_os.cli.main", "serve", "--port", "8000"]),
+                    ("/opt/homebrew/bin/neural-agent".to_string(), vec!["serve", "--port", "8000"]),
+                    ("/opt/homebrew/bin/python3".to_string(), vec!["-m", "neural_agent_os.cli.main", "serve", "--port", "8000"]),
+                    ("/usr/local/bin/neural-agent".to_string(), vec!["serve", "--port", "8000"]),
+                    ("/usr/local/bin/python3".to_string(), vec!["-m", "neural_agent_os.cli.main", "serve", "--port", "8000"]),
+                    ("neural-agent".to_string(), vec!["serve", "--port", "8000"]),
+                    ("python3".to_string(), vec!["-m", "neural_agent_os.cli.main", "serve", "--port", "8000"]),
                 ];
 
-                for (cmd, args) in commands {
-                    if let Ok(mut child) = Command::new(cmd).args(&args).spawn() {
+                for (cmd, args) in candidates {
+                    if let Ok(mut child) = Command::new(&cmd).args(&args).spawn() {
                         let _ = child.wait();
                         break;
                     }
@@ -33,7 +44,7 @@ pub fn run() {
             });
 
             // System Tray Menu for macOS / Windows / Linux
-            let quit_i = MenuItem::with_id(app, "quit", "Quit Transcribe AI", true, None::<&str>)?;
+            let quit_i = MenuItem::with_id(app, "quit", "Quit Neural Agent OS", true, None::<&str>)?;
             let show_i = MenuItem::with_id(app, "show", "Open Dashboard", true, None::<&str>)?;
             let tray_menu = Menu::with_items(app, &[&show_i, &quit_i])?;
 
